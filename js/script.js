@@ -18,14 +18,23 @@ const movies = [
     ,
     {title: 'Black Widow',
     originalRelease: '11 May 2020',
-    imdb: 'tt3480822'},
-    {title: 'Monsters Inc.',
+    imdb: 'tt3480822'}
+    ,
+    {title: 'Monsters Inc.', //TEST VALUE
     originalRelease: '02 Nov 2001',
     imdb: 'tt0198781'}
     ,
     {title: 'Bull',
     originalRelease: '20 Mar 2020',
     imdb: 'tt10008784'}
+    ,
+    {title: 'Mulan',
+    originalRelease: '27 Mar 2020',
+    imdb: 'tt4566758'}
+    ,
+    {title: 'The Lovebirds',
+    originalRelease: '03 Apr 2020',
+    imdb: 'tt8851668'}
 ]
 
 const apiKey = "e19d524f";
@@ -278,14 +287,14 @@ function render() {
 
             //next get iterable release date values
             let iterableDates = Object.entries(monthValue[1]);
-            //console.log(iterableDates);
+            console.log(iterableDates);
 
             for(dayValue of iterableDates) {
 
                 //the first value will be the day
                 let day = dayValue[0];
-                console.log('Day is');
-                console.log(day);
+                //console.log('Day is');
+                //console.log(day);
 
                 $(`#${month}${year}`).append(`<div class='release' id='${day}${month}${year}'></div>`);
 
@@ -293,12 +302,26 @@ function render() {
                 //next get iterable movie releases
                 let iterableMovies = Object.entries(dayValue[1]);
 
-                for(iteratedMovie of iterableMovies) {
+                for(i=0; i<iterableMovies.length; i++) {
 
                     //second value will be movie object
-                    let movieToAdd = iteratedMovie[1];
+                    let movieToAdd = iterableMovies[i][1];
+                    console.log(movieToAdd);
 
-                    addToTimeline(movieToAdd);
+                    //we will want to pass down the previous movie
+                    let previousMovie;
+                    if (i > 0) { previousMovie = iterableMovies[i-1][1];}
+
+                    //console.log(day);
+                    //console.log(month);
+                    //console.log(year);
+
+                    //$(`#${day}${month}${year}`).append(`<p>TEST</p>`);
+
+                    //let currentReleaseMonth = $(`${day}${month}${year}`);
+                    //console.log(currentReleaseMonth);
+
+                    addToTimeline(movieToAdd, day, month, year, previousMovie);
                 }
                 //console.log(iterableMovies);
                 //console.log(iterableMovies[0][1]);
@@ -309,7 +332,51 @@ function render() {
 
 
 
-function addToTimeline(movie) {
+function addToTimeline(movie, d, m, y, previousMovie) {
+
+    let posterToAdd;
+
+    //variable for jQuery input for div ID where the movie will be inserted
+    let $currentReleaseMonth = $(`#${d}${m}${y}`);
+    //find poster url
+    let poster = movie.poster;
+
+    //we will want the value of the previous movie if it exists
+    let previousPoster;
+    if (!previousMovie === false) {
+        //if it it exists, grab its poster
+        previousPoster = previousMovie.poster;
+    }
+
+    //how far along on the x axis of the timeline the movie will be
+    //calculation is percentage of release day divided by 30 (monthly average)
+    let positioning = parseInt((d/30)*100);
+    //variable for HTML input of movie poster
+    posterToAdd = `<img class='poster' src=${poster}></img> ${d} ${m}`;
+
+    //if not first movie on that date, remove date at bottom of previous poster
+    if ($currentReleaseMonth.children().length > 0) {
+        $currentReleaseMonth.last().html(`<img class='poster' src=${previousPoster}></img>`);
+    }
+
+    //if no poster url is available
+    if (poster === 'N/A') {
+        //figure out what to do 
+    }
+    
+    //append movie poster to timeline
+    $currentReleaseMonth.append(posterToAdd);
+
+    //adjust poster on x-axis
+    $currentReleaseMonth.last().css('left', `${positioning}%`);
+    //adjust bottom margin
+    //should come down distance of posters from previous date
+    $currentReleaseMonth.last().css('margin-bottom', `10px`)
+
+
+
+
+
 
 
 }
