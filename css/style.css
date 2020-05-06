@@ -3,22 +3,26 @@
   }
 
   body {
-      background-color: rgb(37, 37, 37);
-      margin: 0;
+    background-color: rgb(37, 37, 37);
+    color: white;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
   }
+  
   
   main {
     display: flex;
-    justify-content: center; 
+    flex-direction: column;
+    justify-content: flex-start; 
     align-items: center;
     height: 100vh;
-    margin: 0;
+    margin-left: 2em;
     font-family: Helvetica;
   }
+  
 
   nav {
     display: flex;
-    flex-direction: row; /* default */
     justify-content: center;
     align-items: center;
     background-color: rgb(20, 20, 20);
@@ -26,16 +30,16 @@
   }
 
   #title {
-      position: relative;
-      text-align: center;
-      line-height: 10px;
+    position: relative;
+    text-align: center;
+    line-height: 10px;
   }
 
   #nav-right {
-      display: flex;
-      justify-content: space-between;
-      position: absolute;
-      right: 10px;
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    right: 10px;
   }
 
  #title > h1 {
@@ -50,19 +54,19 @@
   }
 
   #nav-right > p {
-      margin-left: 20px;
-      font-size: 40px;
+    margin-left: 20px;
+    font-size: 40px;
   }
 
   input {
-      background-color: darkgray;
-      font-family: 'Oswald', sans-serif;
-      color: white;
-      border: 0;  
-      margin-top: 57.5px;
-      font-size: 20px;
-      width: 150px;
-      text-align: center;
+    background-color: darkgray;
+    font-family: 'Oswald', sans-serif;
+    color: white;
+    border: 0;  
+    margin-top: 57.5px;
+    font-size: 20px;
+    width: 150px;
+    text-align: center;
   }
 
   footer {
@@ -72,3 +76,37 @@
     text-align: center;
     padding: 20px;
   }
+
+  
+  section > h2 {
+    margin-top: 2em;
+}
+
+.month {
+  padding-top: 5px;
+  margin: 0 auto;
+  border-bottom: 2px solid rgb(170, 170, 170);
+  width: 90vw;
+  max-width: 1400px;
+  min-width: 400px;
+  white-space: nowrap;
+}
+
+.poster {
+  border: 2px solid black;
+  margin-left: -50px;
+  margin-bottom: 5px;
+  width: 10%;
+}
+
+.poster:hover {
+  width: 155px;
+}
+
+.release {
+  position: relative;
+  /* margin-bottom: -245px; --to be determined in JS according to placement in DOM*/ 
+  /* left: 30%; -- to be determined in JS according to release date */
+  display: flex;
+  flex-direction: column;
+}
