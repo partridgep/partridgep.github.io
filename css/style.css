@@ -75,6 +75,7 @@
     color: white;
     text-align: center;
     padding: 20px;
+    flex-shrink: 0;
   }
 
   
@@ -96,12 +97,9 @@
   border: 2px solid black;
   margin-left: -50px;
   margin-bottom: 5px;
-  width: 10%;
+  width: 100px;
 }
 
-.poster:hover {
-  width: 11%;
-}
 
 .release {
   position: relative;

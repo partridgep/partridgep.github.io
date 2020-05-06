@@ -20,10 +20,6 @@ const movies = [
     originalRelease: '11 May 2020',
     imdb: 'tt3480822'}
     ,
-    {title: 'Monsters Inc.', //TEST VALUE
-    originalRelease: '02 Nov 2001',
-    imdb: 'tt0198781'}
-    ,
     {title: 'Bull',
     originalRelease: '20 Mar 2020',
     imdb: 'tt10008784'}
@@ -35,6 +31,27 @@ const movies = [
     {title: 'The Lovebirds',
     originalRelease: '03 Apr 2020',
     imdb: 'tt8851668'}
+    ,
+    {title: 'The Climb',
+    originalRelease: '20 Mar 2020',
+    imdb: 'tt8637440'
+    }
+    ,
+    {title: 'Deerskin',
+    originalRelease: '20 Mar 2020',
+    imdb: 'tt8193790'}
+    ,
+    {title: 'Run',
+    originalRelease: '08 May 2020',
+    imdb: 'tt8633478'}
+    ,
+    {title: 'Scoob!',
+    originalRelease: '15 May 2020',
+    imdb: 'tt3152592'}
+    ,
+    {title: 'Working Man',
+    originalRelease: '27 Mar 2020',
+    imdb: 'tt8391044'}
 ]
 
 const apiKey = "e19d524f";
@@ -297,6 +314,9 @@ function render() {
                 //console.log(day);
 
                 $(`#${month}${year}`).append(`<div class='release' id='${day}${month}${year}'></div>`);
+                //restrict width of div so it doesn't overflow
+                $(`#${day}${month}${year}`).css(`width`, '200px');
+
 
 
                 //next get iterable movie releases
@@ -306,7 +326,7 @@ function render() {
 
                     //second value will be movie object
                     let movieToAdd = iterableMovies[i][1];
-                    console.log(movieToAdd);
+                    //console.log(movieToAdd);
 
                     //we will want to pass down the previous movie
                     let previousMovie;
@@ -325,6 +345,45 @@ function render() {
                 }
                 //console.log(iterableMovies);
                 //console.log(iterableMovies[0][1]);
+            }
+
+
+            //now that we have all posters situated on the month,
+            //we need to adjust the bottom margins
+            //so that all release dates appear on one line
+
+            //get all release Divs
+            let releaseDivs = Object.values($(`#${month}${year}`).children('.release'));
+
+            //iterating backwards through the divs
+            for(i=releaseDivs.length; i > -1; i--) {
+                
+                //if the div is an object (meaning if it is a cluster of posters)
+                if (typeof(releaseDivs[i]) === 'object') {
+                    //console.log('RD is')
+                    //console.log(releaseDivs[i]);
+                    //if the next div is also an object
+                    if (typeof(releaseDivs[i+1]) === 'object') {
+                    //console.log('next RD is');
+                    //console.log(releaseDivs[i+1]);
+
+                    //console.log(releaseDivs[i+1]['id']);
+
+                    //get dimensions of posters for that date
+                    let divHeight = $(`#${releaseDivs[i+1]['id']}`)[0].getBoundingClientRect();
+                    console.log(divHeight);
+
+                    //adjust bottom margin of div to lower it 
+                    //the height of the following div
+                    $(`#${releaseDivs[i]['id']}`).css('margin-bottom', `-174.98px`);
+                    //this solution here in inelegant and is inputting brute data
+                    //divHeight value doesn't seem to be working
+
+                    //just a test to make sure we are affecting the right divs
+                    //$(`#${releaseDivs[i]['id']}`).css('color', `blue`);
+
+                    }               
+                }
             }
         }
     } 
@@ -355,9 +414,11 @@ function addToTimeline(movie, d, m, y, previousMovie) {
     posterToAdd = `<img class='poster' src=${poster}></img> ${d} ${m}`;
 
     //if not first movie on that date, remove date at bottom of previous poster
-    if ($currentReleaseMonth.children().length > 0) {
-        $currentReleaseMonth.last().html(`<img class='poster' src=${previousPoster}></img>`);
-    }
+    //if ($currentReleaseMonth.children().length > 0) {
+      // console.log(`adding poster for ${movie.title}`)
+        //console.log(`the previous poster was for ${previousMovie.title}`)
+        //$currentReleaseMonth.prev().html(`<img class='poster' src=${previousPoster}></img>`);
+    //}
 
     //if no poster url is available
     if (poster === 'N/A') {
@@ -370,13 +431,7 @@ function addToTimeline(movie, d, m, y, previousMovie) {
     //adjust poster on x-axis
     $currentReleaseMonth.last().css('left', `${positioning}%`);
     //adjust bottom margin
-    //should come down distance of posters from previous date
     $currentReleaseMonth.last().css('margin-bottom', `10px`)
-
-
-
-
-
-
-
+    //should come down distance of posters from previous date
+    //it is DIV AFTER
 }
