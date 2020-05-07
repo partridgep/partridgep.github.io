@@ -90,8 +90,11 @@ const $main = $('main');
 const $input = $('input[type="text"]')
 const $slider = $("#cal_type");
 
+
 /*----- event listeners -----*/
 $slider.change(setCurrentCalendar);
+$main.click(showMovieDetails);
+
 
 /*----- functions -----*/
 
@@ -380,7 +383,7 @@ function render(calendar) {
                 //add a release day div
                 $(`#${month}${year}`).append(`<div class='release' id='${day}${month}${year}'></div>`);
                 //restrict width of div so it doesn't overflow
-                $(`#${day}${month}${year}`).css(`width`, '200px');
+                //$(`#${day}${month}${year}`).css(`width`, '200px');
 
                 //next get iterable movie releases
                 let iterableMovies = Object.entries(dayValue[1]);
@@ -472,6 +475,7 @@ function fixPostersYAxis(d, m, y) {
     }
 };
 
+//changing calendars once toggled
 function setCurrentCalendar() {
 
     //if slider is to the left
@@ -489,4 +493,37 @@ function setCurrentCalendar() {
         render(newReleaseCalendar);
     }
 };
+
+//show movie details
+function showMovieDetails(e) {
+
+    //get value of movie clicked
+    let clickedPoster = e.target;
+
+    //console.log(clickedPoster);
+
+    let $clickedPoster = $(clickedPoster);
+    let clickedPosterSrc = $clickedPoster.attr('src')
+
+    
+    for(movie of movies) {
+        if (movie.poster === clickedPosterSrc) {
+            console.log(movie.title);
+            
+            $main.addClass('overlay');
+            $('img').css('opacity', '0.5');
+            $('h2').css('opacity', '0.5');
+            $('h3').css('opacity', '0.5');
+            $('p').css('opacity', '0.5');
+            $slider.off();
+            $main.off();
+            document.getElementById('cal_type').disabled = true;
+
+            $main.append(`<section class="movieInfo">${movie.title}<section>`)
+
+            
+        }
+    }
+};
+
 
