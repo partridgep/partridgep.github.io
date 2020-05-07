@@ -1,4 +1,5 @@
 /*----- constants -----*/
+//all the movies that have been delayed due to pandemic
 const movies = [
     {title: 'Mission Impossible 7',
     originalRelease: '23 Jul 2021',
@@ -54,21 +55,43 @@ const movies = [
     imdb: 'tt8391044'}
 ]
 
+//constants for first movie API
+//for faster loading, management of long array of movies
 const apiKey = "e19d524f";
 const baseUrl = "https://www.omdbapi.com/";
 const requests = [];
+
+//we will be using a second API to pull
+//more information when we access a specific film
+const apiForIndividualMovie = {
+	"async": true,
+	"crossDomain": true,
+	"url": "https://imdb-internet-movie-database-unofficial.p.rapidapi.com/film/tt1375666",
+	"method": "GET",
+	"headers": {
+		"x-rapidapi-host": "imdb-internet-movie-database-unofficial.p.rapidapi.com",
+		"x-rapidapi-key": "c72e51845amsh13ded685a732780p12270ejsn5acc10aa1952"
+	}
+}
+const urlForIndividualMovie = "https://imdb-internet-movie-database-unofficial.p.rapidapi.com/film/";
+
+//constants used to sort movies
 const originalReleaseCalendar = {};
+const newReleaseCalendar = {};
 const releaseMonths = {};
 
+
 /*----- app's state (variables) -----*/
-let movieAPIData;
+let movieAPIData, isOriginal;
 
 
 /*----- cached element references -----*/
 const $main = $('main');
 const $input = $('input[type="text"]')
+const $slider = $("#cal_type");
 
 /*----- event listeners -----*/
+$slider.change(setCurrentCalendar);
 
 /*----- functions -----*/
 
@@ -77,6 +100,7 @@ init();
 
 
 function init() {
+    isOriginal = true;
     getAPIMovieData();
 };
 
@@ -105,8 +129,11 @@ function getAPIMovieData() {
         //place movies in original release time objects
         organizeMoviesByOriginalRelease();
 
-        //render in DOM
-        render();
+        //we also want to have the delayed movie calendar prepared
+        organizeMoviesByDelayedRelease();
+
+        //render original calendar in DOM
+        render(originalReleaseCalendar);
   });
 };
 
@@ -118,10 +145,6 @@ function addAPIDataToMovies() {
         //rename variables
         let movie = movies[i];
         let movieAPI = movieAPIData[i][0];
-
-        //check we have the right movie
-        //console.log(movie);
-        //console.log(movieAPI);
 
         //grab relevant API data
         movie.poster = movieAPI.Poster;
@@ -135,7 +158,7 @@ function addAPIDataToMovies() {
 };
 
 
-//place each movie in corresponding yearly release object
+//place each movie in corresponding original release object
 function organizeMoviesByOriginalRelease() {
 
     for(movie of movies) {
@@ -177,8 +200,58 @@ function organizeMoviesByOriginalRelease() {
         //numerically in objects since ES6!!!!
 
     }
-    console.log(originalReleaseCalendar);  
+    //console.log(originalReleaseCalendar);  
 };
+
+
+//place each movie in corresponding original release object
+function organizeMoviesByDelayedRelease() {
+
+    for(movie of movies) {
+
+        //if no new release date, go onto next movie
+        if (movie.newRelease === 'N/A') return;
+
+        let releaseDate = movie.newRelease;
+
+        //get original release year (last 4 characters of release date)
+        let newYear = releaseDate.slice(-4);
+
+        //get original release month (middle 3 characters of release date)
+        let newMonth = releaseDate.slice(-8, -5);
+        //get monthly index (ex. 1 for Jan)
+        newMonth = convertMonthStrToIdx(newMonth);
+
+        //get original release day (first 2 characters of released date)
+        let newDay = releaseDate.slice(0, 2);
+
+        //if the release calendar does not have a year object, create it
+        if (!newReleaseCalendar[`${newYear}`]) {
+            newReleaseCalendar[`${newYear}`] = {
+                [`${newMonth}`]: []
+                }
+            ;}
+
+        //if the release year does not have a month object, create it
+        if (!newReleaseCalendar[`${newYear}`][`${newMonth}`]) {
+            newReleaseCalendar[`${newYear}`][`${newMonth}`] = [];
+        }
+
+        //if the release month does not have a date object, create it
+        if (!newReleaseCalendar[`${newYear}`][`${newMonth}`][`${newDay}`]) {
+            newReleaseCalendar[`${newYear}`][`${newMonth}`][`${newDay}`] = [];
+        }
+        
+        //once those objects exist, add movie to that timeframe release bucket
+        newReleaseCalendar[`${newYear}`][`${newMonth}`][`${newDay}`].push(movie); 
+
+        //this will end up sorted because integers are sorted 
+        //numerically in objects since ES6!!!!
+
+    }
+    console.log(newReleaseCalendar);  
+};
+
 
 
 //return month idx for easy calendar object sorting
@@ -219,8 +292,7 @@ function convertMonthStrToIdx(month) {
     }
     else if (month === 'Dec') {
         month = 12;
-    }
-    
+    }   
     return month;
 };
 
@@ -263,16 +335,18 @@ function convertMonthIdxToStr(month) {
     else if (month === '12') {
         month = 'December';
     }
-    
     return month;
 };
     
 
 //render in the DOM   
-function render() {
+function render(calendar) {
+
+    //clear calendar in the DOM
+    $main.html('');
     
     //grab entries of calendar object to make it iterable
-    let iterableCalendar = Object.entries(originalReleaseCalendar);
+    let iterableCalendar = Object.entries(calendar);
 
     //iterate through each year in the calendar
     for(yearValue of iterableCalendar) {
@@ -297,7 +371,6 @@ function render() {
 
             //next get iterable release date values
             let iterableDates = Object.entries(monthValue[1]);
-            console.log(iterableDates);
 
             for(dayValue of iterableDates) {
 
@@ -334,8 +407,6 @@ function render() {
         }
     } 
 };
-
-
 
 function addToTimeline(movie, d, m, y) {
 
@@ -400,3 +471,22 @@ function fixPostersYAxis(d, m, y) {
         //now all of our release divs are aligned on the timeline!!!
     }
 };
+
+function setCurrentCalendar() {
+
+    //if slider is to the left
+    if ($slider.val() === '1') {
+        //set boolean to true
+        isOriginal = true;
+        //render original release calendar
+        render(originalReleaseCalendar);
+    }
+    //if it's the to right
+    else {
+        //set boolean to false
+        isOriginal = false;
+        //render new release calendar
+        render(newReleaseCalendar);
+    }
+};
+

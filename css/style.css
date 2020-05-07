@@ -9,7 +9,6 @@
     font-family: Arial, Helvetica, sans-serif;
   }
   
-  
   main {
     display: flex;
     flex-direction: column;
@@ -20,7 +19,6 @@
     font-family: Helvetica;
   }
   
-
   nav {
     display: flex;
     justify-content: center;
@@ -70,6 +68,56 @@
     text-align: center;
   }
 
+  #changeView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Oswald', sans-serif;
+    padding-top: 25px;
+  }
+
+  #calendarToggle {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 27px;
+    font-variant: small-caps;
+  }
+
+  .slideContainer {
+    padding: 0 50%;
+  }
+
+  .slider {
+    -webkit-appearance: none;
+    width: 35px;
+    height: 20px;
+    border-radius: 5px; 
+    border: 1px solid white; 
+    background: black;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+  }
+
+  /* Mouse-over effects */
+  .slider:hover {
+    opacity: 1; /* Fully shown on mouse-over */
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 21px;
+    border-radius: 30%; 
+    border: 1px solid rgba(100, 99, 99, 0.5);
+    background: white;
+    cursor: pointer;
+  }
+
   footer {
     font-family: 'Oswald', sans-serif;
     background-color: rgb(20, 20, 20);
@@ -79,41 +127,39 @@
     flex-shrink: 0;
   }
 
-  
+
   section > h2 {
     margin-top: 2em;
-}
+  }
 
-.month {
-  padding-top: 5px;
-  padding-bottom: 7px;
-  margin: 0 auto;
-  margin-bottom: 70px;
-  border-bottom: 2px solid rgb(170, 170, 170);
-  width: 90vw;
-  max-width: 1400px;
-  min-width: 400px;
-  white-space: nowrap;
-}
+  .month {
+    padding-top: 5px;
+    padding-bottom: 7px;
+    margin: 0 auto;
+    margin-bottom: 70px;
+    border-bottom: 2px solid rgb(170, 170, 170);
+    width: 90vw;
+    max-width: 1400px;
+    min-width: 400px;
+    white-space: nowrap;
+  }
 
-.poster {
-  border: 2px solid black;
-  margin-left: -50px;
-  margin-bottom: 5px;
-  width: 100px;
-  height: 150px;
-}
+  .poster {
+    border: 2px solid black;
+    margin-left: -50px;
+    margin-bottom: 5px;
+    width: 100px;
+    height: 150px;
+  }
 
 
-.release {
-  position: relative;
-  /* margin-bottom: -245px; --to be determined in JS according to placement in DOM*/ 
-  /* left: 30%; -- to be determined in JS according to release date */
-  display: flex;
-  flex-direction: column;
-}
+  .release {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
 
-p {
-  margin: 0 0 0 -30px;
-  max-width: 20px;
-}
+  p {
+    margin: 0 0 0 -30px;
+    max-width: 20px;
+  }
