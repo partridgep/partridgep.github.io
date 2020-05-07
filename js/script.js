@@ -273,16 +273,12 @@ function render() {
     
     //grab entries of calendar object to make it iterable
     let iterableCalendar = Object.entries(originalReleaseCalendar);
-    //console.log(iterableCalendar);
 
     //iterate through each year in the calendar
     for(yearValue of iterableCalendar) {
-        //console.log(value[1]);
         
         //the first value will be the year
         let year = yearValue[0];
-        //console.log('Year is');
-        //console.log(year);
 
         //add year to the DOM
         $main.append(`<section class='year' id=${year}><h2>${year}</h2></section>`)
@@ -294,11 +290,8 @@ function render() {
         for(monthValue of iterableMonths) {
 
             //the first value will be the month 
-            // (we get its long string value to render in DOM for user-friendliness)
+            //(we get its long string value to render in DOM for user-friendliness)
             let month = convertMonthIdxToStr(monthValue[0]);
-            //console.log(iterableMonths);
-            //console.log('Month is');
-            //console.log(month);
 
             $(`#${year}`).append(`<div class='month' id=${month}${year}><h3>${month}</h3></div>`);
 
@@ -310,14 +303,11 @@ function render() {
 
                 //the first value will be the day
                 let day = dayValue[0];
-                //console.log('Day is');
-                //console.log(day);
 
+                //add a release day div
                 $(`#${month}${year}`).append(`<div class='release' id='${day}${month}${year}'></div>`);
                 //restrict width of div so it doesn't overflow
                 $(`#${day}${month}${year}`).css(`width`, '200px');
-
-
 
                 //next get iterable movie releases
                 let iterableMovies = Object.entries(dayValue[1]);
@@ -326,64 +316,20 @@ function render() {
 
                     //second value will be movie object
                     let movieToAdd = iterableMovies[i][1];
-                    //console.log(movieToAdd);
 
-                    //we will want to pass down the previous movie
-                    let previousMovie;
-                    if (i > 0) { previousMovie = iterableMovies[i-1][1];}
-
-                    //console.log(day);
-                    //console.log(month);
-                    //console.log(year);
-
-                    //$(`#${day}${month}${year}`).append(`<p>TEST</p>`);
-
-                    //let currentReleaseMonth = $(`${day}${month}${year}`);
-                    //console.log(currentReleaseMonth);
-
-                    addToTimeline(movieToAdd, day, month, year, previousMovie);
+                    addToTimeline(movieToAdd, day, month, year);
                 }
-                //console.log(iterableMovies);
-                //console.log(iterableMovies[0][1]);
-            }
+
+                //now that all posters are added to the release div, 
+                // append date paragraph to the bottom
+                $(`#${day}${month}${year}`).append(`<p>${day} ${month}</p>`);
 
 
-            //now that we have all posters situated on the month,
-            //we need to adjust the bottom margins
-            //so that all release dates appear on one line
+                //Now we run into a problem: each new release div pushes
+                //previous release div up by its height. This doesn't look good!
+                //To fix this, we must adjust the previous div's margin
+                fixPostersYAxis(day, month, year);
 
-            //get all release Divs
-            let releaseDivs = Object.values($(`#${month}${year}`).children('.release'));
-
-            //iterating backwards through the divs
-            for(i=releaseDivs.length; i > -1; i--) {
-                
-                //if the div is an object (meaning if it is a cluster of posters)
-                if (typeof(releaseDivs[i]) === 'object') {
-                    //console.log('RD is')
-                    //console.log(releaseDivs[i]);
-                    //if the next div is also an object
-                    if (typeof(releaseDivs[i+1]) === 'object') {
-                    //console.log('next RD is');
-                    //console.log(releaseDivs[i+1]);
-
-                    //console.log(releaseDivs[i+1]['id']);
-
-                    //get dimensions of posters for that date
-                    let divHeight = $(`#${releaseDivs[i+1]['id']}`)[0].getBoundingClientRect();
-                    console.log(divHeight);
-
-                    //adjust bottom margin of div to lower it 
-                    //the height of the following div
-                    $(`#${releaseDivs[i]['id']}`).css('margin-bottom', `-174.98px`);
-                    //this solution here in inelegant and is inputting brute data
-                    //divHeight value doesn't seem to be working
-
-                    //just a test to make sure we are affecting the right divs
-                    //$(`#${releaseDivs[i]['id']}`).css('color', `blue`);
-
-                    }               
-                }
             }
         }
     } 
@@ -391,7 +337,7 @@ function render() {
 
 
 
-function addToTimeline(movie, d, m, y, previousMovie) {
+function addToTimeline(movie, d, m, y) {
 
     let posterToAdd;
 
@@ -400,18 +346,11 @@ function addToTimeline(movie, d, m, y, previousMovie) {
     //find poster url
     let poster = movie.poster;
 
-    //we will want the value of the previous movie if it exists
-    let previousPoster;
-    if (!previousMovie === false) {
-        //if it it exists, grab its poster
-        previousPoster = previousMovie.poster;
-    }
-
     //how far along on the x axis of the timeline the movie will be
     //calculation is percentage of release day divided by 30 (monthly average)
     let positioning = parseInt((d/30)*100);
     //variable for HTML input of movie poster
-    posterToAdd = `<img class='poster' src=${poster}></img> ${d} ${m}`;
+    posterToAdd = `<img class='poster' src=${poster}></img>`;
 
     //if not first movie on that date, remove date at bottom of previous poster
     //if ($currentReleaseMonth.children().length > 0) {
@@ -430,8 +369,34 @@ function addToTimeline(movie, d, m, y, previousMovie) {
 
     //adjust poster on x-axis
     $currentReleaseMonth.last().css('left', `${positioning}%`);
-    //adjust bottom margin
-    $currentReleaseMonth.last().css('margin-bottom', `10px`)
-    //should come down distance of posters from previous date
-    //it is DIV AFTER
-}
+};
+
+//make sure all movie posters are well aligned on the y-axis
+function fixPostersYAxis(d, m, y) {
+
+    //if the previous div is also a release div
+    if ($(`#${d}${m}${y}`).prev().hasClass('release')) {
+                    
+        //grab that div's ID for easy manipulatiom
+        let prevID = $(`#${d}${m}${y}`).prev().attr('id');
+        
+        //see how many posters are in the current div
+        //we substract 1 because 1 child will be the date paragraph
+        let numPosters = $(`#${d}${m}${y}`).children().length - 1;
+        
+        //get the height of an individual poster (first three characters)
+        //add 5 for its margin
+        let posterHeight = parseInt(($(`.poster`).css('height')).slice(0, 3)) + 5;
+
+        //finally, calculate the margin we'll have to substract to our current div
+        //that's the number of posters times the height of a poster
+        //plus 18px for the date paragraph
+        let divMargin = numPosters * posterHeight + 18;
+
+        //set the bottom margin for the previous release div 
+        //to be negative that amount
+        $(`#${prevID}`).css('margin-bottom', `-${divMargin}px`);
+
+        //now all of our release divs are aligned on the timeline!!!
+    }
+};
