@@ -184,17 +184,70 @@
   }
 
   .movieInfo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
     position: fixed;
     top: 25%;
     background-color: white;
     border: 3px solid black;
     color: black;
-    padding: 200px;
+    padding: 20px;
     z-index: 5;
-    font-size: 40px;
+    font-size: 18px;
+    border-radius: 5px;
+    max-width: 900px;
+  }
+
+  .movieInfo > h3 {
+    grid-column: span 2;
+    text-align: center;
+    font-size: 22px;
+  }
+
+  .movieInfo > div {
+    grid-row: span 5;
+    overflow-y: hidden;
+    margin: 20px 5px 0 5px;
+  }
+
+  iframe {
+    width: 480px;
+    height: 270px;
+  }
+
+  .movieInfo > p {
+    font-weight: 600;
+  }
+
+  .covid_info {
+    margin-left: -40px;
+  }
+
+  .movieInfo > p > span {
+    font-weight: 500;
+  }
+
+  .movieInfo > ul {
+    margin-left: -80px;
+    font-weight: 600;
+  }
+
+  .movieInfo > ul > li {
+    margin-left: 20px;
+    padding-top: 7px;
+    font-weight: 500;
+  }
+
+  .imdb_info {
+    grid-column: span 2;
+    margin-bottom: -10px;
+  }
+
+  #closeInfo {
+    grid-column: span 2;
+    text-align: right;
+    margin: -5px 0px -20px 0px;
+    font-size: 25px;
   }
 
   .overlay {

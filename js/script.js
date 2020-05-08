@@ -99,7 +99,7 @@ $main.click(getMovieOnPoster);
 /*----- functions -----*/
 
 //initalize webpage app
-init();
+//init();
 
 
 function init() {
