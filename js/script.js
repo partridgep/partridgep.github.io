@@ -502,7 +502,7 @@ function getMovieOnPoster(e) {
         if (movie.poster === clickedPosterSrc && !movie.poster === false) {
             showMovieDetails(movie);      
         }
-        else if (movie.title === $(clickedPoster).text()){
+        else if (movie.title === $(clickedPoster).text() && $clickedPoster.hasClass('posterTitle')){
             showMovieDetails(movie);
         }
     }
