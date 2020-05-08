@@ -14,9 +14,11 @@
     flex-direction: column;
     justify-content: flex-start; 
     align-items: center;
-    height: 100vh;
-    margin-left: 2em;
+    min-height: calc(100vh - 270px);
     font-family: Helvetica;
+    position: relative;
+    top: 110px;
+    margin-top: 50px;
   }
   
   nav {
@@ -25,6 +27,10 @@
     align-items: center;
     background-color: rgb(20, 20, 20);
     color: white;
+    position: fixed;
+    width: 100vw;
+    top: 0;
+    z-index: 4;
   }
 
   #title {
@@ -73,7 +79,14 @@
     justify-content: center;
     align-items: center;
     font-family: 'Oswald', sans-serif;
-    padding-top: 25px;
+    background-color: rgb(37,37,37);
+    background: linear-gradient(top, rgb(37,37,37), rgba(37, 37, 37, 0));
+    background: -webkit-linear-gradient(top, rgb(37,37,37), rgba(37, 37, 37, 0));
+    position: fixed;
+    width: 100vw;
+    top: 109px;
+    z-index: 4;
+    padding-bottom: 150px;
   }
 
   #calendarToggle {
@@ -86,7 +99,7 @@
   }
 
   .slideContainer {
-    padding: 0 50%;
+    margin: 0 20px;
   }
 
   .slider {
@@ -102,11 +115,6 @@
     transition: opacity .2s;
   }
 
-  /* Mouse-over effects */
-  .slider:hover {
-    opacity: 1; /* Fully shown on mouse-over */
-  }
-
   .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
@@ -119,12 +127,22 @@
   }
 
   footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     font-family: 'Oswald', sans-serif;
+    width: 100%;
     background-color: rgb(20, 20, 20);
     color: white;
     text-align: center;
-    padding: 20px;
-    flex-shrink: 0;
+    padding: 7px;
+    z-index: 5;
+    margin-top: 150px;
+  }
+
+  footer > p {
+    width: 100%;
   }
 
 
@@ -156,11 +174,11 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 150px;
+    width: 100px;
     margin-right: 0;
   }
 
-  p {
+  .release > p {
     margin: 0 0 0 20px;
     max-width: 20px;
   }
@@ -184,4 +202,31 @@
     height: 100%;
     background: rgba(0,0,0,0.75);
     opacity: 1;
+    margin: 0;
+  }
+
+  .container {
+    position: relative;
+    background-color: black;
+    width: 100px;
+    height: 150px;
+    margin-bottom: 5px;
+  }
+  
+  .posterTitle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    width: 90px;
+    height: 150px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    text-align: center;
   }

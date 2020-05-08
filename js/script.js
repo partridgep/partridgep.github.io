@@ -93,7 +93,7 @@ const $slider = $("#cal_type");
 
 /*----- event listeners -----*/
 $slider.change(setCurrentCalendar);
-$main.click(showMovieDetails);
+$main.click(getMovieOnPoster);
 
 
 /*----- functions -----*/
@@ -424,18 +424,12 @@ function addToTimeline(movie, d, m, y) {
     //calculation is percentage of release day divided by 30 (monthly average)
     let positioning = parseInt((d/30)*100);
     //variable for HTML input of movie poster
-    posterToAdd = `<img class='poster' src=${poster}></img>`;
-
-    //if not first movie on that date, remove date at bottom of previous poster
-    //if ($currentReleaseMonth.children().length > 0) {
-      // console.log(`adding poster for ${movie.title}`)
-        //console.log(`the previous poster was for ${previousMovie.title}`)
-        //$currentReleaseMonth.prev().html(`<img class='poster' src=${previousPoster}></img>`);
-    //}
+    posterToAdd = `<img class='poster' src=${poster}>`;
 
     //if no poster url is available
     if (poster === 'N/A') {
         //figure out what to do 
+        posterToAdd = `<div class='container'><img class='poster'><div class='posterTitle'>${movie.title}</div></div>`;
     }
     
     //append movie poster to timeline
@@ -495,35 +489,77 @@ function setCurrentCalendar() {
 };
 
 //show movie details
-function showMovieDetails(e) {
+function getMovieOnPoster(e) {
 
     //get value of movie clicked
     let clickedPoster = e.target;
 
-    //console.log(clickedPoster);
-
     let $clickedPoster = $(clickedPoster);
     let clickedPosterSrc = $clickedPoster.attr('src')
+    let clickedPosterText = $(clickedPoster).text();
 
-    
     for(movie of movies) {
-        if (movie.poster === clickedPosterSrc) {
-            console.log(movie.title);
-            
-            $main.addClass('overlay');
-            $('img').css('opacity', '0.5');
-            $('h2').css('opacity', '0.5');
-            $('h3').css('opacity', '0.5');
-            $('p').css('opacity', '0.5');
-            $slider.off();
-            $main.off();
-            document.getElementById('cal_type').disabled = true;
-
-            $main.append(`<section class="movieInfo">${movie.title}<section>`)
-
-            
+        if (movie.poster === clickedPosterSrc && !movie.poster === false) {
+            showMovieDetails(movie);      
+        }
+        else if (movie.title === $(clickedPoster).text()){
+            showMovieDetails(movie);
         }
     }
+};
+
+function showMovieDetails(movie) {
+
+    console.log(movie);
+
+    dimPageBackground();
+                     
+    $main.append(`<section class="movieInfo">${movie.title}</section>`);
+
+}
+
+function dimPageBackground() {
+    
+    //add overlay darkening filter to page sections
+    $main.addClass('overlay');
+
+    //lower items opacity so they get darkened too
+    $('h1').css('opacity', '0.5');
+    $('input').css('opacity', '0.5');
+    $('img').css('opacity', '0.5');
+    $('h2').css('opacity', '0.5');
+    $('h3').css('opacity', '0.5');
+    $('p').css('opacity', '0.5');
+    $('.posterTitle').css('opacity', '0.5');
+
+    //turn off any event listeners or toggles
+    //so user can't access them
+    $slider.off();
+    $main.off();
+    $('#cal_type').prop('disabled', true);
+    $('input[type="text"]').prop('disabled', true);
+};
+
+
+function removeDim() {
+
+    //remove overlay darkening filter to page sections
+    $main.removeClass('overlay');
+
+    //reset items opacity
+    $('h1').css('opacity', '1');
+    $('input').css('opacity', '1');
+    $('img').css('opacity', '1');
+    $('h2').css('opacity', '1');
+    $('h3').css('opacity', '1');
+    $('p').css('opacity', '1');
+    $('.posterTitle').css('opacity', '1')
+
+    //turn back on any event listeners or toggles
+    $slider.change(setCurrentCalendar);
+    $main.click(getMovieOnPoster);
+    $('#cal_type').prop('disabled', false);
+    $('input[type="text"]').prop('disabled', false);
 };
 
 
