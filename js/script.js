@@ -99,7 +99,7 @@ $main.click(getMovieOnPoster);
 /*----- functions -----*/
 
 //initalize webpage app
-//init();
+init();
 
 
 function init() {
@@ -155,7 +155,6 @@ function addAPIDataToMovies() {
         movie.runtime = movieAPI.Runtime;
         movie.director = movieAPI.Director;
         movie.cast = movieAPI.Actors;
-        movie.plot = movieAPI.Plot;
 
     }
 };
@@ -512,11 +511,41 @@ function showMovieDetails(movie) {
 
     console.log(movie);
 
+    getSecondAPIData(movie);
+
     dimPageBackground();
                      
     $main.append(`<section class="movieInfo">${movie.title}</section>`);
 
-}
+};
+
+function getSecondAPIData(movie) {
+
+    apiForIndividualMovie.url = urlForIndividualMovie + movie.imdb;
+
+    //get AJAX data
+    $.ajax(apiForIndividualMovie).then(
+        function(data) {
+            //grab the data
+            movieAPIData = data;
+
+            console.log(movieAPIData);
+
+            movie.plot = movieAPIData.plot;
+            movie.trailer = movieAPIData.trailer.id;
+
+            console.log(movie.trailer);
+
+
+            //render the DOM accordingly
+            //render();
+
+        }, function(error) {
+            //show error if it doesn't work
+            console.log(error)
+        });
+
+};
 
 function dimPageBackground() {
     
