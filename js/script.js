@@ -85,6 +85,7 @@ const originalReleaseCalendar = {};
 const newReleaseCalendar = {};
 const releaseMonths = {};
 
+
 //constants for movie trailer url
 const trailerUrl = 'https://www.imdb.com/video/imdb/';
 const trailerUrlPart2 = '/imdb/embed?autoplay=false&width=480';
@@ -111,6 +112,8 @@ const infoWindowSources = `<p id='sources'>Sources: </p>`
 
 /*----- app's state (variables) -----*/
 let movieAPIData, isOriginal, currentMovie;
+let originalSorted = [];
+let newSorted = [];
 let moviesToTrack = localStorage.getItem('Movies To Track');
 moviesToTrack = moviesToTrack ? moviesToTrack.split(',') : [];
 
@@ -233,11 +236,16 @@ function organizeMoviesByOriginalRelease() {
         //once those objects exist, add movie to that timeframe release bucket
         originalReleaseCalendar[`${originalYear}`][`${originalMonth}`][`${originalDay}`].push(movie); 
 
+
+
         //this will end up sorted because integers are sorted 
         //numerically in objects since ES6!!!!
 
     }
     //console.log(originalReleaseCalendar);  
+
+    //finally let's make sure our sorted array is fully sorted
+    createSortedArray(originalReleaseCalendar);
 };
 
 
@@ -285,11 +293,169 @@ function organizeMoviesByDelayedRelease() {
         //this will end up sorted because integers are sorted 
         //numerically in objects since ES6!!!!
 
+
     }
     console.log(newReleaseCalendar);  
+
+    //finally let's make sure our sorted array is fully sorted
+    createSortedArray(newReleaseCalendar)
 };
 
 
+function createSortedArray(calendar) {
+
+    //grab entries of calendar object to make it iterable
+    let iterableCalendar = Object.entries(calendar);
+
+    //iterate through each year in the calendar
+    for(yearValue of iterableCalendar) {
+
+        //the first value will be the year
+        let year = yearValue[0];
+
+        //next get iterable monthly values
+        let iterableMonths = Object.entries(yearValue[1]);
+
+         //iterate through each month in calendar
+         for(monthValue of iterableMonths) {
+
+            //next get iterable release date values
+            let iterableDates = Object.entries(monthValue[1]);
+
+            for(dayValue of iterableDates) {
+
+                //the first value will be the day
+                let day = dayValue[0];
+
+                //next get iterable movie releases
+                let iterableMovies = Object.entries(dayValue[1]);
+
+                for(i=0; i<iterableMovies.length; i++) {
+
+                    //second value will be movie object
+                    let movieToAdd = iterableMovies[i][1];
+
+                    //add movie object to sorted calendar
+                    if (calendar === newReleaseCalendar) newSorted.push(movieToAdd);
+                    else originalSorted.push(movieToAdd);
+                }
+            }
+        }
+    }
+
+    //now make sure array is truly sorted
+    if (calendar === newReleaseCalendar) newSorted = fullySortNew(newSorted);
+    else originalSorted = fullySortOriginal(originalSorted);
+};
+
+
+function compareOriginalReleaseDates(a, b) {
+    const releaseDateA = a.originalRelease;
+    const releaseDateB = b.originalRelease;
+
+    let comparison = 0;
+    if (releaseDateA > releaseDateB) {
+        comparison = 1;
+    }
+    else if (releaseDateA < releaseDateB) {
+        comparison = -1;
+    }
+    return comparison;
+};
+
+function compareNewReleaseDates(a, b) {
+    const releaseDateA = a.newRelease;
+    const releaseDateB = b.newRelease;
+
+    let comparison = 0;
+    if (releaseDateA > releaseDateB) {
+        comparison = 1;
+    }
+    else if (releaseDateA < releaseDateB) {
+        comparison = -1;
+    }
+    return comparison;
+}
+
+function fullySortOriginal(array) {
+
+    let toSort = [array[0]];
+    let sorted = [];
+
+    for (i=1; i < array.length; i++) {
+
+        if (array[i].title === 'Mission Impossible 7') console.log(i)
+
+        let releaseDate = array[i].originalRelease;
+        let month = releaseDate.slice(-8, -5);
+
+        if (month === array[i-1].originalRelease.slice(-8, -5)) {
+            toSort.push(array[i]);
+        }
+        else {
+            toSort.sort(compareOriginalReleaseDates);
+            for(item of toSort) {
+                sorted.push(item);
+            }
+            toSort = [array[i]];
+            console.log(toSort);
+        }
+    }
+    let lastMonth = toSort;
+    lastMonth.sort(compareOriginalReleaseDates);
+    for (item of lastMonth) sorted.push(item);
+    console.log('this is original sorted:');
+    console.log(sorted);
+    return sorted;
+};
+
+function fullySortNew(array) {
+
+    let toSort = [array[0]];
+    let sorted = [];
+
+    for (i=1; i < array.length; i++) {
+
+        let releaseDate = array[i].newRelease;
+        let month = releaseDate.slice(-8, -5);
+
+        if (month === array[i-1].newRelease.slice(-8, -5)) {
+            toSort.push(array[i]);
+        }
+        else {
+            toSort.sort(compareNewReleaseDates);
+            for(item of toSort) {
+                sorted.push(item);
+            }
+            toSort = [array[i]];
+        }  
+    }
+    let lastMonth = toSort;
+    lastMonth.sort(compareNewReleaseDates);
+    for (item of lastMonth) sorted.push(item);
+    console.log('this is new sorted:');
+    console.log(sorted);
+    return sorted;
+};
+
+//changing calendars once toggled
+function setCurrentCalendar() {
+
+    //if slider is to the left
+    if ($slider.val() === '1') {
+        //set boolean to true
+        isOriginal = true;
+        //render original release calendar
+        render(originalReleaseCalendar);
+    }
+    //if it's the to right
+    else {
+        //set boolean to false
+        isOriginal = false;
+        //render new release calendar
+        render(newReleaseCalendar);
+    }
+};
 
 //return month idx for easy calendar object sorting
 function convertMonthStrToIdx(month) {
@@ -374,6 +540,7 @@ function convertMonthIdxToStr(month) {
     }
     return month;
 };
+
     
 
 //render in the DOM   
@@ -428,6 +595,7 @@ function render(calendar) {
                     let movieToAdd = iterableMovies[i][1];
 
                     addToTimeline(movieToAdd, day, month, year);
+
                 }
 
                 //now that all posters are added to the release div, 
@@ -503,25 +671,6 @@ function fixPostersYAxis(d, m, y) {
     }
 };
 
-//changing calendars once toggled
-function setCurrentCalendar() {
-
-    //if slider is to the left
-    if ($slider.val() === '1') {
-        //set boolean to true
-        isOriginal = true;
-        //render original release calendar
-        render(originalReleaseCalendar);
-    }
-    //if it's the to right
-    else {
-        //set boolean to false
-        isOriginal = false;
-        //render new release calendar
-        render(newReleaseCalendar);
-    }
-};
-
 //show movie details
 function handleClick(e) {
 
@@ -561,12 +710,18 @@ function showMovieDetails(movie) {
     $infoWindow = $('.movieInfo');
     //show title
     $infoWindow.append(`<h3>${movie.title}</h3>`);
-    //tell user data is loading
-    $infoWindow.append(infoLoading);
 
-    //grab API data from second API
-    getSecondAPIData(movie);
-
+    //if we've already loaded the data from the second API
+    if(movie.dataRetrieved) {
+        //no need for load time
+        renderInfoWindow(movie);
+    }
+    else {
+        //tell user data is loading
+        $infoWindow.append(infoLoading);
+        //grab API data from second API
+        getSecondAPIData(movie);
+    }
 };
 
 //grab new movie info from second API
@@ -587,6 +742,8 @@ function getSecondAPIData(movie) {
 
             //render the DOM accordingly
             renderInfoWindow(movie);
+
+            movie.dataRetrieved = true;
 
         }, function(error) {
             //show error if it doesn't work
@@ -783,7 +940,15 @@ function handleWindowClick(e) {
         removeFromReleaseTracker(currentMovie);
         //tell user item has been removed from release tracker
         $clickedItem.text('Add to Release Tracker');
-    };
+    }
+    else if ($clickedItem.hasClass('carousel__button--prev')) {
+        console.log('Previous');
+        getPreviousFilm();
+    }
+    else if ($clickedItem.hasClass('carousel__button--next')) {
+        console.log('Next');
+        getNextFilm();
+    }
 };
 
 
@@ -854,6 +1019,63 @@ function removeFromReleaseTracker(movie) {
         }
     };
 };
+
+function getPreviousFilm() {
+
+    if (isOriginal) {
+        console.log('in original timeline');
+        for (i=1; i<originalSorted.length; i++) {
+            if (currentMovie.title === originalSorted[i].title) {
+                let previousFilm = originalSorted[i-1];
+                $('.movieInfo').remove();
+                showMovieDetails(previousFilm);
+                //currentMovie = previousFilm;
+            }
+        }
+    }
+    else if (isOriginal === false) {
+        console.log('in other timeline');
+        for (i=1; i<newSorted.length; i++) {
+            if (currentMovie.title === newSorted[i].title) {
+                let previousFilm = newSorted[i-1];
+                $('.movieInfo').remove();
+                showMovieDetails(previousFilm);
+                //currentMovie = previousFilm;
+            }
+        }
+    }
+};
+
+function getNextFilm() {
+
+    if (isOriginal) {
+        console.log('in original timeline');
+        for (i=0; i<originalSorted.length-1; i++) {
+            if (currentMovie.title === originalSorted[i].title) {
+                let nextFilm = originalSorted[i+1];
+                console.log('next film is:')
+                console.log(nextFilm);
+                $('.movieInfo').remove();
+                showMovieDetails(nextFilm);
+                //currentMovie = nextFilm;
+            }
+        }
+    }
+    else if (isOriginal === false) {
+        console.log('in other timeline');
+        for (i=0; i<newSorted.length-1; i++) {
+            if (currentMovie.title === newSorted[i].title) {
+                let nextFilm = newSorted[i+1];
+                console.log('next film is:');
+                console.log(nextFilm);
+                $('.movieInfo').remove();
+                showMovieDetails(nextFilm);
+                //currentMovie = nextFilm;
+            }
+        }
+    }
+
+}
 
 function dimPageBackground() {
     
