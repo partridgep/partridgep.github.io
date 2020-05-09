@@ -27,7 +27,8 @@ const movies = [
     ,
     {title: 'Mulan',
     originalRelease: '27 Mar 2020',
-    imdb: 'tt4566758'}
+    imdb: 'tt4566758',
+    trivia: ["Disney first cancelled Mulan's premiere in China, despite hopes that it would perform well there, but did not move its opening date in the rest of the world. Finally, the movie got pushed back to July."]}
     ,
     {title: 'The Lovebirds',
     originalRelease: '03 Apr 2020',
@@ -55,6 +56,10 @@ const movies = [
     imdb: 'tt8391044'}
 ]
 
+//constants for sources urls
+const imdbUrl = 'https://www.imdb.com/title/';
+const vultureUrl = 'https://www.vulture.com/2020/04/here-are-all-the-movies-and-tv-shows-affected-by-coronavirus.html';
+
 //constants for first movie API
 //for faster loading, management of long array of movies
 const apiKey = "e19d524f";
@@ -79,6 +84,29 @@ const urlForIndividualMovie = "https://imdb-internet-movie-database-unofficial.p
 const originalReleaseCalendar = {};
 const newReleaseCalendar = {};
 const releaseMonths = {};
+
+//constants for movie trailer url
+const trailerUrl = 'https://www.imdb.com/video/imdb/';
+const trailerUrlPart2 = '/imdb/embed?autoplay=false&width=480';
+
+//HTML constants for movie info window
+const infoWindow = `<section class='movieInfo'>
+                        <p id='closeInfo'>X</p>
+                        <div class="carousel__button--next"></div>
+                        <div class="carousel__button--prev"></div>
+                    </section`;
+const infoLoading = '<p id="load">Loading...</p>';
+const infoWindowLinks = `<section id='infoLinks'>
+                            <a href='#'>Switch Timelines</a>
+                            <a href='#'>View in <span>Original</span> Timeline</a>
+                            <a href='#'>Add to Release Tracker</a>
+                        </section>`;
+const infoWindowTrailer = `<div id='trailer'>
+                                <iframe scroll = 'no' allowfullscreen='true' scrolling='no' autoplay='false' src=`;
+const infoWindowTrailerPart2 = ` type="video/mp4">Your browser does not support the video tag.</iframe></div>`;
+const infoWindowCovidFacts = `<section id='covid-facts'></section>`;
+const infoWindowIMDbFacts = `<section id='imdb-facts'></section`;
+const infoWindowSources = `<p id='sources'>Sources: </p>`
 
 
 /*----- app's state (variables) -----*/
@@ -155,6 +183,11 @@ function addAPIDataToMovies() {
         movie.runtime = movieAPI.Runtime;
         movie.director = movieAPI.Director;
         movie.cast = movieAPI.Actors;
+
+        //add sources urls too
+        if (!movie.sources) {movie.sources = []}
+        movie.sources.push(imdbUrl+movie.imdb);
+        movie.sources.push(vultureUrl);
 
     }
 };
@@ -511,11 +544,14 @@ function showMovieDetails(movie) {
 
     console.log(movie);
 
-    getSecondAPIData(movie);
-
     dimPageBackground();
-                     
-    $main.append(`<section class="movieInfo">${movie.title}</section>`);
+
+    $main.append(infoWindow);
+    $infoWindow = $('.movieInfo');
+    $infoWindow.append(`<h3>${movie.title}</h3>`);
+    $infoWindow.append(infoLoading);
+
+    getSecondAPIData(movie);
 
 };
 
@@ -528,17 +564,11 @@ function getSecondAPIData(movie) {
         function(data) {
             //grab the data
             movieAPIData = data;
-
-            console.log(movieAPIData);
-
             movie.plot = movieAPIData.plot;
             movie.trailer = movieAPIData.trailer.id;
 
-            console.log(movie.trailer);
-
-
             //render the DOM accordingly
-            //render();
+            renderInfoWindow(movie);
 
         }, function(error) {
             //show error if it doesn't work
@@ -546,6 +576,91 @@ function getSecondAPIData(movie) {
         });
 
 };
+
+function createTrailerLink(movie) {
+
+    let trailerLink = trailerUrl + movie.trailer + trailerUrlPart2;
+
+    return trailerLink;
+}
+
+function renderInfoWindow(movie) {
+
+    console.log(movie);
+
+    let $infoWindow = $('.movieInfo');
+    $('#load').remove();
+    $infoWindow.append(infoWindowLinks);
+
+    if (!movie.trailer) {
+        console.log('no trailer!');
+    }
+    else {
+        let trailerLink = createTrailerLink(movie);
+        console.log(trailerLink);
+        let trailerInfoToAppend = `${infoWindowTrailer}'${trailerLink}'${infoWindowTrailerPart2}`;
+        console.log(trailerInfoToAppend);
+        $infoWindow.append(trailerInfoToAppend);
+    };
+    
+    $infoWindow.append(infoWindowCovidFacts);
+    let $covidFacts = $('#covid-facts');
+    $covidFacts.append(`<p class='covid_info'>Original Release Date: <span>${movie.originalRelease}</span></p>`);
+    $covidFacts.append(`<p class='covid_info'>New Release Date: <span>${movie.newRelease}</span></p>`);
+    
+    if (!movie.trivia === false) {
+        $covidFacts.append(`<ul>Facts about COVID-19 impact on film: </ul>`);
+        let $trivia = $('#covid-facts > ul');
+        for (trivia of movie.trivia) {
+            $trivia.append(`<li>${trivia}</li`);
+
+        }
+    };
+
+    $infoWindow.append(infoWindowIMDbFacts);
+    let $imdbFacts = $('#imdb-facts');
+    $imdbFacts.append(`<p class='imdb_info'>Plot: <span>${movie.plot}</span></p>`);
+    $imdbFacts.append(`<p class='imdb_info'>Director: <span>${movie.director}</span></p>`);
+    $imdbFacts.append(`<p class='imdb_info'>Cast: <span>${movie.cast}</span></p>`)
+
+    $infoWindow.append(infoWindowSources);
+    let $sources = $('#sources');
+    let sourcesForDisplay = createSources(movie.sources);
+
+    for (i=0; i < movie.sources.length; i++) {
+        console.log(movie.sources[i]);
+        console.log(sourcesForDisplay[i]);
+        $sources.append(`<a href='${movie.sources[i]}'target='_blank'>${sourcesForDisplay[i]}</a>`)
+        if (i < (movie.sources.length -1)) {$sources.append(', ');}
+    }
+
+
+
+};
+
+function createSources(sources) {
+
+    let sourcesForDisplay = [];
+
+    for (source of sources) {
+        let gettingSource = source.slice(12, source.length);
+        let finalSourceDisplay = '';
+        for (char of gettingSource) {
+            if (char === '.') {break}
+            finalSourceDisplay = finalSourceDisplay + char; 
+        }
+        console.log(finalSourceDisplay);
+        if (finalSourceDisplay === 'imdb') {
+            sourcesForDisplay.push('IMDb');
+        }
+        else {
+        sourcesForDisplay.push(finalSourceDisplay[0].toUpperCase()+finalSourceDisplay.slice(1, finalSourceDisplay.length));
+        }
+    };
+
+    return sourcesForDisplay;
+
+}
 
 function dimPageBackground() {
     
