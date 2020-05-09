@@ -91,14 +91,14 @@ const trailerUrlPart2 = '/imdb/embed?autoplay=false&width=480';
 
 //HTML constants for movie info window
 const infoWindow = `<section class='movieInfo'>
-                        <p id='closeInfo'>X</p>
+                        <p id='closeInfo'><a href=''>X</a></p>
                         <div class="carousel__button--next"></div>
                         <div class="carousel__button--prev"></div>
-                    </section`;
+                    </section>`;
 const infoLoading = '<p id="load">Loading...</p>';
 const infoWindowLinks = `<section id='infoLinks'>
                             <a href='#'>Switch Timelines</a>
-                            <a href='#'>View in <span>Original</span> Timeline</a>
+                            <a href='#'>View in <span id='timeline_span'>Original</span> Timeline</a>
                             <a href='#'>Add to Release Tracker</a>
                         </section>`;
 const infoWindowTrailer = `<div id='trailer'>
@@ -110,7 +110,9 @@ const infoWindowSources = `<p id='sources'>Sources: </p>`
 
 
 /*----- app's state (variables) -----*/
-let movieAPIData, isOriginal;
+let movieAPIData, isOriginal, currentMovie;
+let moviesToTrack = localStorage.getItem('Movies To Track');
+moviesToTrack = moviesToTrack ? moviesToTrack.split(',') : [];
 
 
 /*----- cached element references -----*/
@@ -334,40 +336,40 @@ function convertMonthStrToIdx(month) {
 //return full month string for user view in the DOM
 function convertMonthIdxToStr(month) {
 
-    if (month === '1') {
+    if (month === '1' || month === 'Jan') {
         month = 'January';
     }
-    else if (month === '2') {
+    else if (month === '2' || month === 'Feb') {
         month = 'February';
     }
-    else if (month === '3') {
+    else if (month === '3' || month === 'Mar') {
         month = 'March';
     }
-    else if (month === '4') {
+    else if (month === '4' || month === 'Apr') {
         month = 'April';
     }
-    else if (month === '5') {
+    else if (month === '5' || month === 'May') {
         month = 'May';
     }
-    else if (month === '6') {
+    else if (month === '6' || month === 'Jun') {
         month = 'June';
     }
-    else if (month === '7') {
+    else if (month === '7' || month === 'Jul') {
         month = 'July';
     }
-    else if (month === '8') {
+    else if (month === '8' || month === 'Aug') {
         month = 'August';
     }
-    else if (month === '9') {
+    else if (month === '9' || month === 'Sep') {
         month = 'September';
     }
-    else if (month === '10') {
+    else if (month === '10' || month === 'Oct') {
         month = 'October';
     }
-    else if (month === '11') {
+    else if (month === '11' || month === 'Nov') {
         month = 'November';
     }
-    else if (month === '12') {
+    else if (month === '12' || month === 'Dec') {
         month = 'December';
     }
     return month;
@@ -609,6 +611,10 @@ function renderInfoWindow(movie) {
     $('#load').remove();
     //add nav links
     $infoWindow.append(infoWindowLinks);
+    //change nav links to fit current timeline
+    if (isOriginal === false) {$('#infoLinks a > span').text('Delayed');};
+    //change last nav link to reflect whether or not the movie is in the release tracker
+    if (checkIfInTracker(movie)) {$('#infoLinks > a:last').text('✓ Added to Release Tracker')};
 
     //add all info
     addTrailer(movie);
@@ -618,6 +624,18 @@ function renderInfoWindow(movie) {
 
     //create event listeners to interact with window
     $main.click(handleWindowClick);
+
+    currentMovie = movie;
+
+};
+
+function checkIfInTracker(movie) {
+    //go through array of tracked movies
+    for(trackedMovie of moviesToTrack) {
+        if (trackedMovie === movie.title) {
+            return true
+        };
+    };
 };
 
 function addTrailer(movie) {
@@ -731,27 +749,117 @@ function handleWindowClick(e) {
 
     //get value of movie clicked
     let clickedItem = e.target;
-    console.log(clickedItem);
 
     //wrap it in jQuery money
     let $clickedItem = $(clickedItem);
     //get text value
     let clickedItemText = $(clickedItem).text();
 
+    //if user clicks on X to close window
     if (clickedItemText === 'X') {
-        console.log('Close that window!');
+        //prevent from going back to top of page
+        e.preventDefault();
+        console.log('close window');
+        //close window
         $('.movieInfo').remove();
+        //restore page background
         removeDim();
     }
+    else if (clickedItemText === 'Switch Timelines') {
+        switchTimelines();
+    }
+    //if user clicks on 'View in Timline'
+    //(make sure the span acts the same way as the rest as the link)
+    else if (clickedItemText[0] === 'V'  || $clickedItem.attr('id') === 'timeline_span') {
+        showInTimeline();
+    }
+    else if (clickedItemText === 'Add to Release Tracker') {
+        addToReleaseTracker(currentMovie);
+        //tell user item has been added to release tracker
+        $clickedItem.text('✓ Added to Release Tracker');
+    }
+    //if the user clicks on the link that says the movie is already in the release tracker
+    else if (clickedItemText[0] === '✓') {
+        removeFromReleaseTracker(currentMovie);
+        //tell user item has been removed from release tracker
+        $clickedItem.text('Add to Release Tracker');
+    };
+};
 
 
-}
+function switchTimelines() {
+
+    //change boolean
+    if (isOriginal) {isOriginal = false;}
+    else (isOriginal = true);
+
+    //change the middle timeline nav to reflect current timeline
+    if ($('#infoLinks a > span').text() === 'Original') {
+        $('#infoLinks a > span').text('Delayed');
+        //change value of toggler in page background
+        $('#cal_type').val('2');
+    }
+    else {
+        $('#infoLinks a > span').text('Original');
+        $('#cal_type').val('1');      
+    };
+};
+
+function showInTimeline() {
+
+    //if in Original Timeline
+    if (isOriginal) {
+        //render page in original timeline
+        removeDim()
+        render(originalReleaseCalendar);
+        //find matching release div
+        let releaseMonth = convertMonthIdxToStr(currentMovie.originalRelease.slice(-8, -5));
+        let releaseYear = currentMovie.originalRelease.slice(-4);
+        //animate and jump to matching release div
+        $('html, body').animate({
+            scrollTop: $(`#${releaseMonth}${releaseYear}`).offset().top-300,
+        }, 1000);
+    }
+    else {
+        removeDim();
+        render(newReleaseCalendar);
+        let releaseMonth = convertMonthIdxToStr(currentMovie.newRelease.slice(-8, -5));
+        let releaseYear = currentMovie.newRelease.slice(-4);
+        $('html, body').animate({
+            scrollTop: $(`#${releaseMonth}${releaseYear}`).offset().top-300,
+        }, 1000);
+    };
+};
+
+function addToReleaseTracker(movie) {
+
+    //add movie to array of movies to track
+    moviesToTrack.push(movie.title);
+    //add array of movies to track to local storage
+    localStorage.setItem('Movies To Track', moviesToTrack.toString());
+
+};
+
+function removeFromReleaseTracker(movie) {
+
+    //go through array of tracked movies
+    for (i=0; i<moviesToTrack.length; i++) {
+        //if movie matches one of the tracked movies
+        if (moviesToTrack[i] === movie.title) {
+            console.log('movie matches')
+            //remove from array of tracked movies
+            moviesToTrack.splice(i, 1);
+            //add updated array of tracked movies to local storage
+            localStorage.setItem('Movies To Track', moviesToTrack.toString());
+        }
+    };
+};
 
 function dimPageBackground() {
     
     //add overlay darkening filter to page sections
     $main.addClass('overlay');
-
+    
     //lower items opacity so they get darkened too
     $('h1').css('opacity', '0.5');
     $('input').css('opacity', '0.5');
