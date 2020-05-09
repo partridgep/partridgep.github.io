@@ -607,21 +607,27 @@ function renderInfoWindow(movie) {
     let $covidFacts = $('#covid-facts');
     $covidFacts.append(`<p class='covid_info'>Original Release Date: <span>${movie.originalRelease}</span></p>`);
     $covidFacts.append(`<p class='covid_info'>New Release Date: <span>${movie.newRelease}</span></p>`);
+    if (!movie.trailer) {
+        $('#covid-facts > p').removeClass('covid-info');
+        $('#covid-facts > p').addClass('noTrailer');
+    }
     
     if (!movie.trivia === false) {
         $covidFacts.append(`<ul>Facts about COVID-19 impact on film: </ul>`);
         let $trivia = $('#covid-facts > ul');
         for (trivia of movie.trivia) {
             $trivia.append(`<li>${trivia}</li`);
-
         }
     };
 
     $infoWindow.append(infoWindowIMDbFacts);
     let $imdbFacts = $('#imdb-facts');
-    $imdbFacts.append(`<p class='imdb_info'>Plot: <span>${movie.plot}</span></p>`);
-    $imdbFacts.append(`<p class='imdb_info'>Director: <span>${movie.director}</span></p>`);
-    $imdbFacts.append(`<p class='imdb_info'>Cast: <span>${movie.cast}</span></p>`)
+    if (movie.plot) $imdbFacts.append(`<p class='imdb_info'>Plot: <span>${movie.plot}</span></p>`);
+    if (movie.director) $imdbFacts.append(`<p class='imdb_info'>Director: <span>${movie.director}</span></p>`);
+    if (movie.cast) $imdbFacts.append(`<p class='imdb_info'>Cast: <span>${movie.cast}</span></p>`);
+    if (!movie.trailer) {
+        $imdbFacts.css('margin-left', '20px');
+    }
 
     $infoWindow.append(infoWindowSources);
     let $sources = $('#sources');
@@ -633,9 +639,6 @@ function renderInfoWindow(movie) {
         $sources.append(`<a href='${movie.sources[i]}'target='_blank'>${sourcesForDisplay[i]}</a>`)
         if (i < (movie.sources.length -1)) {$sources.append(', ');}
     }
-
-
-
 };
 
 function createSources(sources) {

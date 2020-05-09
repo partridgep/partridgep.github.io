@@ -248,7 +248,6 @@
     justify-items: center;
     align-items: center;
     margin-right: 15px;
-    min-height: 300px;
   }
 
   .movieInfo p {
@@ -258,6 +257,11 @@
 
   .covid_info {
     margin-left: -40px;
+  }
+
+  .noTrailer {
+    grid-column: span 2;
+    margin-left: 20px;
   }
 
   .movieInfo p > span {
