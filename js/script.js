@@ -121,13 +121,13 @@ const $slider = $("#cal_type");
 
 /*----- event listeners -----*/
 $slider.change(setCurrentCalendar);
-$main.click(getMovieOnPoster);
+$main.click(handleClick);
 
 
 /*----- functions -----*/
 
 //initalize webpage app
-//init();
+init();
 
 
 function init() {
@@ -521,42 +521,56 @@ function setCurrentCalendar() {
 };
 
 //show movie details
-function getMovieOnPoster(e) {
+function handleClick(e) {
 
     //get value of movie clicked
-    let clickedPoster = e.target;
+    let clickedItem = e.target;
+    console.log(clickedItem);
 
-    let $clickedPoster = $(clickedPoster);
-    let clickedPosterSrc = $clickedPoster.attr('src')
-    let clickedPosterText = $(clickedPoster).text();
+    //wrap it in jQuery money
+    let $clickedItem = $(clickedItem);
+    //get source attribute
+    let clickedItemSrc = $clickedItem.attr('src')
+    //get text value
+    let clickedItemText = $(clickedItem).text();
 
+    //check if we've clicked on a movie poster
     for(movie of movies) {
-        if (movie.poster === clickedPosterSrc && !movie.poster === false) {
+        //if it's a poster with same poster src as a movie in movies array
+        if (movie.poster === clickedItemSrc && !movie.poster === false) {
+            //create movie info window
             showMovieDetails(movie);      
         }
-        else if (movie.title === $(clickedPoster).text() && $clickedPoster.hasClass('posterTitle')){
+        //if it's a placeholder poster whose text matches a title in the movie array
+        else if (movie.title === $(clickedItem).text() && $clickedItem.hasClass('posterTitle')){
+            //create movie info window
             showMovieDetails(movie);
         }
-    }
+    };
 };
 
 function showMovieDetails(movie) {
 
-    console.log(movie);
-
+    //make background of page dark and non-interactable
     dimPageBackground();
 
+    //render minimal movie info window while API data is loading
     $main.append(infoWindow);
     $infoWindow = $('.movieInfo');
+    //show title
     $infoWindow.append(`<h3>${movie.title}</h3>`);
+    //tell user data is loading
     $infoWindow.append(infoLoading);
 
+    //grab API data from second API
     getSecondAPIData(movie);
 
 };
 
+//grab new movie info from second API
 function getSecondAPIData(movie) {
 
+    //define the URL needed for the API
     apiForIndividualMovie.url = urlForIndividualMovie + movie.imdb;
 
     //get AJAX data
@@ -564,7 +578,9 @@ function getSecondAPIData(movie) {
         function(data) {
             //grab the data
             movieAPIData = data;
+            //grab plot
             movie.plot = movieAPIData.plot;
+            //grab trailer ID
             movie.trailer = movieAPIData.trailer.id;
 
             //render the DOM accordingly
@@ -574,94 +590,160 @@ function getSecondAPIData(movie) {
             //show error if it doesn't work
             console.log(error)
         });
-
 };
 
+//form appropriate URL for movie trailer
 function createTrailerLink(movie) {
 
+    //add  trailer ID to URL
     let trailerLink = trailerUrl + movie.trailer + trailerUrlPart2;
-
     return trailerLink;
-}
+};
 
+//load data onto movie indo window
 function renderInfoWindow(movie) {
 
-    console.log(movie);
-
+    //get window
     let $infoWindow = $('.movieInfo');
+    //remove 'Loading'
     $('#load').remove();
+    //add nav links
     $infoWindow.append(infoWindowLinks);
 
-    if (!movie.trailer) {
-        console.log('no trailer!');
-    }
-    else {
+    //add all info
+    addTrailer(movie);
+    addCovidFacts(movie);
+    addIMDbFacts(movie);
+    addSources(movie);
+
+    //create event listeners to interact with window
+    $main.click(handleWindowClick);
+};
+
+function addTrailer(movie) {
+    //check if there is a trailer available
+    if (movie.trailer) {
+        //if there is, get trailer link
         let trailerLink = createTrailerLink(movie);
-        console.log(trailerLink);
+        //append trailer div to HTML
         let trailerInfoToAppend = `${infoWindowTrailer}'${trailerLink}'${infoWindowTrailerPart2}`;
-        console.log(trailerInfoToAppend);
+        //append trailer div to DOM
         $infoWindow.append(trailerInfoToAppend);
     };
+};
+
+function addCovidFacts(movie) {
     
+    //add a section for Covid facts
     $infoWindow.append(infoWindowCovidFacts);
     let $covidFacts = $('#covid-facts');
+    //append release dates
     $covidFacts.append(`<p class='covid_info'>Original Release Date: <span>${movie.originalRelease}</span></p>`);
     $covidFacts.append(`<p class='covid_info'>New Release Date: <span>${movie.newRelease}</span></p>`);
+
+    //fix layout if there is no trailer to the left
     if (!movie.trailer) {
         $('#covid-facts > p').removeClass('covid-info');
         $('#covid-facts > p').addClass('noTrailer');
-    }
+    };
     
-    if (!movie.trivia === false) {
+    //if there is trivia to add
+    if (movie.trivia) {
+        //create list 
         $covidFacts.append(`<ul>Facts about COVID-19 impact on film: </ul>`);
         let $trivia = $('#covid-facts > ul');
+        //add trivia to list
         for (trivia of movie.trivia) {
             $trivia.append(`<li>${trivia}</li`);
-        }
+        };
     };
-
-    $infoWindow.append(infoWindowIMDbFacts);
-    let $imdbFacts = $('#imdb-facts');
-    if (movie.plot) $imdbFacts.append(`<p class='imdb_info'>Plot: <span>${movie.plot}</span></p>`);
-    if (movie.director) $imdbFacts.append(`<p class='imdb_info'>Director: <span>${movie.director}</span></p>`);
-    if (movie.cast) $imdbFacts.append(`<p class='imdb_info'>Cast: <span>${movie.cast}</span></p>`);
-    if (!movie.trailer) {
-        $imdbFacts.css('margin-left', '20px');
-    }
-
-    $infoWindow.append(infoWindowSources);
-    let $sources = $('#sources');
-    let sourcesForDisplay = createSources(movie.sources);
-
-    for (i=0; i < movie.sources.length; i++) {
-        console.log(movie.sources[i]);
-        console.log(sourcesForDisplay[i]);
-        $sources.append(`<a href='${movie.sources[i]}'target='_blank'>${sourcesForDisplay[i]}</a>`)
-        if (i < (movie.sources.length -1)) {$sources.append(', ');}
-    }
 };
 
-function createSources(sources) {
+function addIMDbFacts(movie)  {
 
+    //add section for movie details
+    $infoWindow.append(infoWindowIMDbFacts);
+    let $imdbFacts = $('#imdb-facts');
+    //add plot description if there is one
+    if (movie.plot) $imdbFacts.append(`<p class='imdb_info'>Plot: <span>${movie.plot}</span></p>`);
+    //add director if there is one
+    if (movie.director) $imdbFacts.append(`<p class='imdb_info'>Director: <span>${movie.director}</span></p>`);
+    //add cast if there is one
+    if (movie.cast) $imdbFacts.append(`<p class='imdb_info'>Cast: <span>${movie.cast}</span></p>`);
+
+    //fix layout if there is no trailer
+    if (!movie.trailer) {
+        $imdbFacts.css('margin-left', '20px');
+    };
+};
+
+function addSources(movie) {
+
+    //add new section for sources
+    $infoWindow.append(infoWindowSources);
+    let $sources = $('#sources');
+
+    //get displayable sources (i.e. 'IMDB' for an IMDb link)
+    let sourcesForDisplay = createSources(movie.sources);
+
+    //for each source
+    for (i=0; i < movie.sources.length; i++) {
+        //add link
+        $sources.append(`<a href='${movie.sources[i]}'target='_blank'>${sourcesForDisplay[i]}</a>`)
+        //while there is still a source to add, add a comma
+        if (i < (movie.sources.length -1)) {$sources.append(', ');}
+    };
+};
+
+//create displayable sources (i.e. 'IMDB' for an IMDb link)
+function createSources(sources) {
+    
+    //create empty array of displayable sources
     let sourcesForDisplay = [];
 
+    //for each source
     for (source of sources) {
+        //create link without 'https://wwww.'
         let gettingSource = source.slice(12, source.length);
+        //create empty string to which we will add the final source displauy
         let finalSourceDisplay = '';
+        //for each character
         for (char of gettingSource) {
+            //add character to final source display
+            //if it's a period, stop adding to final source display
             if (char === '.') {break}
             finalSourceDisplay = finalSourceDisplay + char; 
-        }
-        console.log(finalSourceDisplay);
+        };
+
+        //change formatting for IMDb 
         if (finalSourceDisplay === 'imdb') {
             sourcesForDisplay.push('IMDb');
         }
         else {
-        sourcesForDisplay.push(finalSourceDisplay[0].toUpperCase()+finalSourceDisplay.slice(1, finalSourceDisplay.length));
+            //for others, add source display in Title Case
+            sourcesForDisplay.push(finalSourceDisplay[0].toUpperCase()+finalSourceDisplay.slice(1, finalSourceDisplay.length));
         }
     };
-
     return sourcesForDisplay;
+};
+
+function handleWindowClick(e) {
+
+    //get value of movie clicked
+    let clickedItem = e.target;
+    console.log(clickedItem);
+
+    //wrap it in jQuery money
+    let $clickedItem = $(clickedItem);
+    //get text value
+    let clickedItemText = $(clickedItem).text();
+
+    if (clickedItemText === 'X') {
+        console.log('Close that window!');
+        $('.movieInfo').remove();
+        removeDim();
+    }
+
 
 }
 
@@ -704,7 +786,7 @@ function removeDim() {
 
     //turn back on any event listeners or toggles
     $slider.change(setCurrentCalendar);
-    $main.click(getMovieOnPoster);
+    $main.click(handleClick);
     $('#cal_type').prop('disabled', false);
     $('input[type="text"]').prop('disabled', false);
 };
