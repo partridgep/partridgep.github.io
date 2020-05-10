@@ -122,11 +122,14 @@ moviesToTrack = moviesToTrack ? moviesToTrack.split(',') : [];
 const $main = $('main');
 const $input = $('input[type="text"]')
 const $slider = $("#cal_type");
+const $searchLink = $('#search-link');
 
 
 /*----- event listeners -----*/
 $slider.change(setCurrentCalendar);
 $main.click(handleClick);
+$('form').on('submit', handleSearch);
+
 
 
 /*----- functions -----*/
@@ -698,6 +701,19 @@ function handleClick(e) {
             showMovieDetails(movie);
         }
     };
+
+    //if we click on a movie link on the  search page
+    if (($clickedItem).attr('id') === 'search-link') {
+        //the movie to show will be the text of the link
+        let movieToShow = clickedItemText;
+        //find movie with that title
+        for (movie of movies) {
+            if (movieToShow === movie.title) {
+                //show corresponding movie info window
+                showMovieDetails(movie);
+            };
+        };
+    };
 };
 
 function showMovieDetails(movie) {
@@ -1084,8 +1100,49 @@ function getNextFilm() {
             }
         }
     }
+};
 
-}
+function handleSearch(e) {
+
+    //prevent reloading of page
+    e.preventDefault();
+
+    //if nothing has been entered, don't search
+    if ($input.val() === '') return; 
+
+    //get lower case so it doesn't matter how user typed in title
+    userInput = $input.val().toLowerCase();
+
+    //clear the input
+    $input.val('');
+
+    //check if it matches a movie in array
+    for (movie of movies) {
+        if (userInput === movie.title.toLowerCase()) {
+            //if so, render the search results
+            renderSearchResults(movie.title);
+            //exit function
+            return;
+        };
+    };
+
+    //if not a movie in array display lack of results
+    renderSearchResults('No Results Found');
+
+};
+
+function renderSearchResults(title) {
+    //create new search results section on page
+    $main.html('');
+    $main.append("<section id='search-results'></section>");
+    $('#search-results').append("<h1>Search Results</h1>");
+    if (title === 'No Results Found') {
+        $('#search-results').append(`<ul><li>${title}</li></ul>`);
+    }
+    else {
+        $('#search-results').append(`<ul><li><a id='search-link' href='#'>${title}</a></li></ul>`);
+    };
+};
 
 function dimPageBackground() {
     

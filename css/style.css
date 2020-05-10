@@ -378,3 +378,28 @@
     width: 100%;
     text-align: center;
   }
+
+  #search-results {
+    font-family: 'Oswald', sans-serif;
+    width: 50vw;
+  }
+
+  #search-results > h1 {
+    font-size: 30px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  #search-results > ul {
+    float: left;
+    font-size: 24px;
+  }
+
+  #search-results a {
+    color: grey;
+  }
+
+  #search-results a:active {
+    color: rgb(255, 88, 88);
+  }
+
