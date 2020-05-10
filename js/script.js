@@ -1022,25 +1022,35 @@ function removeFromReleaseTracker(movie) {
 
 function getPreviousFilm() {
 
+    //create variable for the previous film
+    let previousFilm = '';
+
+    //check which timeline we're in
     if (isOriginal) {
-        console.log('in original timeline');
+        //iterate through all movies in original sorted array
         for (i=1; i<originalSorted.length; i++) {
+            //if we find a match
             if (currentMovie.title === originalSorted[i].title) {
-                let previousFilm = originalSorted[i-1];
+                //get the previous film in the array
+                previousFilm = originalSorted[i-1];
+                //take down info window for current film
                 $('.movieInfo').remove();
+                //create info window for previous film
                 showMovieDetails(previousFilm);
-                //currentMovie = previousFilm;
+                //make sure the loop stops iterating
+                //this is a bug fix, otherwise repeatedly clicking previous button doesn't work
+                break;
             }
         }
     }
+    //do similar process in delayed timeline
     else if (isOriginal === false) {
-        console.log('in other timeline');
         for (i=1; i<newSorted.length; i++) {
             if (currentMovie.title === newSorted[i].title) {
-                let previousFilm = newSorted[i-1];
+                previousFilm = newSorted[i-1];
                 $('.movieInfo').remove();
                 showMovieDetails(previousFilm);
-                //currentMovie = previousFilm;
+                break;
             }
         }
     }
@@ -1057,7 +1067,7 @@ function getNextFilm() {
                 console.log(nextFilm);
                 $('.movieInfo').remove();
                 showMovieDetails(nextFilm);
-                //currentMovie = nextFilm;
+                break;
             }
         }
     }
@@ -1070,7 +1080,7 @@ function getNextFilm() {
                 console.log(nextFilm);
                 $('.movieInfo').remove();
                 showMovieDetails(nextFilm);
-                //currentMovie = nextFilm;
+                break;
             }
         }
     }
