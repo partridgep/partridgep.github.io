@@ -123,12 +123,14 @@ const $main = $('main');
 const $input = $('input[type="text"]')
 const $slider = $("#cal_type");
 const $searchLink = $('#search-link');
+const $hamburger = $('#nav-right > p');
 
 
 /*----- event listeners -----*/
 $slider.change(setCurrentCalendar);
 $main.click(handleClick);
 $('form').on('submit', handleSearch);
+$hamburger.click(handleHamburger);
 
 
 
@@ -141,6 +143,8 @@ init();
 function init() {
     isOriginal = true;
     getAPIMovieData();
+    $('#hamburger-slideout').removeClass('hamburger_show');
+    $main.removeClass('hamburger_push');
 };
 
 
@@ -543,8 +547,6 @@ function convertMonthIdxToStr(month) {
     }
     return month;
 };
-
-    
 
 //render in the DOM   
 function render(calendar) {
@@ -988,6 +990,11 @@ function switchTimelines() {
 
 function showInTimeline() {
 
+    //make sure timeline switcher is back on page
+    $('#changeView').removeClass('hidden');
+    $slider.on();
+    $('#cal_type').prop('disabled', false);
+
     //if in Original Timeline
     if (isOriginal) {
         //render page in original timeline
@@ -1132,6 +1139,11 @@ function handleSearch(e) {
 };
 
 function renderSearchResults(title) {
+    //remove timeline switcher (no need here)
+    $('#changeView').addClass('hidden');
+    $slider.off();
+    $('#cal_type').prop('disabled', true);
+
     //create new search results section on page
     $main.html('');
     $main.append("<section id='search-results'></section>");
@@ -1143,6 +1155,15 @@ function renderSearchResults(title) {
         $('#search-results').append(`<ul><li><a id='search-link' href='#'>${title}</a></li></ul>`);
     };
 };
+
+function handleHamburger() {
+    console.log('HAMBURGER!!!');
+    $('#hamburger-slideout').toggleClass('hamburger_show');
+    $main.toggleClass('hamburger_push');
+    $('nav').toggleClass('hamburger_push');
+    $('#changeView').toggleClass('hamburger_push');
+    $('footer').toggleClass('hamburger_push');
+}
 
 function dimPageBackground() {
     
