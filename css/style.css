@@ -20,7 +20,6 @@
     position: relative;
     top: 110px;
     margin-top: 50px;
-    transition: 0.3s all;
   }
   
   nav {
@@ -33,7 +32,6 @@
     width: 100vw;
     top: 0;
     z-index: 4;
-    transition: 0.3s all;
   }
 
   #title {
@@ -132,6 +130,10 @@
     right: 300px;
   }
 
+  .half_opacity {
+    opacity: 0.5;
+  }
+
   #changeView {
     display: flex;
     justify-content: center;
@@ -144,7 +146,6 @@
     width: 100vw;
     top: 109px;
     z-index: 4;
-    transition: 0.3s all;
   }
 
   #calendarToggle {
@@ -186,6 +187,7 @@
 
   footer {
     display: flex;
+    position: relative;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -197,7 +199,6 @@
     padding: 7px;
     z-index: 5;
     margin-top: 150px;
-    transition: 0.3s all;
   }
 
   footer > p {

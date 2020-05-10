@@ -1139,6 +1139,7 @@ function handleSearch(e) {
 };
 
 function renderSearchResults(title) {
+
     //remove timeline switcher (no need here)
     $('#changeView').addClass('hidden');
     $slider.off();
@@ -1157,13 +1158,37 @@ function renderSearchResults(title) {
 };
 
 function handleHamburger() {
-    console.log('HAMBURGER!!!');
+
     $('#hamburger-slideout').toggleClass('hamburger_show');
-    $main.toggleClass('hamburger_push');
-    $('nav').toggleClass('hamburger_push');
-    $('#changeView').toggleClass('hamburger_push');
-    $('footer').toggleClass('hamburger_push');
-}
+    $('img').toggleClass('half_opacity');
+    $('.posterTitle').toggleClass('half_opacity');
+    $('#changeView p').toggleClass('half_opacity');
+    $('.year p').toggleClass('half_opacity');
+    $('#title').toggleClass('half_opacity');
+    $('footer').toggleClass('half_opacity');
+
+
+    if ($('#hamburger-slideout').hasClass('hamburger_show')) {
+        $main.animate({right: '300px'}, 250);
+        $('nav').animate({right: '300px'}, 250);
+        $('#changeView').animate({right: '300px'}, 250);
+        $('footer').animate({right: '300px'}, 250);
+        $slider.off();
+        $main.off();
+        $('#cal_type').prop('disabled', true);
+        $('input[type="text"]').prop('disabled', true);
+        }
+     else {
+        $main.animate({right: '0'}, 250);
+        $('nav').animate({right: '0'}, 250);
+        $('#changeView').animate({right: '0'}, 250);
+        $('footer').animate({right: '0'}, 250);
+        $slider.change(setCurrentCalendar);
+        $main.click(handleClick);
+        $('#cal_type').prop('disabled', false);
+        $('input[type="text"]').prop('disabled', false);
+     }
+};
 
 function dimPageBackground() {
     
