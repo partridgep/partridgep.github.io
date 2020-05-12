@@ -151,6 +151,12 @@
     z-index: 4;
   }
 
+  .selected {
+    font-weight: 900;
+    font-size: 32px;
+    margin-top: -4px;
+  }
+
   #calendarToggle {
     display: flex;
     flex-direction: row;
@@ -230,6 +236,10 @@
     margin-bottom: 5px;
     width: 100px;
     height: 150px;
+  }
+
+  .container > img {
+    display: none;
   }
 
   .release {
@@ -341,6 +351,17 @@
     font-weight: 500;
   }
 
+  #covid-facts > ul.noTrailer {
+    margin-left: -20px;
+    font-weight: 600;
+  }
+
+  .movieInfo ul > li.noTrailer {
+    margin-left: 30px;
+    padding-top: 7px;
+    font-weight: 500;
+  }
+
   #imdb-facts {
     grid-column: span 2;
     margin-bottom: -10px;
@@ -422,6 +443,7 @@
     width: 100px;
     height: 150px;
     margin-bottom: 5px;
+    border: 1px solid white;
   }
   
   .posterTitle {
@@ -440,6 +462,7 @@
     top: 0;
     width: 100%;
     text-align: center;
+    padding: 1px;
   }
 
   #search-results, #release_tracker {

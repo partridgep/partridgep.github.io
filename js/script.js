@@ -1,29 +1,46 @@
 /*----- constants -----*/
 //all the movies that have been delayed due to pandemic
 const movies = [
+    {title: 'A Quiet Place Part II', imdb: 'tt8332922', originalRelease: '08 Mar 2020', newRelease: '04 Sep 2020', sources: ['https://www.indiewire.com/2020/03/a-quiet-place-2-release-date-delayed-coronavirus-1202217148/'] 
+    }
+    ,
+    {title: 'Antebellum', imdb: 'tt10065694', originalRelease: '24 Apr 2020', newRelease: '21 Aug 2020', sources: ['https://www.variety.com/2020/film/news/janelle-monae-antebellum-new-release-date-1234595089/']}
+    ,
+    {title: 'Antlers', imdb: 'tt7740510', originalRelease: '17 Apr 2020', newRelease: 'TBD', sources: ['https://www.theguardian.com/film/2020/mar/13/disney-delays-release-of-mulan-the-new-mutants-and-antlers-as-black-widow-speculation-grows']}
+    ,
+    {title: 'Artemis Fowl', imdb: 'tt3089630', originalRelease: '29 May 2020', newRelease: '12 Jun 2020', onVOD: 'Disney+', sources: ['https://www.deadline.com/2020/04/artemis-fowl-disney-release-trolls-world-tour-1202900186/'], trivia: ['The first Disney movie to be pushed to its streaming service due to the pandemic.']}
+    ,
+    {title: 'Black Widow', imdb: 'tt3480822', originalRelease: '11 May 2020', newRelease: '06 Nov 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854', 'https://www.theverge.com/2020/3/17/21183747/black-widow-delayed-coronavirus-marvel-studios-disney-mulan-new-mutants-amc-regal', 'https://time.com/5804878/black-widow-coronavirus-release-delayed/'], trivia:['There was speculation that Disney would release the film on Disney+, but as a Marvel title, it was necessary to the studio that it  do well in theaters.', "'Black Widow' shifting dates could trigger a domino effect on release dates for the rest of the movies set in the Marvel Cinematic Universe due to their interconnected nature."]}
+    ,
+    {title: 'Blue Story', imdb: 'tt9285882', originalRelease: '20 Mar 2020', newRelease: 'TBD', sources: ['https://www.hollywoodreporter.com/news/paramount-pulls-lovebirds-blue-story-due-coronavirus-1284257']}
+    ,
+    {title: 'Bull', imdb: 'tt10008784', originalRelease: '20 Mar 2020', newRelease: '01 May 2020', onVOD: 'yes', sources: ['https://www.deadline.com/2020/03/dosed-human-capital-searchlight-pictures-focus-features-a24-specialty-box-office-1202886970/']}
+    ,
+    {title: 'Candyman', imdb: 'tt9347730', originalRelease: '12 Jun 2020', newRelease: '25 Sep 2020', sources: ['https://variety.com/2020/film/box-office/candyman-delayed-coronavirus-jordan-peele-1203542508/']}
+    ,
+    {title: 'Charm City Kings', imdb: 'tt9048840', originalRelease: '10 Apr 2020', newRelease: 'TBD', onVOD: 'HBO Max', sources: ['https://deadline.com/2020/05/sony-pictures-classics-charm-city-kings-sells-to-hbo-max-1202926812/'], trivia: ['The opening was shifted from April 10, 2020, then to August 14, 2020, again to August 21, 2020 until it was acquired by HBO Max in May.']}
+    ,
+    {title: 'The Climb', imdb: 'tt8637440', originalRelease: '20 Mar 2020', newRelease: 'TBD', sources: ['https://deadline.com/2020/03/sony-pictures-classics-release-the-climb-postponed-in-wake-of-ny-la-theater-closures-1202884481/']}
+    ,
+    {title: 'Deerskin', imdb: 'tt8193790', originalRelease: '20 Mar 2020', newRelease: 'TBD'}
+    ,
+    {title: 'Doctor Strange in the Multiverse of Madness', imdb: 'tt9419884', originalRelease: '07 May 2021', newRelease: '25 Mar 2022', sources: ['https://www.theverge.com/2020/4/24/21235283/spider-man-spiderverse-homecoming-delay-release-date-trilogy-marvel-venom-doctor-strange-thor'], trivia: ["The film was first pushed to November 5th, 2021, but was delayed again when Sony Studio's Spiderman sequel was pushed back."]}
+    ,
+    {title: 'Dungeons & Dragons', imdb: 'tt2906216', originalRelease: '19 Nov 2021', newRelease: '27 May 2022', sources: ['https://theplaylist.net/paramount-mission-impossible-delays-20200424/']}
+    ,
+    {title: 'F9', imdb: 'tt5433138', originalRelease: '22 May 2020', newRelease: '02 Apr 2021'}
+    /*
+    {title: 'Mission Impossible 7', imdb: 'tt9603212', originalRelease: '23 Jul 2021', newRelease: '19 Nov 2021'
+    }
+    /*
     {title: 'Mission Impossible 7',
     originalRelease: '23 Jul 2021',
     imdb: 'tt9603212'}
     ,
-    {title: 'Blue Story',
-    originalRelease: '20 Mar 2020',
-    imdb: 'tt9285882'}
-    ,
-    {title: 'A Quiet Place Part II', 
-    originalRelease: '08 Mar 2020',
-    imdb: 'tt8332922'}
     ,
     {title: 'No Time To Die',
     originalRelease: '10 Apr 2020',
     imdb: 'tt2382320'}
-    ,
-    {title: 'Black Widow',
-    originalRelease: '11 May 2020',
-    imdb: 'tt3480822'}
-    ,
-    {title: 'Bull',
-    originalRelease: '20 Mar 2020',
-    imdb: 'tt10008784'}
     ,
     {title: 'Mulan',
     originalRelease: '27 Mar 2020',
@@ -32,16 +49,10 @@ const movies = [
     ,
     {title: 'The Lovebirds',
     originalRelease: '03 Apr 2020',
-    imdb: 'tt8851668'}
+    imdb: 'tt8851668',
+    onVOD: 'Netflix'}
     ,
-    {title: 'The Climb',
-    originalRelease: '20 Mar 2020',
-    imdb: 'tt8637440'
-    }
     ,
-    {title: 'Deerskin',
-    originalRelease: '20 Mar 2020',
-    imdb: 'tt8193790'}
     ,
     {title: 'Run',
     originalRelease: '08 May 2020',
@@ -53,7 +64,8 @@ const movies = [
     ,
     {title: 'Working Man',
     originalRelease: '27 Mar 2020',
-    imdb: 'tt8391044'}
+    imdb: 'tt8391044'
+}*/
 ]
 
 //constants for sources urls
@@ -147,13 +159,19 @@ $main.click(handleClick);
 $('form').on('submit', handleSearch);
 $hamburger.click(handleHamburger);
 $('#title').click(goHome);
+$('#home').click(goHome);
+$('#faq-burger').click(renderFAQ);
+$('#tracker').click(renderTracker);
+$('#original').click(toOriginal);
+$('#delayed').click(toDelayed);
+
 
 
 
 /*----- functions -----*/
 
 //initalize webpage app
-//init();
+init();
 
 
 function init() {
@@ -207,17 +225,81 @@ function addAPIDataToMovies() {
 
         //grab relevant API data
         movie.poster = movieAPI.Poster;
-        movie.newRelease = movieAPI.Released;
+        //movie.newRelease = movieAPI.Released;
         movie.runtime = movieAPI.Runtime;
         movie.director = movieAPI.Director;
         movie.cast = movieAPI.Actors;
+
+        //check IMDB's new release date against the one we have
+        getNewReleaseDate(movie, movieAPI);
 
         //add sources urls too
         if (!movie.sources) {movie.sources = []}
         movie.sources.push(imdbUrl+movie.imdb);
         movie.sources.push(vultureUrl);
 
+    };
+};
+
+function getNewReleaseDate(movie, movieAPI) {
+
+    let imdbDate = movieAPI.Released;
+
+    //if we have a releasee date that is TBD
+    if (movie.newRelease === 'TBD'){
+        //and if the IMDB release date is the same as the original release,
+        //let's keep it as TBD
+        if (imdbDate === movie.originalRelease) {
+            console.log(movie.title);
+            console.log('no new release date');
+            return;
+        }
+        //else 
+        else checkIMDBReleaseDate(movie, imdbDate, false);
+        
     }
+    //if we already have a new release date in our array
+    else if (movie.newRelease) {
+        console.log(movie.title);
+        console.log(movie.newRelease);
+        console.log(movieAPI.Released);
+        
+        checkIMDBReleaseDate(movie, imdbDate, true);   
+    }
+    
+}
+
+function checkIMDBReleaseDate(movie, imdbDate, againstNew) {
+    
+    //if IMDB has a different release,
+    //and it's from before 2020,
+    //don't trust it (e.g. for foreign films)
+    if (parseInt(imdbDate.slice(-4)) < 2020) {
+        return;
+    }
+    // it's after 2020, we can trust it
+    else if (parseInt(imdbDate.slice(-4)) > 2020) {
+        movie.newRelease = imdbDate;
+    }
+    //if it's in 2020, we'll have to check the date
+    else if (parseInt(imdbDate.slice(-4)) === 2020) {
+        let imdbMonth = convertMonthStrToIdx(imdbDate.slice(-8, -5));
+        let newMonth = convertMonthStrToIdx(movie.newRelease.slice(-8, -5));
+        let originalMonth = convertMonthStrToIdx(movie.originalRelease.slice(-8, -5));
+        //if it's moved to a later month, trust that date
+        //if our new release date is not TBD, we'll check against that
+        if (againstNew) {
+            if (imdbMonth > newMonth) {
+                movie.newRelease = imdbDate;
+            };
+        }
+        //otherwise we'll check against the original month
+        else {
+            if (imdbMonth > originalMonth) {
+                movie.newRelease = imdbDate;
+            };
+        }
+    };
 };
 
 
@@ -265,7 +347,6 @@ function organizeMoviesByOriginalRelease() {
         //numerically in objects since ES6!!!!
 
     }
-    //console.log(originalReleaseCalendar);  
 
     //finally let's make sure our sorted array is fully sorted
     createSortedArray(originalReleaseCalendar);
@@ -318,7 +399,6 @@ function organizeMoviesByDelayedRelease() {
 
 
     }
-    console.log(newReleaseCalendar);  
 
     //finally let's make sure our sorted array is fully sorted
     createSortedArray(newReleaseCalendar)
@@ -407,8 +487,6 @@ function fullySortOriginal(array) {
 
     for (i=1; i < array.length; i++) {
 
-        if (array[i].title === 'Mission Impossible 7') console.log(i)
-
         let releaseDate = array[i].originalRelease;
         let month = releaseDate.slice(-8, -5);
 
@@ -421,14 +499,11 @@ function fullySortOriginal(array) {
                 sorted.push(item);
             }
             toSort = [array[i]];
-            console.log(toSort);
         }
     }
     let lastMonth = toSort;
     lastMonth.sort(compareOriginalReleaseDates);
     for (item of lastMonth) sorted.push(item);
-    console.log('this is original sorted:');
-    console.log(sorted);
     return sorted;
 };
 
@@ -456,8 +531,6 @@ function fullySortNew(array) {
     let lastMonth = toSort;
     lastMonth.sort(compareNewReleaseDates);
     for (item of lastMonth) sorted.push(item);
-    console.log('this is new sorted:');
-    console.log(sorted);
     return sorted;
 };
 
@@ -466,18 +539,38 @@ function setCurrentCalendar() {
 
     //if slider is to the left
     if ($slider.val() === '1') {
-        //set boolean to true
-        isOriginal = true;
-        //render original release calendar
-        render(originalReleaseCalendar);
+        toOriginal();
     }
     //if it's the to right
     else {
-        //set boolean to false
-        isOriginal = false;
-        //render new release calendar
-        render(newReleaseCalendar);
+        toDelayed();
     }
+};
+
+function toDelayed() {
+
+    //make sure the slider is at correct value
+    $slider.val('2');
+    //set boolean to false
+    isOriginal = false;
+    //put 'Original' in  bold
+    $('#original').removeClass('selected');
+    $('#delayed').addClass('selected');
+    //render new release calendar
+    render(newReleaseCalendar);
+};
+
+function toOriginal() {
+
+    //make sure slider is at correct value
+    $slider.val('1');
+    //set boolean to true
+    isOriginal = true;
+    //put 'Original' in  bold
+    $('#original').addClass('selected');
+    $('#delayed').removeClass('selected');
+    //render original release calendar
+    render(originalReleaseCalendar);
 };
 
 //return month idx for easy calendar object sorting
@@ -579,6 +672,9 @@ function render(calendar) {
         //the first value will be the year
         let year = yearValue[0];
 
+        //if no release date do not add to DOM
+        if (year === 'TBD') return;
+
         //add year to the DOM
         $main.append(`<section class='year' id=${year}><h2>${year}</h2></section>`)
 
@@ -587,10 +683,11 @@ function render(calendar) {
 
         //iterate through each month in calendar
         for(monthValue of iterableMonths) {
-
+            
             //the first value will be the month 
             //(we get its long string value to render in DOM for user-friendliness)
             let month = convertMonthIdxToStr(monthValue[0]);
+
 
             $(`#${year}`).append(`<div class='month' id=${month}${year}><h3>${month}</h3></div>`);
 
@@ -632,6 +729,14 @@ function render(calendar) {
             }
         }
     } 
+
+    //after all releases have been added, 
+    //create event listeners to hover
+    $('img').on('mouseover', handleMouseIn);
+    $('.container').on('mouseover', handleMouseIn);
+    $('img').on('mouseout', handleMouseOut);
+    $('div.container').on('mouseout', handleMouseOut);
+
 };
 
 function addToTimeline(movie, d, m, y) {
@@ -645,14 +750,17 @@ function addToTimeline(movie, d, m, y) {
 
     //how far along on the x axis of the timeline the movie will be
     //calculation is percentage of release day divided by 30 (monthly average)
-    let positioning = parseInt((d/30)*100);
+    let positioning = parseInt((d/31)*100);
     //variable for HTML input of movie poster
     posterToAdd = `<img class='poster' src=${poster}>`;
+    
 
     //if no poster url is available
     if (poster === 'N/A') {
         //figure out what to do 
         posterToAdd = `<div class='container'><img class='poster'><div class='posterTitle'>${movie.title}</div></div>`;
+
+
     }
     
     //append movie poster to timeline
@@ -720,8 +828,8 @@ function handleClick(e) {
         }
     };
 
-    //if we click on a movie link on the  search page
-    if (($clickedItem).attr('id') === 'search-link') {
+    //if we click on a movie link on the search page or tracker page
+    if (($clickedItem).attr('id') === 'search-link' || ($clickedItem).attr('id') === 'tracked-link') {
         //the movie to show will be the text of the link
         let movieToShow = clickedItemText;
         //find movie with that title
@@ -732,6 +840,58 @@ function handleClick(e) {
             };
         };
     };
+};
+
+function handleMouseIn(e) {
+
+    //get value of movie hovered
+    let hoveredItem = e.currentTarget;
+
+    //wrap it in jQuery money
+    let $hoveredItem = $(hoveredItem);
+
+    //make it bigger
+    $hoveredItem.animate({height: '160px', width: '110px', marginLeft: '-5px'}, 100);  
+    
+    //in case it's a poster with no image
+    //grab title div
+    let target = e.target;
+    if ($(target).hasClass('posterTitle')) {
+        //make title bigger as well
+        $(target).animate({fontSize: '20px'}, 100);
+    };
+
+    //lower all previous release divs
+    //so the y axis isn't messed up
+    let parentDiv = $hoveredItem.parent();
+    let previousReleases = $(parentDiv).prevAll();
+    for(release of previousReleases) {
+        if ($(release).hasClass('release'))
+        $(release).animate({bottom: '-=10px'}, 100);
+    };
+
+};
+
+function handleMouseOut(e) {
+
+    hoveredItem = e.currentTarget;
+    $hoveredItem = $(hoveredItem);
+    $hoveredItem.animate({height: '150px', width: '100px', marginLeft: '0px'}, 100);
+
+    let target = e.target;
+    if ($(target).hasClass('posterTitle')) {
+        $(target).animate({fontSize: '18px'}, 100);
+    };
+
+    //bring back up all previous release divs
+    //so the y axis isn't messed up
+    let parentDiv = $hoveredItem.parent();
+    let previousReleases = $(parentDiv).prevAll();
+    for(release of previousReleases) {
+        if ($(release).hasClass('release'))
+        $(release).animate({bottom: '+=10px'}, 100);
+    };
+
 };
 
 function showMovieDetails(movie) {
@@ -857,13 +1017,15 @@ function addCovidFacts(movie) {
     //append release dates
     $covidFacts.append(`<p class='covid_info'>Original Release Date: <span>${movie.originalRelease}</span></p>`);
     $covidFacts.append(`<p class='covid_info'>New Release Date: <span>${movie.newRelease}</span></p>`);
-
-    //fix layout if there is no trailer to the left
-    if (!movie.trailer) {
-        $('#covid-facts > p').removeClass('covid-info');
-        $('#covid-facts > p').addClass('noTrailer');
-    };
-    
+    //if there is info about VOD release
+    if (movie.onVOD) {
+        //add info
+        if (movie.onVOD === 'yes') {$covidFacts.append(`<p class='covid_info'>Release Format: <span> VOD</span></p>`);}
+        else $covidFacts.append(`<p class='covid_info'>Release Format: <span> VOD (${movie.onVOD})</span></p>`);
+    }
+    else {
+        $covidFacts.append(`<p class='covid_info'>Release Format: <span> Theatrical</span></p>`);
+    }
     //if there is trivia to add
     if (movie.trivia) {
         //create list 
@@ -874,6 +1036,20 @@ function addCovidFacts(movie) {
             $trivia.append(`<li>${trivia}</li`);
         };
     };
+
+    //fix layout if there is no trailer to the left
+    if (!movie.trailer) {
+        $('#covid-facts > p').removeClass('covid-info');
+        $('#covid-facts > p').addClass('noTrailer');
+        $('#covid-facts').css({gridColumn: 'span 2'});
+        $infoWindow.css({maxWidth: '550px'});
+        $('#covid-facts  li').removeClass('covid-info');
+        $('#covid-facts > ul').addClass('noTrailer');
+        $('#covid-facts  li').addClass('noTrailer');
+    };
+
+    $('#movie-infi')
+    
 };
 
 function addIMDbFacts(movie)  {
@@ -936,6 +1112,15 @@ function createSources(sources) {
         if (finalSourceDisplay === 'imdb') {
             sourcesForDisplay.push('IMDb');
         }
+        else if (finalSourceDisplay === 'theguardian') {
+            sourcesForDisplay.push('The Guardian');
+        }
+        else if (finalSourceDisplay === 'hollywoodreporter') {
+            sourcesForDisplay.push('Hollywood Reporter');
+        }
+        else if (finalSourceDisplay === 'theverge') {
+            sourcesForDisplay.push('The Verge');
+        }
         else {
             //for others, add source display in Title Case
             sourcesForDisplay.push(finalSourceDisplay[0].toUpperCase()+finalSourceDisplay.slice(1, finalSourceDisplay.length));
@@ -948,6 +1133,7 @@ function handleWindowClick(e) {
 
     //get value of movie clicked
     let clickedItem = e.target;
+    console.log(clickedItem);
 
     //wrap it in jQuery money
     let $clickedItem = $(clickedItem);
@@ -965,6 +1151,7 @@ function handleWindowClick(e) {
         removeDim();
     }
     else if (clickedItemText === 'Switch Timelines') {
+        console.log('switching');
         switchTimelines();
     }
     //if user clicks on 'View in Timline'
@@ -984,11 +1171,9 @@ function handleWindowClick(e) {
         $clickedItem.text('Add to Release Tracker');
     }
     else if ($clickedItem.hasClass('carousel__button--prev')) {
-        console.log('Previous');
         getPreviousFilm();
     }
     else if ($clickedItem.hasClass('carousel__button--next')) {
-        console.log('Next');
         getNextFilm();
     }
 };
@@ -1005,10 +1190,16 @@ function switchTimelines() {
         $('#infoLinks a > span').text('Delayed');
         //change value of toggler in page background
         $('#cal_type').val('2');
+        //change display of toggler in background
+        $('#original').removeClass('selected');
+        $('#delayed').addClass('selected');
     }
     else {
         $('#infoLinks a > span').text('Original');
-        $('#cal_type').val('1');      
+        $('#cal_type').val('1'); 
+        //change display of toggler in background
+        $('#original').addClass('selected');
+        $('#delayed').removeClass('selected');     
     };
 };
 
@@ -1058,7 +1249,6 @@ function removeFromReleaseTracker(movie) {
     for (i=0; i<moviesToTrack.length; i++) {
         //if movie matches one of the tracked movies
         if (moviesToTrack[i] === movie.title) {
-            console.log('movie matches')
             //remove from array of tracked movies
             moviesToTrack.splice(i, 1);
             //add updated array of tracked movies to local storage
@@ -1106,12 +1296,9 @@ function getPreviousFilm() {
 function getNextFilm() {
 
     if (isOriginal) {
-        console.log('in original timeline');
         for (i=0; i<originalSorted.length-1; i++) {
             if (currentMovie.title === originalSorted[i].title) {
                 let nextFilm = originalSorted[i+1];
-                console.log('next film is:')
-                console.log(nextFilm);
                 $('.movieInfo').remove();
                 showMovieDetails(nextFilm);
                 break;
@@ -1119,12 +1306,9 @@ function getNextFilm() {
         }
     }
     else if (isOriginal === false) {
-        console.log('in other timeline');
         for (i=0; i<newSorted.length-1; i++) {
             if (currentMovie.title === newSorted[i].title) {
                 let nextFilm = newSorted[i+1];
-                console.log('next film is:');
-                console.log(nextFilm);
                 $('.movieInfo').remove();
                 showMovieDetails(nextFilm);
                 break;
@@ -1202,12 +1386,6 @@ function handleHamburger() {
          //otherwise push it back to the right
          pushToRight();
     }
-    
-    //create new event listeners for hamburger menu links
-    $('#home').click(goHome);
-    $('#faq-burger').click(renderFAQ);
-    $('#tracker').click(renderTracker);
-        
 };
 
 function pushToLeft() {
@@ -1278,8 +1456,6 @@ function fullOpacity() {
 
 function renderFAQ() {
 
-    console.log('FAQ');
-
     //remove hamburger menu and go back to main 
     goBackToMain();
 
@@ -1308,8 +1484,6 @@ function renderFAQ() {
 
 function renderTracker() {
 
-    console.log('tracker');
-
     //remove hamburger menu and go back to main 
     goBackToMain();
 
@@ -1326,8 +1500,7 @@ function renderTracker() {
     $trackerSection.append(`<ul></ul>`);
 
     for(movie of moviesToTrack) {
-        console.log(movie);
-        $('#release_tracker ul').append(`<li><a href='#'>${movie}</a></li>`);
+        $('#release_tracker ul').append(`<li><a id='tracked-link' href='#'>${movie}</a></li>`);
     }
 
 
@@ -1353,6 +1526,8 @@ function dimPageBackground() {
     $main.off();
     $('#cal_type').prop('disabled', true);
     $('input[type="text"]').prop('disabled', true);
+    $('img').off();
+    $('.container').off();
 };
 
 function removeDim() {
@@ -1374,4 +1549,8 @@ function removeDim() {
     $main.click(handleClick);
     $('#cal_type').prop('disabled', false);
     $('input[type="text"]').prop('disabled', false);
+    $('img').on('mouseover', handleMouseIn);
+    $('.container').on('mouseover', handleMouseIn);
+    $('img').on('mouseout', handleMouseOut);
+    $('div.container').on('mouseout', handleMouseOut);
 };
