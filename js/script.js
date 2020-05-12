@@ -109,6 +109,21 @@ const infoWindowCovidFacts = `<section id='covid-facts'></section>`;
 const infoWindowIMDbFacts = `<section id='imdb-facts'></section`;
 const infoWindowSources = `<p id='sources'>Sources: </p>`
 
+//HTML constants for FAQ
+const faqSection = `<section id='faq'></section`;
+const faqTitle = `<h1>Frequently Asked Questions</h1>`;
+const faQuestion1 = `<p class='question'>Why this project?</p>`;
+const faQuestion2 = `<p class='question'>How confident can we be about the new release dates in the delayed calendar?</p>`;
+const faQuestion3 = `<p class='question'>How will this affect the entertainment industry?</p>`;
+const faqAnswer1 = `<p class='answer'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae provident minima magnam odit debitis quisquam, excepturi, veritatis, sit accusamus temporibus amet nihil velit cupiditate repellendus voluptatum! Fuga beatae mollitia quos.</p>`
+const faqAnswer2 = `<p class='answer'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae provident minima magnam odit debitis quisquam, excepturi, veritatis, sit accusamus temporibus amet nihil velit cupiditate repellendus voluptatum! Fuga beatae mollitia quos.</p>`
+const faqAnswer3 = `<p class='answer'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae provident minima magnam odit debitis quisquam, excepturi, veritatis, sit accusamus temporibus amet nihil velit cupiditate repellendus voluptatum! Fuga beatae mollitia quos.</p>`
+
+//HTML constants for release tracker
+const trackerSection = `<section id='release_tracker'>`;
+const trackerTitle = `<h1>Release Tracker</h1>`;
+const trackerSubtitle = `<h2>Movies whose release dates you wish to track will appear here.</h2>`;
+
 
 /*----- app's state (variables) -----*/
 let movieAPIData, isOriginal, currentMovie;
@@ -131,13 +146,14 @@ $slider.change(setCurrentCalendar);
 $main.click(handleClick);
 $('form').on('submit', handleSearch);
 $hamburger.click(handleHamburger);
+$('#title').click(goHome);
 
 
 
 /*----- functions -----*/
 
 //initalize webpage app
-init();
+//init();
 
 
 function init() {
@@ -604,7 +620,7 @@ function render(calendar) {
                 }
 
                 //now that all posters are added to the release div, 
-                // append date paragraph to the bottom
+                //append date paragraph to the bottom
                 $(`#${day}${month}${year}`).append(`<p>${day} ${month}</p>`);
 
 
@@ -723,6 +739,13 @@ function showMovieDetails(movie) {
     //make background of page dark and non-interactable
     dimPageBackground();
 
+    //prevent function from repeatedly creating 
+    //multiple info windows at once
+    if ( $(".movieInfo").parents("main").length == 1 ) { 
+        console.log('already movie info here');
+        return;
+    };
+
     //render minimal movie info window while API data is loading
     $main.append(infoWindow);
     $infoWindow = $('.movieInfo');
@@ -733,6 +756,7 @@ function showMovieDetails(movie) {
     if(movie.dataRetrieved) {
         //no need for load time
         renderInfoWindow(movie);
+        console.log('rendering now');
     }
     else {
         //tell user data is loading
@@ -1159,7 +1183,9 @@ function renderSearchResults(title) {
 
 function handleHamburger() {
 
+    //show or remove hamburger menu from view
     $('#hamburger-slideout').toggleClass('hamburger_show');
+    //change opacity of HTML elements
     $('img').toggleClass('half_opacity');
     $('.posterTitle').toggleClass('half_opacity');
     $('#changeView p').toggleClass('half_opacity');
@@ -1167,27 +1193,144 @@ function handleHamburger() {
     $('#title').toggleClass('half_opacity');
     $('footer').toggleClass('half_opacity');
 
-
+    //if we are showing the hamburger menu
     if ($('#hamburger-slideout').hasClass('hamburger_show')) {
-        $main.animate({right: '300px'}, 250);
-        $('nav').animate({right: '300px'}, 250);
-        $('#changeView').animate({right: '300px'}, 250);
-        $('footer').animate({right: '300px'}, 250);
-        $slider.off();
-        $main.off();
-        $('#cal_type').prop('disabled', true);
-        $('input[type="text"]').prop('disabled', true);
+        //push the rest of the page to the left
+        pushToLeft();
         }
      else {
-        $main.animate({right: '0'}, 250);
-        $('nav').animate({right: '0'}, 250);
-        $('#changeView').animate({right: '0'}, 250);
-        $('footer').animate({right: '0'}, 250);
-        $slider.change(setCurrentCalendar);
-        $main.click(handleClick);
-        $('#cal_type').prop('disabled', false);
-        $('input[type="text"]').prop('disabled', false);
-     }
+         //otherwise push it back to the right
+         pushToRight();
+    }
+    
+    //create new event listeners for hamburger menu links
+    $('#home').click(goHome);
+    $('#faq-burger').click(renderFAQ);
+    $('#tracker').click(renderTracker);
+        
+};
+
+function pushToLeft() {
+    
+    $main.animate({right: '300px'}, 250);
+    $('nav').animate({right: '300px'}, 250);
+    $('#changeView').animate({right: '300px'}, 250);
+    $('footer').animate({right: '300px'}, 250);
+    $slider.off();
+    $main.off();
+    $('#cal_type').prop('disabled', true);
+    $('input[type="text"]').prop('disabled', true);
+    
+};
+
+function pushToRight() {
+    
+    $main.animate({right: '0'}, 250);
+    $('nav').animate({right: '0'}, 250);
+    $('#changeView').animate({right: '0'}, 250);
+    $('footer').animate({right: '0'}, 250);
+    $slider.change(setCurrentCalendar);
+    $main.click(handleClick);
+    $('#cal_type').prop('disabled', false);
+    $('input[type="text"]').prop('disabled', false);
+
+};
+
+
+function goHome() {
+
+    //make sure timeline switcher is back on page
+    //(if we clicked on this after the search page)
+    $('#changeView').removeClass('hidden');
+    $slider.on();
+    $('#cal_type').prop('disabled', false);
+
+    //remove hamburger menu and go back to main 
+    goBackToMain();
+
+    //render appropriate calendar
+    if (isOriginal) render(originalReleaseCalendar);
+    else render(newReleaseCalendar);
+    
+};
+
+function goBackToMain() {
+
+    //remove hamburger menu from view
+    $('#hamburger-slideout').removeClass('hamburger_show');
+    //reset opacity for all HTML elements
+    fullOpacity();
+    //push HTML elements back to the right
+    pushToRight();
+    //reset main
+    $main.html('');
+    
+};
+
+function fullOpacity() {
+    $('img').removeClass('half_opacity');
+    $('.posterTitle').removeClass('half_opacity');
+    $('#changeView p').removeClass('half_opacity');
+    $('.year p').removeClass('half_opacity');
+    $('#title').removeClass('half_opacity');
+    $('footer').removeClass('half_opacity');   
+};
+
+function renderFAQ() {
+
+    console.log('FAQ');
+
+    //remove hamburger menu and go back to main 
+    goBackToMain();
+
+    //make sure timeline switcher is off page
+    //(if we clicked on this after the search page)
+    $('#changeView').addClass('hidden');
+    $slider.off();
+    $('#cal_type').prop('disabled', true);
+
+    $main.append(faqSection);
+    $faqSection = $('#faq');
+    $faqSection.append(faqTitle);
+    $faqSection.append(faQuestion1);
+    $faqSection.append(faqAnswer1);
+    $faqSection.append('<br>');
+    $faqSection.append(faQuestion2);
+    $faqSection.append(faqAnswer2);
+    $faqSection.append('<br>');
+    $faqSection.append(faQuestion3);
+    $faqSection.append(faqAnswer3);
+    $faqSection.append('<br>');
+
+
+    
+};
+
+function renderTracker() {
+
+    console.log('tracker');
+
+    //remove hamburger menu and go back to main 
+    goBackToMain();
+
+    //make sure timeline switcher is off page
+    //(if we clicked on this after the search page)
+    $('#changeView').addClass('hidden');
+    $slider.off();
+    $('#cal_type').prop('disabled', true);
+
+    $main.append(trackerSection);
+    $trackerSection = $('#release_tracker');
+    $trackerSection.append(trackerTitle);
+    $trackerSection.append(trackerSubtitle);
+    $trackerSection.append(`<ul></ul>`);
+
+    for(movie of moviesToTrack) {
+        console.log(movie);
+        $('#release_tracker ul').append(`<li><a href='#'>${movie}</a></li>`);
+    }
+
+
 };
 
 function dimPageBackground() {
@@ -1212,7 +1355,6 @@ function dimPageBackground() {
     $('input[type="text"]').prop('disabled', true);
 };
 
-
 function removeDim() {
 
     //remove overlay darkening filter to page sections
@@ -1233,5 +1375,3 @@ function removeDim() {
     $('#cal_type').prop('disabled', false);
     $('input[type="text"]').prop('disabled', false);
 };
-
-
