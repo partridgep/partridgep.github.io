@@ -751,11 +751,18 @@ function render(calendar) {
             //(we get its long string value to render in DOM for user-friendliness)
             let month = convertMonthIdxToStr(monthValue[0]);
 
-
             $(`#${year}`).append(`<div class='month' id=${month}${year}><h3>${month}</h3></div>`);
 
             //next get iterable release date values
             let iterableDates = Object.entries(monthValue[1]);
+
+            //we'll want to add each release date
+            //in descending order of the number
+            //of each release they contain/
+            //or the height of the div will be messed up
+            iterableDates.sort(function(a, b) {
+                return b[1].length - a[1].length;
+            });
 
             for(dayValue of iterableDates) {
 
@@ -771,32 +778,24 @@ function render(calendar) {
                 let iterableMovies = Object.entries(dayValue[1]);
 
                 for(i=0; i<iterableMovies.length; i++) {
-
                     //second value will be movie object
                     let movieToAdd = iterableMovies[i][1];
 
                     addToTimeline(movieToAdd, day, month, year);
-
-                }
+                };
 
                 //now that all posters are added to the release div, 
                 //append date paragraph to the bottom
                 $(`#${day}${month}${year}`).append(`<p>${day} ${month}</p>`);
 
-
                 //Now we run into a problem: each new release div pushes
                 //previous release div up by its height. This doesn't look good!
                 //To fix this, we must adjust the previous div's margin
                 fixPostersYAxis(day, month, year);
-
-                
-            }
-            //Another problem: if the last release div
-            //added to the month div is taller than all the others,
-            //the month div will bump into the previous div
-            fixDivHeight(month, year);
-        }
-    } 
+           
+            };
+        };
+    }; 
 
     //after all releases have been added, 
     //create event listeners to hover
@@ -864,55 +863,6 @@ function fixPostersYAxis(d, m, y) {
 
         //now all of our release divs are aligned on the timeline!!!
     }
-};
-
-//make sure the release divs are all aligned on the y-axis
-//when the last release div is taller than all others
-function fixDivHeight(m, y) {
-
-    //cache values to check against
-    let needToFixMargin  = false;
-    let tallestOtherDiv = 1;
-
-    let currentMonthDiv = $(`#${m}${y}`);
-    let lastReleaseDiv = $(`#${m}${y} > .release:last-child`);
-    let numPosters = $(lastReleaseDiv).children().length -1;
-    let allChildren = currentMonthDiv.children();
-
-    //iterate through all children of month div
-    //except for last child (we want to check against it)
-    for(i=0; i < allChildren.length - 1; i++ ) {
-        //only check it if  it's a release div
-        if ($(allChildren[i]).hasClass('release')) {
-            //check how many posters are in the release div
-            let numPostersOfChild = $(allChildren[i]).children().length - 1;
-            //keep tally of release div with highest number of posters
-            if (numPostersOfChild >= tallestOtherDiv) {
-                tallestOtherDiv = numPostersOfChild;
-            };
-        };
-    };
-
-    //if the last release div has the highest number of posters,
-    //we need to fix the margin
-    if (tallestOtherDiv >= numPosters) {
-        needToFixMargin = true;
-    };
-
-    if (needToFixMargin) {
-        console.log(`${m} ${y} need to fix margin`)
-        //get the height of an individual poster (first three characters)
-        //add 5 for its margin
-        let posterHeight = parseInt(($(`.poster`).css('height')).slice(0, 3)) + 5;
-
-        //the minimum height the div will have to be
-        let minimumHeight = posterHeight * numPosters + 10;
-
-        //adjust minimum height of month div by manipulating the margin
-        //of its title div
-        $(`#${m}${y} > h3`).css({marginBottom: `${minimumHeight-(minimumHeight*0.7)}px`})
-        
-    };
 };
 
 //show movie details
