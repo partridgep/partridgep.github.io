@@ -588,48 +588,10 @@ function fullySortNew(array) {
     return sorted;
 };
 
-//changing calendars once toggled
-function setCurrentCalendar() {
-
-    //if slider is to the left
-    if ($slider.val() === '1') {
-        toOriginal();
-    }
-    //if it's the to right
-    else {
-        toDelayed();
-    }
-};
-
-function toDelayed() {
-
-    //make sure the slider is at correct value
-    $slider.val('2');
-    //set boolean to false
-    isOriginal = false;
-    //put 'Original' in  bold
-    $('#original').removeClass('selected');
-    $('#delayed').addClass('selected');
-    //render new release calendar
-    render(newReleaseCalendar);
-};
-
-function toOriginal() {
-
-    //make sure slider is at correct value
-    $slider.val('1');
-    //set boolean to true
-    isOriginal = true;
-    //put 'Original' in  bold
-    $('#original').addClass('selected');
-    $('#delayed').removeClass('selected');
-    //render original release calendar
-    render(originalReleaseCalendar);
-};
 
 //return month idx for easy calendar object sorting
 function convertMonthStrToIdx(month) {
-
+    
     if (month === 'Jan') {
         month = 1;
     }
@@ -671,7 +633,7 @@ function convertMonthStrToIdx(month) {
 
 //return full month string for user view in the DOM
 function convertMonthIdxToStr(month) {
-
+    
     if (month === '1' || month === 'Jan') {
         month = 'January';
     }
@@ -713,40 +675,40 @@ function convertMonthIdxToStr(month) {
 
 //render in the DOM   
 function render(calendar) {
-
+    
     //clear calendar in the DOM
     $main.html('');
     
     //grab entries of calendar object to make it iterable
     let iterableCalendar = Object.entries(calendar);
-
+    
     //iterate through each year in the calendar
     for(yearValue of iterableCalendar) {
         
         //the first value will be the year
         let year = yearValue[0];
-
+        
         //if no release date do not add to DOM
         if (year === 'TBD') return;
-
+        
         //add year to the DOM
         $main.append(`<section class='year' id=${year}><h2>${year}</h2></section>`)
-
+        
         //next get iterable monthly values
         let iterableMonths = Object.entries(yearValue[1]);
-
+        
         //iterate through each month in calendar
         for(monthValue of iterableMonths) {
             
             //the first value will be the month 
             //(we get its long string value to render in DOM for user-friendliness)
             let month = convertMonthIdxToStr(monthValue[0]);
-
+            
             $(`#${year}`).append(`<div class='month' id=${month}${year}><h3>${month}</h3></div>`);
-
+            
             //next get iterable release date values
             let iterableDates = Object.entries(monthValue[1]);
-
+            
             //we'll want to add each release date
             //in descending order of the number
             //of each release they contain/
@@ -754,65 +716,65 @@ function render(calendar) {
             iterableDates.sort(function(a, b) {
                 return b[1].length - a[1].length;
             });
-
+            
             for(dayValue of iterableDates) {
-
+                
                 //the first value will be the day
                 let day = dayValue[0];
-
+                
                 //add a release day div
                 $(`#${month}${year}`).append(`<div class='release' id='${day}${month}${year}'></div>`);
                 //restrict width of div so it doesn't overflow
                 //$(`#${day}${month}${year}`).css(`width`, '200px');
-
+                
                 //next get iterable movie releases
                 let iterableMovies = Object.entries(dayValue[1]);
-
+                
                 for(i=0; i<iterableMovies.length; i++) {
                     //second value will be movie object
                     let movieToAdd = iterableMovies[i][1];
-
+                    
                     addToTimeline(movieToAdd, day, month, year);
                 };
-
+                
                 //now that all posters are added to the release div, 
                 //append date paragraph to the bottom
                 $(`#${day}${month}${year}`).append(`<p>${day} ${month}</p>`);
-
+                
                 //Now we run into a problem: each new release div pushes
                 //previous release div up by its height. This doesn't look good!
                 //To fix this, we must adjust the previous div's margin
                 fixPostersYAxis(day, month, year);
-           
+                
             };
         };
     }; 
-
+    
     //after all releases have been added, 
     //create event listeners to hover
     $('img').on('mouseover', handleMouseIn);
     $('.container').on('mouseover', handleMouseIn);
     $('img').on('mouseout', handleMouseOut);
     $('div.container').on('mouseout', handleMouseOut);
-
+    
 };
 
 function addToTimeline(movie, d, m, y) {
-
+    
     let posterToAdd;
-
+    
     //variable for jQuery input for div ID where the movie will be inserted
     let $currentReleaseMonth = $(`#${d}${m}${y}`);
     //find poster url
     let poster = movie.poster;
-
+    
     //how far along on the x axis of the timeline the movie will be
     //calculation is percentage of release day divided by 40
     //little more than 30 to represent month on a line
     let positioning = parseInt((d/40)*100);
     //variable for HTML input of movie poster
     posterToAdd = `<img class='poster' src=${poster}>`;
-
+    
     //if no poster url is available
     if (poster === 'N/A') {
         //figure out what to do 
@@ -821,17 +783,17 @@ function addToTimeline(movie, d, m, y) {
     
     //append movie poster to timeline
     $currentReleaseMonth.append(posterToAdd);
-
+    
     //adjust poster on x-axis
     $currentReleaseMonth.last().css('left', `${positioning}%`);
 };
 
 //make sure all movie posters are well aligned on the y-axis
 function fixPostersYAxis(d, m, y) {
-
+    
     //if the previous div is also a release div
     if ($(`#${d}${m}${y}`).prev().hasClass('release')) {
-                    
+        
         //grab that div's ID for easy manipulatiom
         let prevID = $(`#${d}${m}${y}`).prev().attr('id');
         
@@ -842,34 +804,73 @@ function fixPostersYAxis(d, m, y) {
         //get the height of an individual poster (first three characters)
         //add 5 for its margin
         let posterHeight = parseInt(($(`.poster`).css('height')).slice(0, 3)) + 5;
-
+        
         //finally, calculate the margin we'll have to substract to our current div
         //that's the number of posters times the height of a poster
         //plus 18px for the date paragraph
         let divMargin = numPosters * posterHeight + 18;
-
+        
         //set the bottom margin for the previous release div 
         //to be negative that amount
         $(`#${prevID}`).css('margin-bottom', `-${divMargin}px`);
-
+        
         //now all of our release divs are aligned on the timeline!!!
     }
 };
 
+//changing calendars once toggled
+function setCurrentCalendar() {
+
+    //if slider is to the left
+    if ($slider.val() === '1') {
+        toOriginal();
+    }
+    //if it's the to right
+    else {
+        toDelayed();
+    }
+};
+
+function toDelayed() {
+
+    //make sure the slider is at correct value
+    $slider.val('2');
+    //set boolean to false
+    isOriginal = false;
+    //put 'Original' in  bold
+    $('#original').removeClass('selected');
+    $('#delayed').addClass('selected');
+    //render new release calendar
+    render(newReleaseCalendar);
+};
+
+function toOriginal() {
+
+    //make sure slider is at correct value
+    $slider.val('1');
+    //set boolean to true
+    isOriginal = true;
+    //put 'Original' in  bold
+    $('#original').addClass('selected');
+    $('#delayed').removeClass('selected');
+    //render original release calendar
+    render(originalReleaseCalendar);
+};
+
 //show movie details
 function handleClick(e) {
-
+    
     //get value of movie clicked
     let clickedItem = e.target;
     console.log(clickedItem);
-
+    
     //wrap it in jQuery money
     let $clickedItem = $(clickedItem);
     //get source attribute
     let clickedItemSrc = $clickedItem.attr('src')
     //get text value
     let clickedItemText = $(clickedItem).text();
-
+    
     //check if we've clicked on a movie poster
     for(movie of movies) {
         //if it's a poster with same poster src as a movie in movies array
@@ -1542,8 +1543,6 @@ function renderFAQ() {
     $faqSection.append(faQuestion3);
     $faqSection.append(faqAnswer3);
     $faqSection.append('<br>');
-
-
     
 };
 
