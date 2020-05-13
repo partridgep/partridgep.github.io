@@ -16,51 +16,51 @@ const movies = [
     ,
     {title: 'Bull', imdb: 'tt10008784', originalRelease: '20 Mar 2020', newRelease: '01 May 2020', onVOD: 'yes', sources: ['https://www.deadline.com/2020/03/dosed-human-capital-searchlight-pictures-focus-features-a24-specialty-box-office-1202886970/']}
     ,
-    {title: 'Candyman', imdb: 'tt9347730', originalRelease: '12 Jun 2020', newRelease: '25 Sep 2020', sources: ['https://variety.com/2020/film/box-office/candyman-delayed-coronavirus-jordan-peele-1203542508/']}
+    {title: 'Candyman', imdb: 'tt9347730', originalRelease: '12 Jun 2020', newRelease: '25 Sep 2020', sources: ['https://www.variety.com/2020/film/box-office/candyman-delayed-coronavirus-jordan-peele-1203542508/']}
     ,
-    {title: 'Charm City Kings', imdb: 'tt9048840', originalRelease: '10 Apr 2020', newRelease: 'TBD', onVOD: 'HBO Max', sources: ['https://deadline.com/2020/05/sony-pictures-classics-charm-city-kings-sells-to-hbo-max-1202926812/'], trivia: ['The opening was shifted from April 10, 2020, then to August 14, 2020, again to August 21, 2020 until it was acquired by HBO Max in May.']}
+    {title: 'Charm City Kings', imdb: 'tt9048840', originalRelease: '10 Apr 2020', newRelease: 'TBD', onVOD: 'HBO Max', sources: ['https://www.deadline.com/2020/05/sony-pictures-classics-charm-city-kings-sells-to-hbo-max-1202926812/'], trivia: ['The opening was shifted from April 10, 2020, then to August 14, 2020, again to August 21, 2020 until it was acquired by HBO Max in May.']}
     ,
-    {title: 'The Climb', imdb: 'tt8637440', originalRelease: '20 Mar 2020', newRelease: 'TBD', sources: ['https://deadline.com/2020/03/sony-pictures-classics-release-the-climb-postponed-in-wake-of-ny-la-theater-closures-1202884481/']}
+    {title: 'The Climb', imdb: 'tt8637440', originalRelease: '20 Mar 2020', newRelease: 'TBD', sources: ['https://www.deadline.com/2020/03/sony-pictures-classics-release-the-climb-postponed-in-wake-of-ny-la-theater-closures-1202884481/']}
     ,
     {title: 'Deerskin', imdb: 'tt8193790', originalRelease: '20 Mar 2020', newRelease: 'TBD'}
     ,
     {title: 'Doctor Strange in the Multiverse of Madness', imdb: 'tt9419884', originalRelease: '07 May 2021', newRelease: '25 Mar 2022', sources: ['https://www.theverge.com/2020/4/24/21235283/spider-man-spiderverse-homecoming-delay-release-date-trilogy-marvel-venom-doctor-strange-thor'], trivia: ["The film was first pushed to November 5th, 2021, but was delayed again when Sony Studio's Spiderman sequel was pushed back."]}
     ,
-    {title: 'Dungeons & Dragons', imdb: 'tt2906216', originalRelease: '19 Nov 2021', newRelease: '27 May 2022', sources: ['https://theplaylist.net/paramount-mission-impossible-delays-20200424/']}
+    {title: 'Dungeons & Dragons', imdb: 'tt2906216', originalRelease: '19 Nov 2021', newRelease: '27 May 2022', sources: ['https://www.theplaylist.net/paramount-mission-impossible-delays-20200424/']}
     ,
     {title: 'F9', imdb: 'tt5433138', originalRelease: '22 May 2020', newRelease: '02 Apr 2021', sources: ['https://www.hollywoodreporter.com/heat-vision/f9-being-pushed-back-a-year-coronavirus-pandemic-1284242'], trivia: ['The film is taking the spot previously reserved for the 10th and final installment in the main Fast & Franchise series.']}
     ,
-    {title: 'Fatherhood', imdb: 'tt4733624', originalRelease: '15 Jan 2021', newRelease: '02 Apr 2021', sources: ['https://variety.com/2020/film/news/spider-man-sequels-delayed-1234589657/']}
+    {title: 'Fatherhood', imdb: 'tt4733624', originalRelease: '15 Jan 2021', newRelease: '02 Apr 2021', sources: ['https://www.variety.com/2020/film/news/spider-man-sequels-delayed-1234589657/']}
     ,
     {title: 'Free Guy', imdb: 'tt6264654', originalRelease: '03 Jul 2020', newRelease: '11 Dec 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854']}
     ,
-    {title: 'Ghostbusters: Afterlife', imdb: 'tt4513678', originalRelease: '10 Jul 2020', newRelease: '05 Mar  2021', sources:  ['https://variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
+    {title: 'Ghostbusters: Afterlife', imdb: 'tt4513678', originalRelease: '10 Jul 2020', newRelease: '05 Mar  2021', sources:  ['https://www.variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
     ,
-    {title: 'Greyhound', imdb:  'tt6048922', originalRelease: '12 Jun 2020', newRelease: 'TBD', sources: ['https://variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
+    {title: 'Greyhound', imdb:  'tt6048922', originalRelease: '12 Jun 2020', newRelease: 'TBD', sources: ['https://www.variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
     ,
-    {title: 'In the Heights', imdb: 'tt1321510', originalRelease: '26 Jun 2020', newRelease: '18 Jun 2021', sources: ['https://collider.com/lin-manuel-miranda-in-the-heights-movie-new-release-date/']}
+    {title: 'In the Heights', imdb: 'tt1321510', originalRelease: '26 Jun 2020', newRelease: '18 Jun 2021', sources: ['https://www.collider.com/lin-manuel-miranda-in-the-heights-movie-new-release-date/']}
     ,
     {title: 'Jungle Cruise', imdb: 'tt0870154', originalRelease: '24 Jul 2020', newRelease: '30 Jul 2021', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854']}
     ,
-    {title: 'King Richards', imdb: 'tt9620288', originalRelease: '21 Nov 2020', newRelease: '25 Nov 2021', sources: ['https://variety.com/2020/film/box-office/the-batman-release-date-delayed-1234584978/']}
+    {title: 'King Richards', imdb: 'tt9620288', originalRelease: '21 Nov 2020', newRelease: '25 Nov 2021', sources: ['https://www.variety.com/2020/film/box-office/the-batman-release-date-delayed-1234584978/']}
     ,
-    {title: 'Malignant', imdb: 'tt9620288', originalRelease: '14 Aug 2020', newRelease: 'TBD', sources: ['https://variety.com/2020/film/box-office/the-batman-release-date-delayed-1234584978/']}
+    {title: 'Malignant', imdb: 'tt9620288', originalRelease: '14 Aug 2020', newRelease: 'TBD', sources: ['https://www.variety.com/2020/film/box-office/the-batman-release-date-delayed-1234584978/']}
     ,
-    {title: 'Minions: Rise of Gru', imdb: 'tt5113044', originalRelease: '03 Jul 2020', newRelease: '02 Jul 2021', sources: ['https://variety.com/2020/film/news/universal-minions-sequel-release-wicked-1203551680/']}
+    {title: 'Minions: Rise of Gru', imdb: 'tt5113044', originalRelease: '03 Jul 2020', newRelease: '02 Jul 2021', sources: ['https://www.variety.com/2020/film/news/universal-minions-sequel-release-wicked-1203551680/']}
     ,
-    {title: 'Mission Impossible 7', imdb: 'tt9603212', originalRelease: '23 Jul 2021', newRelease: '19 Nov 2021', sources: ['https://variety.com/2020/film/box-office/mission-impossible-sequels-get-pushed-back-1234589362/']}
+    {title: 'Mission Impossible 7', imdb: 'tt9603212', originalRelease: '23 Jul 2021', newRelease: '19 Nov 2021', sources: ['https://www.variety.com/2020/film/box-office/mission-impossible-sequels-get-pushed-back-1234589362/']}
     ,
-    {title: 'Mission Impossible 8', imdb: 'tt9603208', originalRelease: '05 Aug 2022', newRelease: '04 Nov 2022', sources: ['https://variety.com/2020/film/box-office/mission-impossible-sequels-get-pushed-back-1234589362/']}
+    {title: 'Mission Impossible 8', imdb: 'tt9603208', originalRelease: '05 Aug 2022', newRelease: '04 Nov 2022', sources: ['https://www.variety.com/2020/film/box-office/mission-impossible-sequels-get-pushed-back-1234589362/']}
     ,
-    {title: 'Morbius', imdb: 'tt5108870', originalRelease: '31 Jul 2020', newRelease: '19 Mar 2021', sources: ['https://variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
+    {title: 'Morbius', imdb: 'tt5108870', originalRelease: '31 Jul 2020', newRelease: '19 Mar 2021', sources: ['https://www.variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
     ,
     {title: 'Mulan', imdb: 'tt4566758', originalRelease: '27 Mar 2020', newRelease:  '24 Jul 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854'], trivia: ["Disney first cancelled Mulan's premiere in China, despite hopes that it would perform well there, but did not move its opening date in the rest of the world. Finally, the movie got pushed back to July in early April."]}
     ,
-    {title: 'My Spy', imdb: 'tt8242084', originalRelease: '17 Apr 2020', newRelease: 'TBD', onVOD: 'Amazon Prime', sources: ['https://variety.com/2020/digital/news/dave-bautista-my-spy-amazon-prime-1234574765/']}
+    {title: 'My Spy', imdb: 'tt8242084', originalRelease: '17 Apr 2020', newRelease: 'TBD', onVOD: 'Amazon Prime', sources: ['https://www.variety.com/2020/digital/news/dave-bautista-my-spy-amazon-prime-1234574765/']}
     ,
     {title: 'No Time To Die', imdb: 'tt2382320', originalRelease: '10 Apr 2020', newRelease: '25 Nov 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/bond-movie-no-time-die-delayed-due-coronavirus-1282170'], trivia: ['First movie to be delayed due to the pandemic']}
     ,
-    {title: 'Nobody', imdb: 'tt7888964', originalRelease: '14 Aug 2020', newRelease: '26 Feb 2021', sources: ['https://deadline.com/2020/04/m-night-shyamalan-bob-odenkirk-nobody-universal-movie-release-date-change-1202902785/']}
+    {title: 'Nobody', imdb: 'tt7888964', originalRelease: '14 Aug 2020', newRelease: '26 Feb 2021', sources: ['https://www.deadline.com/2020/04/m-night-shyamalan-bob-odenkirk-nobody-universal-movie-release-date-change-1202902785/']}
     ,
     {title: 'Peter Rabbit 2', imdb: 'tt8376234', originalRelease: '07 Aug 2020', newRelease: '15 Jan 2021', sources: ['https://www.newsweek.com/peter-rabbit-2-runaway-release-date-stream-streaming-movie-watch-online-1495926']}
     ,
@@ -70,27 +70,65 @@ const movies = [
     ,
     {title: 'Run', imdb: 'tt8633478', originalRelease: '08 May 2020', newRelease: 'TBD'}
     ,
-    {title: 'Scoob!', imdb: 'tt3152592', originalRelease: '15 May 2020', newRelease: '15 May 2020', onVOD: 'yes', sources: ['https://variety.com/2020/film/box-office/scooby-doo-movie-skips-theaters-on-demand-1203539529/']}
+    {title: 'Scoob!', imdb: 'tt3152592', originalRelease: '15 May 2020', newRelease: '15 May 2020', onVOD: 'yes', sources: ['https://www.variety.com/2020/film/box-office/scooby-doo-movie-skips-theaters-on-demand-1203539529/']}
     ,
     {title: 'Shang-Chi and The Legend of the Ten Rings', imdb: 'tt9376612', originalRelease: '21 Feb 2021', newRelease: '07 May 2021', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854', 'https://variety.com/2020/film/news/doctor-strange-sequel-delay-1234589665/']}
-    
-
-    /*
-
     ,
-    {title: 'The Lovebirds',
-    originalRelease: '03 Apr 2020',
-    imdb: 'tt8851668',
-    onVOD: 'Netflix'}
+    {title: 'Shazam! 2', imdb: 'tt10151854', originalRelease: '01 Apr 2022', newRelease: '4 Nov 2022'}
     ,
+    {title: 'Spiral: From The Book of Saw', imdb: 'tt10342730', originalRelease: '15 May 2020', newRelease: 'TBD'}
     ,
+    {title: 'Soul', imdb: 'tt2948372', originalRelease: '19 Jun 2020', newRelease: '20 Nov 2020'}
     ,
+    {title: 'The Artist’s Wife', imdb: 'tt5806558', originalRelease: '03 Apr 2020', newRelease: 'TBD'}
     ,
+    {title: 'The Batman', imdb: 'tt1877830', originalRelease: '25 Jun 2021', newRelease: '01 Oct 2021'}
     ,
-    {title: 'Working Man',
-    originalRelease: '27 Mar 2020',
-    imdb: 'tt8391044'
-}*/
+    {title: 'The Eternals', imdb: 'tt9032400', originalRelease: '06 Nov 2020', newRelease: '12 Feb 2021'}
+    ,
+    {title: 'The Flash', imdb: 'tt0439572', originalRelease: '01 Jul 2022', newRelease: '03 Jun 2022'}
+    ,
+    {title: 'The French Dispatch', imdb: 'tt8847712', originalRelease: '24 Jul 2020', newRelease: '16 Oct 2020'}
+    ,
+    {title: 'The Lovebirds', imdb: 'tt8851668', originalRelease: '03 Apr 2020', newRelease: '22 May 2020', sources: ['https://www.variety.com/2020/film/news/netflix-issa-rae-kumail-nanjiani-lovebirds-may-launch-1234585332/'], onVOD: 'Netflix'}
+    ,
+    {title: 'The Many Saints of Newark', imdb: 'tt8110232', originalRelease: '25 Sep 2020', newRelease: '12 Mar 2021', sources: ['https://www.thewrap.com/sopranos-many-saints-newark-will-smith-king-richard/']}
+    ,
+    {title: 'The New Mutants', imdb: 'tt4682266', originalRelease: '03 Apr 2020', newRelease: 'TBD'}
+    ,
+    {title: 'The Nightingale', imdb: 'tt4540534', originalRelease: '25 Dec 2020', newRelease: '22 Dec 2021'}
+    ,
+    {title: 'The Personal History of David Copperfield', imdb: 'tt6439020', originalRelease: '08 May 2020', newRelease: 'TBD'}
+    ,
+    {title: 'The Secret Garden', imdb: 'tt2702920', originalRelease: '17 Apr 2020', newRelease: '14 Aug 2020'}
+    ,
+    {title: 'The Tomorrow War', imdb: 'tt9777666', originalRelease: '25 Dec 2020', newRelease: '23 Jul 2021'}
+    ,
+    {title: 'The Truth', imdb: 'tt8323120', originalRelease: '20 Mar 2020', newRelease: 'TBD'}
+    ,
+    {title: 'The Woman in the Window', imdb: 'tt6111574', originalRelease: '15 May 2020', newRelease: 'TBD'}
+    ,
+    {title: 'Thor: Love and Thunder', imdb: 'tt10648342', originalRelease: '05 Nov 2021', newRelease: '18 Feb 2022'}
+    ,
+    {title: 'Top Gun: Maverick', imdb: 'tt1745960', originalRelease: '24 Jun 2020', newRelease: '23 Dec 2020'}
+    ,
+    {title: 'Uncharted', imdb: 'tt1464335', originalRelease: '05 Mar 2021', newRelease: '08 Aug 2021'}
+    ,
+    {title: 'Untitled Elvis Movie', imdb: 'tt3704428', originalRelease: '01 Oct 2021', newRelease: '05 Nov 2021'}
+    ,
+    {title: 'Untitled Indiana Jones Movie', imdb: 'tt1462764', originalRelease: '09 Jul 2021', newRelease: '29 Jul 2022'}
+    ,
+    {title: 'Spider-Man: Far From Home Sequel', imdb: 'tt10872600', originalRelease: '16 Jul 2021', newRelease: '05 Nov 2021'}
+    ,
+    {title: 'Spider-Man: Into The Spider-Verse Sequel', imdb: 'tt9362722', originalRelease: '08 Apr 2022', newRelease: '07 Oct 2022'}
+    ,
+    {title: 'Venom: Let There Be Carnage', imdb: 'tt7097896', originalRelease: '02 Oct 2020', newRelease: '25 Jun 2021'}
+    ,
+    {title: 'Without Remorse', imdb: 'tt0499097', originalRelease: '18 Sep 2020', newRelease: '02 Oct 2020'}
+    ,
+    {title: 'Wonder Woman 1984', imdb: 'tt7126948', originalRelease: '05 Jun 2020', newRelease: '14 Aug 2020'}
+    ,
+    {title: 'Working Man', imdb: 'tt8391044', originalRelease: '27 Mar 2020', newRelease: '05 May 2020'}
 ]
 
 //constants for sources urls
@@ -849,7 +887,7 @@ function fixDivHeight(m, y) {
             //check how many posters are in the release div
             let numPostersOfChild = $(allChildren[i]).children().length - 1;
             //keep tally of release div with highest number of posters
-            if (numPostersOfChild > tallestOtherDiv) {
+            if (numPostersOfChild >= tallestOtherDiv) {
                 tallestOtherDiv = numPostersOfChild;
             };
         };
@@ -857,11 +895,12 @@ function fixDivHeight(m, y) {
 
     //if the last release div has the highest number of posters,
     //we need to fix the margin
-    if (tallestOtherDiv < numPosters) {
+    if (tallestOtherDiv >= numPosters) {
         needToFixMargin = true;
     };
 
     if (needToFixMargin) {
+        console.log(`${m} ${y} need to fix margin`)
         //get the height of an individual poster (first three characters)
         //add 5 for its margin
         let posterHeight = parseInt(($(`.poster`).css('height')).slice(0, 3)) + 5;
@@ -871,7 +910,7 @@ function fixDivHeight(m, y) {
 
         //adjust minimum height of month div by manipulating the margin
         //of its title div
-        $(`#${m}${y} > h3`).css({marginBottom: `${minimumHeight-130}px`})
+        $(`#${m}${y} > h3`).css({marginBottom: `${minimumHeight-(minimumHeight*0.7)}px`})
         
     };
 };
