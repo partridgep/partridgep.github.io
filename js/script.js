@@ -1,8 +1,7 @@
 /*----- constants -----*/
 //all the movies that have been delayed due to pandemic
 const movies = [
-    {title: 'A Quiet Place Part II', imdb: 'tt8332922', originalRelease: '08 Mar 2020', newRelease: '04 Sep 2020', sources: ['https://www.indiewire.com/2020/03/a-quiet-place-2-release-date-delayed-coronavirus-1202217148/'] 
-    }
+    {title: 'A Quiet Place Part II', imdb: 'tt8332922', originalRelease: '08 Mar 2020', newRelease: '04 Sep 2020', sources: ['https://www.indiewire.com/2020/03/a-quiet-place-2-release-date-delayed-coronavirus-1202217148/']}
     ,
     {title: 'Antebellum', imdb: 'tt10065694', originalRelease: '24 Apr 2020', newRelease: '21 Aug 2020', sources: ['https://www.variety.com/2020/film/news/janelle-monae-antebellum-new-release-date-1234595089/']}
     ,
@@ -160,7 +159,6 @@ const originalReleaseCalendar = {};
 const newReleaseCalendar = {};
 const releaseMonths = {};
 
-
 //constants for movie trailer url
 const trailerUrl = 'https://www.imdb.com/video/imdb/';
 const trailerUrlPart2 = '/imdb/embed?autoplay=false&width=480';
@@ -172,11 +170,10 @@ const infoWindow = `<section class='movieInfo'>
                         <div class="carousel__button--prev"></div>
                     </section>`;
 const infoLoading = '<p id="load">Loading...</p>';
-const infoWindowLinks = `<section id='infoLinks'>
-                            <a href='#'>Switch Timelines</a>
-                            <a href='#'>View in <span id='timeline_span'>Original</span> Timeline</a>
-                            <a href='#'>Add to Release Tracker</a>
-                        </section>`;
+const infoWindowLinks = `<section id='infoLinks'></section>`;
+const infoWindowSwitcher =`<a href='#'>Switch Timelines</a>
+                            <a href='#'>View in <span id='timeline_span'>Original</span> Timeline</a>`;
+const infoWindowTracker = `<a href='#'>Add to Release Tracker</a>`;
 const infoWindowTrailer = `<div id='trailer'>
                                 <iframe scroll = 'no' allowfullscreen='true' scrolling='no' autoplay='false' src=`;
 const infoWindowTrailerPart2 = ` type="video/mp4">Your browser does not support the video tag.</iframe></div>`;
@@ -228,9 +225,6 @@ $('#tracker').click(renderTracker);
 $('#original').click(toOriginal);
 $('#delayed').click(toDelayed);
 
-
-
-
 /*----- functions -----*/
 
 //initalize webpage app
@@ -238,8 +232,12 @@ init();
 
 
 function init() {
+    //set boolean to true
+    //page will open on original calendar
     isOriginal = true;
+    //initialize call for API  data
     getAPIMovieData();
+    //make sure the hamburger slideout is hidden
     $('#hamburger-slideout').removeClass('hamburger_show');
     $main.removeClass('hamburger_push');
 };
@@ -313,23 +311,15 @@ function getNewReleaseDate(movie, movieAPI) {
         //and if the IMDB release date is the same as the original release,
         //let's keep it as TBD
         if (imdbDate === movie.originalRelease) {
-            console.log(movie.title);
-            console.log('no new release date');
             return;
         }
         //else 
-        else checkIMDBReleaseDate(movie, imdbDate, false);
-        
+        else checkIMDBReleaseDate(movie, imdbDate, false);    
     }
-    //if we already have a new release date in our array
+    //if we already have a new release date in our array, check it
     else if (movie.newRelease) {
-        console.log(movie.title);
-        console.log(movie.newRelease);
-        console.log(movieAPI.Released);
-        
         checkIMDBReleaseDate(movie, imdbDate, true);   
-    }
-    
+    };
 }
 
 function checkIMDBReleaseDate(movie, imdbDate, againstNew) {
@@ -342,6 +332,9 @@ function checkIMDBReleaseDate(movie, imdbDate, againstNew) {
     }
     // it's after 2020, we can trust it
     else if (parseInt(imdbDate.slice(-4)) > 2020) {
+        console.log('trusting date after 2020');
+        console.log(movie.title);
+        console.log(imdbDate);
         movie.newRelease = imdbDate;
     }
     //if it's in 2020, we'll have to check the date
@@ -405,7 +398,6 @@ function organizeMoviesByOriginalRelease() {
         originalReleaseCalendar[`${originalYear}`][`${originalMonth}`][`${originalDay}`].push(movie); 
 
 
-
         //this will end up sorted because integers are sorted 
         //numerically in objects since ES6!!!!
 
@@ -460,7 +452,6 @@ function organizeMoviesByDelayedRelease() {
         //this will end up sorted because integers are sorted 
         //numerically in objects since ES6!!!!
 
-
     }
 
     //finally let's make sure our sorted array is fully sorted
@@ -504,10 +495,10 @@ function createSortedArray(calendar) {
                     //add movie object to sorted calendar
                     if (calendar === newReleaseCalendar) newSorted.push(movieToAdd);
                     else originalSorted.push(movieToAdd);
-                }
-            }
-        }
-    }
+                };
+            };
+        };
+    };
 
     //now make sure array is truly sorted
     if (calendar === newReleaseCalendar) newSorted = fullySortNew(newSorted);
@@ -541,7 +532,7 @@ function compareNewReleaseDates(a, b) {
         comparison = -1;
     }
     return comparison;
-}
+};
 
 function fullySortOriginal(array) {
 
@@ -816,11 +807,11 @@ function addToTimeline(movie, d, m, y) {
     let poster = movie.poster;
 
     //how far along on the x axis of the timeline the movie will be
-    //calculation is percentage of release day divided by 30 (monthly average)
+    //calculation is percentage of release day divided by 40
+    //little more than 30 to represent month on a line
     let positioning = parseInt((d/40)*100);
     //variable for HTML input of movie poster
     posterToAdd = `<img class='poster' src=${poster}>`;
-    
 
     //if no poster url is available
     if (poster === 'N/A') {
@@ -966,10 +957,12 @@ function showMovieDetails(movie) {
 
     //prevent function from repeatedly creating 
     //multiple info windows at once
+    /*
     if ( $(".movieInfo").parents("main").length == 1 ) { 
         console.log('already movie info here');
         return;
     };
+    */
 
     //render minimal movie info window while API data is loading
     $main.append(infoWindow);
@@ -981,7 +974,6 @@ function showMovieDetails(movie) {
     if(movie.dataRetrieved) {
         //no need for load time
         renderInfoWindow(movie);
-        console.log('rendering now');
     }
     else {
         //tell user data is loading
@@ -1035,6 +1027,12 @@ function renderInfoWindow(movie) {
     $('#load').remove();
     //add nav links
     $infoWindow.append(infoWindowLinks);
+    //if it has a new release date, we can switch timelines
+    if (movie.newRelease !== 'TBD') {
+        $('#infoLinks').append(infoWindowSwitcher);
+    };
+    //add link to add to movie tracker
+    $('#infoLinks').append(infoWindowTracker);
     //change nav links to fit current timeline
     if (isOriginal === false) {$('#infoLinks a > span').text('Delayed');};
     //change last nav link to reflect whether or not the movie is in the release tracker
@@ -1049,6 +1047,7 @@ function renderInfoWindow(movie) {
     //create event listeners to interact with window
     $main.click(handleWindowClick);
 
+    //set as current movie
     currentMovie = movie;
 
 };
@@ -1057,7 +1056,7 @@ function checkIfInTracker(movie) {
     //go through array of tracked movies
     for(trackedMovie of moviesToTrack) {
         if (trackedMovie === movie.title) {
-            return true
+            return true;
         };
     };
 };
@@ -1112,8 +1111,6 @@ function addCovidFacts(movie) {
         $('#covid-facts > ul').addClass('noTrailer');
         $('#covid-facts  li').addClass('noTrailer');
     };
-
-    $('#movie-infi')
     
 };
 
@@ -1453,7 +1450,7 @@ function handleHamburger() {
      else {
          //otherwise push it back to the right
          pushToRight();
-    }
+    };
 };
 
 function pushToLeft() {
@@ -1569,9 +1566,7 @@ function renderTracker() {
 
     for(movie of moviesToTrack) {
         $('#release_tracker ul').append(`<li><a id='tracked-link' href='#'>${movie}</a></li>`);
-    }
-
-
+    };
 };
 
 function dimPageBackground() {
