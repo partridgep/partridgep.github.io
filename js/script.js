@@ -958,12 +958,12 @@ function showMovieDetails(movie) {
 
     //prevent function from repeatedly creating 
     //multiple info windows at once
-    /*
+    
     if ( $(".movieInfo").parents("main").length == 1 ) { 
         console.log('already movie info here');
         return;
     };
-    */
+    
 
     //render minimal movie info window while API data is loading
     $main.append(infoWindow);
