@@ -23,7 +23,7 @@ const movies = [
     ,
     {title: 'Deerskin', imdb: 'tt8193790', originalRelease: '20 Mar 2020', newRelease: 'TBD'}
     ,
-    {title: 'Doctor Strange in the Multiverse of Madness', imdb: 'tt9419884', originalRelease: '07 May 2021', newRelease: '25 Mar 2022', sources: ['https://www.theverge.com/2020/4/24/21235283/spider-man-spiderverse-homecoming-delay-release-date-trilogy-marvel-venom-doctor-strange-thor'], trivia: ["The film was first pushed to November 5th, 2021, but was delayed again when Sony Studio's Spiderman sequel was pushed back."]}
+    {title: 'Doctor Strange in the Multiverse of Madness', imdb: 'tt9419884', originalRelease: '07 May 2021', newRelease: '25 Mar 2022', sources: ['https://www.theverge.com/2020/4/24/21235283/spider-man-spiderverse-homecoming-delay-release-date-trilogy-marvel-venom-doctor-strange-thor'], trivia: ["The film was first pushed to November 5th, 2021, but was delayed again when Sony Studios' Spiderman sequel was pushed back."]}
     ,
     {title: 'Dungeons & Dragons', imdb: 'tt2906216', originalRelease: '19 Nov 2021', newRelease: '27 May 2022', sources: ['https://www.theplaylist.net/paramount-mission-impossible-delays-20200424/']}
     ,
@@ -93,7 +93,7 @@ const movies = [
     ,
     {title: 'The Many Saints of Newark', imdb: 'tt8110232', originalRelease: '25 Sep 2020', newRelease: '12 Mar 2021', sources: ['https://www.thewrap.com/sopranos-many-saints-newark-will-smith-king-richard/']}
     ,
-    {title: 'The New Mutants', imdb: 'tt4682266', originalRelease: '03 Apr 2020', newRelease: 'TBD'}
+    {title: 'The New Mutants', imdb: 'tt4682266', originalRelease: '03 Apr 2020', newRelease: '28 Aug 2020', sources: ['https://www.slashfilm.com/new-mutants-release-date-summer-2020/#more-617422']}
     ,
     {title: 'The Nightingale', imdb: 'tt4540534', originalRelease: '25 Dec 2020', newRelease: '22 Dec 2021'}
     ,
@@ -151,7 +151,7 @@ const apiForIndividualMovie = {
 		"x-rapidapi-host": "imdb-internet-movie-database-unofficial.p.rapidapi.com",
 		"x-rapidapi-key": "c72e51845amsh13ded685a732780p12270ejsn5acc10aa1952"
 	}
-}
+};
 const urlForIndividualMovie = "https://imdb-internet-movie-database-unofficial.p.rapidapi.com/film/";
 
 //constants used to sort movies
@@ -211,6 +211,7 @@ const $input = $('input[type="text"]')
 const $slider = $("#cal_type");
 const $searchLink = $('#search-link');
 const $hamburger = $('#nav-right > p');
+const windowWidth = window.matchMedia("(max-width: 700px)");
 
 
 /*----- event listeners -----*/
@@ -224,6 +225,7 @@ $('#faq-burger').click(renderFAQ);
 $('#tracker').click(renderTracker);
 $('#original').click(toOriginal);
 $('#delayed').click(toDelayed);
+windowWidth.addListener(checkWindowWidth) // Attach listener function on state changes
 
 /*----- functions -----*/
 
@@ -306,7 +308,7 @@ function getNewReleaseDate(movie, movieAPI) {
 
     let imdbDate = movieAPI.Released;
 
-    //if we have a releasee date that is TBD
+    //if we have a release date that is TBD
     if (movie.newRelease === 'TBD'){
         //and if the IMDB release date is the same as the original release,
         //let's keep it as TBD
@@ -330,31 +332,35 @@ function checkIMDBReleaseDate(movie, imdbDate, againstNew) {
     if (parseInt(imdbDate.slice(-4)) < 2020) {
         return;
     }
-    // it's after 2020, we can trust it
-    else if (parseInt(imdbDate.slice(-4)) > 2020) {
-        console.log('trusting date after 2020');
-        console.log(movie.title);
-        console.log(imdbDate);
+    // it's after the new release date year, we can trust it
+    else if (parseInt(imdbDate.slice(-4)) > parseInt(movie.newRelease.slice(-4))) {
         movie.newRelease = imdbDate;
     }
     //if it's in 2020, we'll have to check the date
     else if (parseInt(imdbDate.slice(-4)) === 2020) {
-        let imdbMonth = convertMonthStrToIdx(imdbDate.slice(-8, -5));
-        let newMonth = convertMonthStrToIdx(movie.newRelease.slice(-8, -5));
-        let originalMonth = convertMonthStrToIdx(movie.originalRelease.slice(-8, -5));
-        //if it's moved to a later month, trust that date
-        //if our new release date is not TBD, we'll check against that
-        if (againstNew) {
-            if (imdbMonth > newMonth) {
-                movie.newRelease = imdbDate;
-            };
+        //if the IMDb release year is in 2020, but
+        //the new release date is later, don't trust IMDb
+        if (parseInt(movie.newRelease.slice(-4)) > 2020) {
+            return;
         }
-        //otherwise we'll check against the original month
         else {
-            if (imdbMonth > originalMonth) {
-                movie.newRelease = imdbDate;
+            let imdbMonth = convertMonthStrToIdx(imdbDate.slice(-8, -5));
+            let newMonth = convertMonthStrToIdx(movie.newRelease.slice(-8, -5));
+            let originalMonth = convertMonthStrToIdx(movie.originalRelease.slice(-8, -5));
+            //if it's moved to a later month, trust that date
+            //if our new release date is not TBD, we'll check against that
+            if (againstNew) {
+                if (imdbMonth > newMonth) {
+                    movie.newRelease = imdbDate;
+                };
+            }
+            //otherwise we'll check against the original month
+            else {
+                if (imdbMonth > originalMonth) {
+                    movie.newRelease = imdbDate;
+                };
             };
-        }
+        };
     };
 };
 
@@ -764,14 +770,14 @@ function addToTimeline(movie, d, m, y) {
     let posterToAdd;
     
     //variable for jQuery input for div ID where the movie will be inserted
-    let $currentReleaseMonth = $(`#${d}${m}${y}`);
+    let $currentReleaseDate = $(`#${d}${m}${y}`);
     //find poster url
     let poster = movie.poster;
     
     //how far along on the x axis of the timeline the movie will be
-    //calculation is percentage of release day divided by 40
-    //little more than 30 to represent month on a line
-    let positioning = parseInt((d/40)*100);
+    //calculation is percentage of release day divided by 32
+    //little more than 31 to represent month on a line
+    let positioning = parseInt((d/32)*100);
     //variable for HTML input of movie poster
     posterToAdd = `<img class='poster' src=${poster}>`;
     
@@ -782,10 +788,10 @@ function addToTimeline(movie, d, m, y) {
     }
     
     //append movie poster to timeline
-    $currentReleaseMonth.append(posterToAdd);
+    $currentReleaseDate.append(posterToAdd);
     
     //adjust poster on x-axis
-    $currentReleaseMonth.last().css('left', `${positioning}%`);
+    $currentReleaseDate.last().css('left', `${positioning}%`);
 };
 
 //make sure all movie posters are well aligned on the y-axis
@@ -860,12 +866,25 @@ function toOriginal() {
 //show movie details
 function handleClick(e) {
     
+    //if we didn't click on a search or tracked link
+    if ($(e.target).attr('id') !== 'search-link' && $(e.target).attr('id') !== 'tracked-link') {
+        //do as if we'd hovered off the item
+        handleMouseOut(e);
+    }
+
     //get value of movie clicked
     let clickedItem = e.target;
     console.log(clickedItem);
-    
+  
     //wrap it in jQuery money
     let $clickedItem = $(clickedItem);
+
+    //if we've clicked on a poster title
+    if ($clickedItem.hasClass('posterTitle')) {
+        //make it go back to its normal size
+        $clickedItem.parent().animate({height: '-=10px', width: '-=10px', marginLeft: '0px'}, 100);
+    };
+    
     //get source attribute
     let clickedItemSrc = $clickedItem.attr('src')
     //get text value
@@ -908,14 +927,14 @@ function handleMouseIn(e) {
     let $hoveredItem = $(hoveredItem);
 
     //make it bigger
-    $hoveredItem.animate({height: '160px', width: '110px', marginLeft: '-5px'}, 100);  
+    $hoveredItem.animate({height: '+=10px', width: '+=10px', marginLeft: '-5px'}, 100);  
     
     //in case it's a poster with no image
     //grab title div
     let target = e.target;
     if ($(target).hasClass('posterTitle')) {
         //make title bigger as well
-        $(target).animate({fontSize: '20px'}, 100);
+        $(target).animate({fontSize: '+=2px'}, 100);
     };
 
     //lower all previous release divs
@@ -931,13 +950,14 @@ function handleMouseIn(e) {
 
 function handleMouseOut(e) {
 
-    hoveredItem = e.currentTarget;
+    if ($(e.currentTarget).hasClass('poster') || $(e.currentTarget).hasClass('container')) hoveredItem = e.currentTarget;
+    else hoveredItem = e.target;
     $hoveredItem = $(hoveredItem);
-    $hoveredItem.animate({height: '150px', width: '100px', marginLeft: '0px'}, 100);
+    $hoveredItem.animate({height: '-=10px', width: '-=10px', marginLeft: '0px'}, 100);
 
     let target = e.target;
     if ($(target).hasClass('posterTitle')) {
-        $(target).animate({fontSize: '18px'}, 100);
+        $(target).animate({fontSize: '-=2px'}, 100);
     };
 
     //bring back up all previous release divs
@@ -948,7 +968,6 @@ function handleMouseOut(e) {
         if ($(release).hasClass('release'))
         $(release).animate({bottom: '+=10px'}, 100);
     };
-
 };
 
 function showMovieDetails(movie) {
@@ -958,12 +977,10 @@ function showMovieDetails(movie) {
 
     //prevent function from repeatedly creating 
     //multiple info windows at once
-    
     if ( $(".movieInfo").parents("main").length == 1 ) { 
         console.log('already movie info here');
         return;
     };
-    
 
     //render minimal movie info window while API data is loading
     $main.append(infoWindow);
@@ -1111,8 +1128,7 @@ function addCovidFacts(movie) {
         $('#covid-facts  li').removeClass('covid-info');
         $('#covid-facts > ul').addClass('noTrailer');
         $('#covid-facts  li').addClass('noTrailer');
-    };
-    
+    };   
 };
 
 function addIMDbFacts(movie)  {
@@ -1343,8 +1359,8 @@ function getPreviousFilm() {
                 //make sure the loop stops iterating
                 //this is a bug fix, otherwise repeatedly clicking previous button doesn't work
                 break;
-            }
-        }
+            };
+        };
     }
     //do similar process in delayed timeline
     else if (isOriginal === false) {
@@ -1354,9 +1370,9 @@ function getPreviousFilm() {
                 $('.movieInfo').remove();
                 showMovieDetails(previousFilm);
                 break;
-            }
-        }
-    }
+            };
+        };
+    };
 };
 
 function getNextFilm() {
@@ -1368,8 +1384,8 @@ function getNextFilm() {
                 $('.movieInfo').remove();
                 showMovieDetails(nextFilm);
                 break;
-            }
-        }
+            };
+        };
     }
     else if (isOriginal === false) {
         for (i=0; i<newSorted.length-1; i++) {
@@ -1378,9 +1394,9 @@ function getNextFilm() {
                 $('.movieInfo').remove();
                 showMovieDetails(nextFilm);
                 break;
-            }
-        }
-    }
+            };
+        };
+    };
 };
 
 function handleSearch(e) {
@@ -1479,7 +1495,6 @@ function pushToRight() {
     $('input[type="text"]').prop('disabled', false);
 
 };
-
 
 function goHome() {
 
@@ -1616,3 +1631,98 @@ function removeDim() {
     $('img').on('mouseout', handleMouseOut);
     $('div.container').on('mouseout', handleMouseOut);
 };
+
+//reset poster size after being clicked
+function resetPosterLength() {
+    if (windowWidth.matches) { // If media query matches
+        //fix width and height of any poster that's been hovered over
+        $('img').css({width: '44px'});
+        $('img').css({height: '66px'});
+        $('.posterTitle').css({fontSize: '10px'});
+        $('.container').css({width: '44px'});
+        $('.container').css({height: '66px'});
+    } 
+    else {
+        $('img').css({width: '100px'});
+        $('img').css({height: '150px'});
+        $('.posterTitle').css({fontSize: '18px'});
+        $('.container').css({width: '100px'});
+        $('.container').css({height: '150px'});
+    };
+};
+
+//function to fix poster Y axis whenever
+//window width changes and media query is triggered
+function checkWindowWidth(windowWidth) {
+    if (windowWidth.matches) { // If media query matches
+        //fix width and height of any poster that's been hovered over
+        $('img').css({width: '44px'});
+        $('img').css({height: '66px'});
+        $('.posterTitle').css({fontSize: '10px'});
+        $('.container').css({width: '44px'});
+        $('.container').css({height: '66px'});
+        adjustPosterAxis();
+    } 
+    else {
+        $('img').css({width: '100px'});
+        $('img').css({height: '150px'});
+        $('.posterTitle').css({fontSize: '18px'});
+        $('.container').css({width: '100px'});
+        $('.container').css({height: '150px'});
+        adjustPosterAxis();
+    };
+  };
+
+//go through each release div
+//and fix poster Y axis
+function adjustPosterAxis() {
+
+    let currentCalendar;
+
+    //get current calendar
+    if (isOriginal) currentCalendar = originalReleaseCalendar;
+    else currentCalendar = newReleaseCalendar;
+    
+    //grab entries of calendar object to make it iterable
+    let iterableCalendar = Object.entries(currentCalendar);
+
+    //iterate through each year in the calendar
+    for(yearValue of iterableCalendar) {
+    
+        //the first value will be the year
+        let year = yearValue[0];
+        
+        //next get iterable monthly values
+        let iterableMonths = Object.entries(yearValue[1]);
+        
+        //iterate through each month in calendar
+        for(monthValue of iterableMonths) {
+            
+            //the first value will be the month 
+            //(we get its long string value to render in DOM for user-friendliness)
+            let month = convertMonthIdxToStr(monthValue[0]);
+            
+            //next get iterable release date values
+            let iterableDates = Object.entries(monthValue[1]);
+            
+            //we'll want to go through each release date
+            //in descending order of the number
+            //of each release they contain/
+            //or the height of the div will be messed up
+            iterableDates.sort(function(a, b) {
+                return b[1].length - a[1].length;
+            });
+            
+            for(dayValue of iterableDates) {
+                
+                //the first value will be the day
+                let day = dayValue[0];
+                
+                //Now we run into a problem: each new release div pushes
+                //previous release div up by its height. This doesn't look good!
+                //To fix this, we must adjust the previous div's margin
+                fixPostersYAxis(day, month, year);    
+            };
+        };
+    };
+  };
