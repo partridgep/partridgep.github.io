@@ -524,3 +524,129 @@
     opacity: 0;
   }
 
+  @media (max-width: 700px) {
+
+    #title > h1 {
+      font-size: 25px;
+    }
+
+    #title > h2 {
+      font-size: 18px;
+    }
+
+    #nav-right > p {
+      margin: auto 8px;
+      font-size: 20px;
+    }
+  
+    input {
+      background-color: darkgray;
+      font-family: 'Oswald', sans-serif;
+      color: white;
+      border: 0;  
+      margin: auto 0;
+      font-size: 14px;
+      width: 75px;
+      text-align: center;
+    }
+
+    #changeView {
+      top: 75px;
+    }
+
+    .poster {
+      width: 44px;
+      height: 66px;
+    }
+
+    .release {
+      width: 44px;
+    }
+
+    .release > p {
+      margin: 0 0 0 0px;
+      max-width: 10px;
+      font-size: 10px;
+      height: 18px;
+    }
+
+    .month {
+      max-width: 1400px;
+      min-width: 200px;
+    }
+
+    .container {
+      width: 44px;
+      height: 66px;
+    }
+    
+    .posterTitle {
+      width: 40px;
+      height: 66px;
+      font-size: 10px;
+      overflow-wrap: hidden;
+      word-wrap: hidden;
+      padding: 2px;
+      margin-left: 1px
+    }
+
+    .movieInfo {
+      top: 5%;
+      left: 5%;
+      right: 5%;
+      z-index: 5;
+      font-size: 15px;
+      border-radius: 8px;
+      max-width: 590px;
+      max-height: 700px;
+      overflow-y: scroll;
+      padding-bottom: 5px;
+    }
+
+    #trailer {
+      grid-column: span 2;
+      margin: 14px 5px 0 14px;
+    }
+
+    .covid_info {
+      margin-left: 0;
+    }
+
+    #covid-facts {
+      grid-column: span 2;
+    }
+
+    #covid-facts > ul {
+      padding-left: 0;
+      margin-left: 0px;
+    }
+  
+    .movieInfo ul > li {
+      grid-column: span 2;
+      margin-left: 20px;
+    }
+  
+    #covid-facts > ul.noTrailer {
+      margin-left: 20px;
+    }
+  
+    .movieInfo ul > li.noTrailer {
+      margin-left: 30px;
+      padding-top: 7px;
+      font-weight: 500;
+    }
+
+    .noTrailer {
+      grid-column: span 2;
+      margin-left: 20px;
+    }
+
+
+ 
+
+
+
+
+
+  }
+
