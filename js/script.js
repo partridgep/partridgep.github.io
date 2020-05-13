@@ -28,24 +28,55 @@ const movies = [
     ,
     {title: 'Dungeons & Dragons', imdb: 'tt2906216', originalRelease: '19 Nov 2021', newRelease: '27 May 2022', sources: ['https://theplaylist.net/paramount-mission-impossible-delays-20200424/']}
     ,
-    {title: 'F9', imdb: 'tt5433138', originalRelease: '22 May 2020', newRelease: '02 Apr 2021'}
+    {title: 'F9', imdb: 'tt5433138', originalRelease: '22 May 2020', newRelease: '02 Apr 2021', sources: ['https://www.hollywoodreporter.com/heat-vision/f9-being-pushed-back-a-year-coronavirus-pandemic-1284242'], trivia: ['The film is taking the spot previously reserved for the 10th and final installment in the main Fast & Franchise series.']}
+    ,
+    {title: 'Fatherhood', imdb: 'tt4733624', originalRelease: '15 Jan 2021', newRelease: '02 Apr 2021', sources: ['https://variety.com/2020/film/news/spider-man-sequels-delayed-1234589657/']}
+    ,
+    {title: 'Free Guy', imdb: 'tt6264654', originalRelease: '03 Jul 2020', newRelease: '11 Dec 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854']}
+    ,
+    {title: 'Ghostbusters: Afterlife', imdb: 'tt4513678', originalRelease: '10 Jul 2020', newRelease: '05 Mar  2021', sources:  ['https://variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
+    ,
+    {title: 'Greyhound', imdb:  'tt6048922', originalRelease: '12 Jun 2020', newRelease: 'TBD', sources: ['https://variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
+    ,
+    {title: 'In the Heights', imdb: 'tt1321510', originalRelease: '26 Jun 2020', newRelease: '18 Jun 2021', sources: ['https://collider.com/lin-manuel-miranda-in-the-heights-movie-new-release-date/']}
+    ,
+    {title: 'Jungle Cruise', imdb: 'tt0870154', originalRelease: '24 Jul 2020', newRelease: '30 Jul 2021', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854']}
+    ,
+    {title: 'King Richards', imdb: 'tt9620288', originalRelease: '21 Nov 2020', newRelease: '25 Nov 2021', sources: ['https://variety.com/2020/film/box-office/the-batman-release-date-delayed-1234584978/']}
+    ,
+    {title: 'Malignant', imdb: 'tt9620288', originalRelease: '14 Aug 2020', newRelease: 'TBD', sources: ['https://variety.com/2020/film/box-office/the-batman-release-date-delayed-1234584978/']}
+    ,
+    {title: 'Minions: Rise of Gru', imdb: 'tt5113044', originalRelease: '03 Jul 2020', newRelease: '02 Jul 2021', sources: ['https://variety.com/2020/film/news/universal-minions-sequel-release-wicked-1203551680/']}
+    ,
+    {title: 'Mission Impossible 7', imdb: 'tt9603212', originalRelease: '23 Jul 2021', newRelease: '19 Nov 2021', sources: ['https://variety.com/2020/film/box-office/mission-impossible-sequels-get-pushed-back-1234589362/']}
+    ,
+    {title: 'Mission Impossible 8', imdb: 'tt9603208', originalRelease: '05 Aug 2022', newRelease: '04 Nov 2022', sources: ['https://variety.com/2020/film/box-office/mission-impossible-sequels-get-pushed-back-1234589362/']}
+    ,
+    {title: 'Morbius', imdb: 'tt5108870', originalRelease: '31 Jul 2020', newRelease: '19 Mar 2021', sources: ['https://variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
+    ,
+    {title: 'Mulan', imdb: 'tt4566758', originalRelease: '27 Mar 2020', newRelease:  '24 Jul 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854'], trivia: ["Disney first cancelled Mulan's premiere in China, despite hopes that it would perform well there, but did not move its opening date in the rest of the world. Finally, the movie got pushed back to July in early April."]}
+    ,
+    {title: 'My Spy', imdb: 'tt8242084', originalRelease: '17 Apr 2020', newRelease: 'TBD', onVOD: 'Amazon Prime', sources: ['https://variety.com/2020/digital/news/dave-bautista-my-spy-amazon-prime-1234574765/']}
+    ,
+    {title: 'No Time To Die', imdb: 'tt2382320', originalRelease: '10 Apr 2020', newRelease: '25 Nov 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/bond-movie-no-time-die-delayed-due-coronavirus-1282170'], trivia: ['First movie to be delayed due to the pandemic']}
+    ,
+    {title: 'Nobody', imdb: 'tt7888964', originalRelease: '14 Aug 2020', newRelease: '26 Feb 2021', sources: ['https://deadline.com/2020/04/m-night-shyamalan-bob-odenkirk-nobody-universal-movie-release-date-change-1202902785/']}
+    ,
+    {title: 'Peter Rabbit 2', imdb: 'tt8376234', originalRelease: '07 Aug 2020', newRelease: '15 Jan 2021', sources: ['https://www.newsweek.com/peter-rabbit-2-runaway-release-date-stream-streaming-movie-watch-online-1495926']}
+    ,
+    {title: 'Praise This', imdb: 'tt9658388', originalRelease: '25 Sep 2020', newRelease: 'TBD'}
+    ,
+    {title: 'Raya and The Last Dragon', imdb: 'tt5109280', originalRelease: '25 Nov 2020', newRelease: '12 Mar 2021'}
+    ,
+    {title: 'Run', imdb: 'tt8633478', originalRelease: '08 May 2020', newRelease: 'TBD'}
+    ,
+    {title: 'Scoob!', imdb: 'tt3152592', originalRelease: '15 May 2020', newRelease: '15 May 2020', onVOD: 'yes', sources: ['https://variety.com/2020/film/box-office/scooby-doo-movie-skips-theaters-on-demand-1203539529/']}
+    ,
+    {title: 'Shang-Chi and The Legend of the Ten Rings', imdb: 'tt9376612', originalRelease: '21 Feb 2021', newRelease: '07 May 2021', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854', 'https://variety.com/2020/film/news/doctor-strange-sequel-delay-1234589665/']}
+    
+
     /*
-    {title: 'Mission Impossible 7', imdb: 'tt9603212', originalRelease: '23 Jul 2021', newRelease: '19 Nov 2021'
-    }
-    /*
-    {title: 'Mission Impossible 7',
-    originalRelease: '23 Jul 2021',
-    imdb: 'tt9603212'}
-    ,
-    ,
-    {title: 'No Time To Die',
-    originalRelease: '10 Apr 2020',
-    imdb: 'tt2382320'}
-    ,
-    {title: 'Mulan',
-    originalRelease: '27 Mar 2020',
-    imdb: 'tt4566758',
-    trivia: ["Disney first cancelled Mulan's premiere in China, despite hopes that it would perform well there, but did not move its opening date in the rest of the world. Finally, the movie got pushed back to July."]}
+
     ,
     {title: 'The Lovebirds',
     originalRelease: '03 Apr 2020',
@@ -54,13 +85,7 @@ const movies = [
     ,
     ,
     ,
-    {title: 'Run',
-    originalRelease: '08 May 2020',
-    imdb: 'tt8633478'}
     ,
-    {title: 'Scoob!',
-    originalRelease: '15 May 2020',
-    imdb: 'tt3152592'}
     ,
     {title: 'Working Man',
     originalRelease: '27 Mar 2020',
@@ -726,7 +751,12 @@ function render(calendar) {
                 //To fix this, we must adjust the previous div's margin
                 fixPostersYAxis(day, month, year);
 
+                
             }
+            //Another problem: if the last release div
+            //added to the month div is taller than all the others,
+            //the month div will bump into the previous div
+            fixDivHeight(month, year);
         }
     } 
 
@@ -750,7 +780,7 @@ function addToTimeline(movie, d, m, y) {
 
     //how far along on the x axis of the timeline the movie will be
     //calculation is percentage of release day divided by 30 (monthly average)
-    let positioning = parseInt((d/31)*100);
+    let positioning = parseInt((d/40)*100);
     //variable for HTML input of movie poster
     posterToAdd = `<img class='poster' src=${poster}>`;
     
@@ -759,8 +789,6 @@ function addToTimeline(movie, d, m, y) {
     if (poster === 'N/A') {
         //figure out what to do 
         posterToAdd = `<div class='container'><img class='poster'><div class='posterTitle'>${movie.title}</div></div>`;
-
-
     }
     
     //append movie poster to timeline
@@ -798,6 +826,54 @@ function fixPostersYAxis(d, m, y) {
 
         //now all of our release divs are aligned on the timeline!!!
     }
+};
+
+//make sure the release divs are all aligned on the y-axis
+//when the last release div is taller than all others
+function fixDivHeight(m, y) {
+
+    //cache values to check against
+    let needToFixMargin  = false;
+    let tallestOtherDiv = 1;
+
+    let currentMonthDiv = $(`#${m}${y}`);
+    let lastReleaseDiv = $(`#${m}${y} > .release:last-child`);
+    let numPosters = $(lastReleaseDiv).children().length -1;
+    let allChildren = currentMonthDiv.children();
+
+    //iterate through all children of month div
+    //except for last child (we want to check against it)
+    for(i=0; i < allChildren.length - 1; i++ ) {
+        //only check it if  it's a release div
+        if ($(allChildren[i]).hasClass('release')) {
+            //check how many posters are in the release div
+            let numPostersOfChild = $(allChildren[i]).children().length - 1;
+            //keep tally of release div with highest number of posters
+            if (numPostersOfChild > tallestOtherDiv) {
+                tallestOtherDiv = numPostersOfChild;
+            };
+        };
+    };
+
+    //if the last release div has the highest number of posters,
+    //we need to fix the margin
+    if (tallestOtherDiv < numPosters) {
+        needToFixMargin = true;
+    };
+
+    if (needToFixMargin) {
+        //get the height of an individual poster (first three characters)
+        //add 5 for its margin
+        let posterHeight = parseInt(($(`.poster`).css('height')).slice(0, 3)) + 5;
+
+        //the minimum height the div will have to be
+        let minimumHeight = posterHeight * numPosters + 10;
+
+        //adjust minimum height of month div by manipulating the margin
+        //of its title div
+        $(`#${m}${y} > h3`).css({marginBottom: `${minimumHeight-130}px`})
+        
+    };
 };
 
 //show movie details
@@ -1120,6 +1196,9 @@ function createSources(sources) {
         }
         else if (finalSourceDisplay === 'theverge') {
             sourcesForDisplay.push('The Verge');
+        }
+        else if (finalSourceDisplay === 'The Playlist') {
+            sourcesForDisplay.push('The Playlist');
         }
         else {
             //for others, add source display in Title Case
