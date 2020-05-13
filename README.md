@@ -2,7 +2,7 @@
 One resource to view all movies whose release has been impacted by the coronavirus.
 
 ## Getting Started
-[Click Here] (https://partridgep.github.io/) to get started.
+[Click Here](https://partridgep.github.io/) to get started.
 
 ## Technologies Used
 * HTML
