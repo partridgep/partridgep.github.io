@@ -33,7 +33,7 @@ const movies = [
     ,
     {title: 'Free Guy', imdb: 'tt6264654', originalRelease: '03 Jul 2020', newRelease: '11 Dec 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854']}
     ,
-    {title: 'Ghostbusters: Afterlife', imdb: 'tt4513678', originalRelease: '10 Jul 2020', newRelease: '05 Mar  2021', sources:  ['https://www.variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
+    {title: 'Ghostbusters: Afterlife', imdb: 'tt4513678', originalRelease: '10 Jul 2020', newRelease: '05 Mar 2021', sources:  ['https://www.variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
     ,
     {title: 'Greyhound', imdb:  'tt6048922', originalRelease: '12 Jun 2020', newRelease: 'TBD', sources: ['https://www.variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
     ,
@@ -161,7 +161,7 @@ const releaseMonths = {};
 
 //constants for movie trailer url
 const trailerUrl = 'https://www.imdb.com/video/imdb/';
-const trailerUrlPart2 = '/imdb/embed?autoplay=false&width=480';
+const trailerUrlPart2 = '/imdb/embed?autoplay=0&width=480';
 
 //HTML constants for movie info window
 const infoWindow = `<section class='movieInfo'>
@@ -175,7 +175,7 @@ const infoWindowSwitcher =`<a href='#'>Switch Timelines</a>
                             <a href='#'>View in <span id='timeline_span'>Original</span> Timeline</a>`;
 const infoWindowTracker = `<a href='#'>Add to Release Tracker</a>`;
 const infoWindowTrailer = `<div id='trailer'>
-                                <iframe scroll = 'no' allowfullscreen='true' scrolling='no' autoplay='false' src=`;
+                                <iframe scroll = 'no' allowfullscreen='true' scrolling='no' autoplay='false' autoplay=0 autostart='0' src=`;
 const infoWindowTrailerPart2 = ` type="video/mp4">Your browser does not support the video tag.</iframe></div>`;
 const infoWindowCovidFacts = `<section id='covid-facts'></section>`;
 const infoWindowIMDbFacts = `<section id='imdb-facts'></section`;
@@ -211,7 +211,7 @@ const $input = $('input[type="text"]')
 const $slider = $("#cal_type");
 const $searchLink = $('#search-link');
 const $hamburger = $('#nav-right > p');
-const windowWidth = window.matchMedia("(max-width: 700px)");
+const windowWidth = window.matchMedia("(max-width: 840px)");
 
 
 /*----- event listeners -----*/
@@ -810,11 +810,14 @@ function fixPostersYAxis(d, m, y) {
         //get the height of an individual poster (first three characters)
         //add 5 for its margin
         let posterHeight = parseInt(($(`.poster`).css('height')).slice(0, 3)) + 5;
+
+        //also, get the height of the date text
+        let textHeight = parseInt(($(`.release > p`).css('height')).slice(0, 3));
         
         //finally, calculate the margin we'll have to substract to our current div
         //that's the number of posters times the height of a poster
-        //plus 18px for the date paragraph
-        let divMargin = numPosters * posterHeight + 18;
+        //plus the height of the date paragraph
+        let divMargin = numPosters * posterHeight + textHeight;
         
         //set the bottom margin for the previous release div 
         //to be negative that amount
