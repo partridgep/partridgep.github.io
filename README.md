@@ -24,7 +24,7 @@ One resource to view all movies whose release has been impacted by the coronavir
 
 ## Functioning
 
-This web app takes movie data from APIs to display a release schedule timelines, which can be toggled between *Original* and *Delayed*.
+This web app takes movie data from APIs to display a release schedule timeline, which can be toggled between *Original* and *Delayed*.
 
 It works through the following steps:
 
