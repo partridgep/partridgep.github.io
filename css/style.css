@@ -259,7 +259,10 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     position: fixed;
-    top: 25%;
+    top: 20%;
+    right: auto;
+    left: auto;
+    bottom: 15%;
     background-color: white;
     background: linear-gradient(top, rgb(255, 255, 255), rgb(224, 224, 224));
     background: -webkit-linear-gradient(top, rgb(255,255,255), rgb(224, 224, 224));
@@ -270,8 +273,8 @@
     font-size: 18px;
     border-radius: 8px;
     max-width: 910px;
-    min-height: 500px;
-    max-height: 800px;
+    min-height: 75%;
+    max-height: 95%;
     overflow-y: auto;
   }
 
@@ -307,10 +310,11 @@
     grid-row: span 5;
     overflow-y: hidden;
     margin: 20px 5px 0 15px;
+    width: 480px;
   }
 
   iframe {
-    width: 100%;
+    width: 480px;
     height: 270px;
     border: 0;
   }
@@ -524,7 +528,7 @@
     opacity: 0;
   }
 
-  @media (max-width: 700px) {
+  @media (max-width: 840px) {
 
     #title > h1 {
       font-size: 25px;
@@ -535,7 +539,7 @@
     }
 
     #nav-right > p {
-      margin: auto 8px;
+      margin: 3.5px 0px 0 0;
       font-size: 20px;
     }
   
@@ -544,10 +548,10 @@
       font-family: 'Oswald', sans-serif;
       color: white;
       border: 0;  
-      margin: auto 0;
-      font-size: 14px;
-      width: 75px;
-      text-align: center;
+      margin: auto 5px;
+      font-size: 8px;
+      width: 41px;
+      text-align: right;
     }
 
     #changeView {
@@ -564,10 +568,10 @@
     }
 
     .release > p {
-      margin: 0 0 0 0px;
+      margin: 0 0 0 12%;
       max-width: 10px;
-      font-size: 10px;
-      height: 18px;
+      font-size: 8px;
+      height: 5px;
     }
 
     .month {
@@ -591,25 +595,27 @@
     }
 
     .movieInfo {
+      width: 100vw;
+      min-height: 90vh;
       top: 5%;
-      left: 5%;
-      right: 5%;
       z-index: 5;
       font-size: 15px;
       border-radius: 8px;
-      max-width: 590px;
-      max-height: 700px;
       overflow-y: scroll;
-      padding-bottom: 5px;
+      padding-bottom: 25px;
     }
 
     #trailer {
       grid-column: span 2;
-      margin: 14px 5px 0 14px;
+      margin: 14px 5% 0 5%;
+      align-self: center;
+      justify-self: center;
+      justify-items: center;
     }
 
     .covid_info {
       margin-left: 0;
+      padding-left: 15px;
     }
 
     #covid-facts {
@@ -617,7 +623,7 @@
     }
 
     #covid-facts > ul {
-      padding-left: 0;
+      padding-left: 15px;
       margin-left: 0px;
     }
   
@@ -639,6 +645,10 @@
     .noTrailer {
       grid-column: span 2;
       margin-left: 20px;
+    }
+
+    #imdb-facts {
+      padding-left: 15px;
     }
 
 
