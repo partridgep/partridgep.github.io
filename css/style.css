@@ -672,6 +672,11 @@
       margin-bottom: 2em;
     }
 
+    .carousel__button--prev,
+    .carousel__button--next {
+      top:60%;
+    }
+
 
   }
 
