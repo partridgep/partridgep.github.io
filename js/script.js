@@ -1742,20 +1742,26 @@ function adjustPosterAxis() {
     };
   };
 
+  //get new embedded trailer link
+  //depending on window width
   function adjustTrailerWidth() {
 
+    //if we have a movie info window open
     if ($('#movieInfo')) {
-        console.log('movie info is open')
+        //get trailer link
         let link = $('iframe').attr('src');
+        //remove width attribute
         link = link.slice(0, link.length-3);
+        //add desired width to link
         if (windowWidth.matches) {
             link = link + '300';
         }
         else {
             link = link + '480';
         }
+        //remove trailer from page
         $('iframe').remove();
+        //append trailer with new width
         $('#trailer').append(`<iframe scroll = 'no' allowfullscreen='true' scrolling='no' autoplay='false' autoplay=0 autostart='0' src=${link} type="video/mp4">Your browser does not support the video tag.</iframe>`);
     }
-
   }
