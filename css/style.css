@@ -530,6 +530,10 @@
 
   @media (max-width: 840px) {
 
+    main {
+      overflow-x: hidden;
+    }
+
     #title > h1 {
       font-size: 25px;
     }
@@ -603,6 +607,7 @@
       border-radius: 8px;
       overflow-y: scroll;
       padding-bottom: 25px;
+      overflow-x: hidden;
     }
 
     #trailer {
@@ -611,13 +616,16 @@
       align-self: center;
       justify-self: center;
       justify-items: center;
-      width: 400px;
+      width: 360px;
+      overflow-x: hidden;
     }
   
     iframe {
-
-      /*width: 300px;
-      height: 168.75px;*/
+      transform: scale(0.9);
+      transform-origin: 0 0;
+      /*
+      width: 390px;
+      height: 270px;*/
       border: 0;
     }
 
@@ -663,6 +671,7 @@
       margin-top: 2em;
       margin-bottom: 2em;
     }
+
 
   }
 
