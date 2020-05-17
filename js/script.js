@@ -162,6 +162,7 @@ const releaseMonths = {};
 //constants for movie trailer url
 const trailerUrl = 'https://www.imdb.com/video/imdb/';
 const trailerUrlPart2 = '/imdb/embed?autoplay=0&width=480';
+const trailerUrlForMobile = '/imdb/embed?autoplay=0&width=300';
 
 //HTML constants for movie info window
 const infoWindow = `<section class='movieInfo'>
@@ -868,12 +869,7 @@ function toOriginal() {
 
 //show movie details
 function handleClick(e) {
-    
-    //if we didn't click on a search or tracked link
-    if ($(e.target).attr('id') !== 'search-link' && $(e.target).attr('id') !== 'tracked-link') {
-        //do as if we'd hovered off the item
-        handleMouseOut(e);
-    }
+
 
     //get value of movie clicked
     let clickedItem = e.target;
@@ -897,11 +893,15 @@ function handleClick(e) {
     for(movie of movies) {
         //if it's a poster with same poster src as a movie in movies array
         if (movie.poster === clickedItemSrc && !movie.poster === false) {
+            //do as if we'd hovered off the item
+            handleMouseOut(e);
             //create movie info window
             showMovieDetails(movie);      
         }
         //if it's a placeholder poster whose text matches a title in the movie array
         else if (movie.title === $(clickedItem).text() && $clickedItem.hasClass('posterTitle')){
+            //do as if we'd hovered off the item
+            handleMouseOut(e);
             //create movie info window
             showMovieDetails(movie);
         }
@@ -1034,8 +1034,18 @@ function getSecondAPIData(movie) {
 //form appropriate URL for movie trailer
 function createTrailerLink(movie) {
 
+    let trailerLink;
+
     //add  trailer ID to URL
-    let trailerLink = trailerUrl + movie.trailer + trailerUrlPart2;
+
+    //give embed link of smaller trailer window if query matches
+    if (windowWidth.matches) {
+        console.log('window is small');
+        trailerLink = trailerUrl + movie.trailer + trailerUrlForMobile;
+    }
+    else {
+        trailerLink = trailerUrl + movie.trailer + trailerUrlPart2;
+    }
     return trailerLink;
 };
 
@@ -1665,6 +1675,7 @@ function checkWindowWidth(windowWidth) {
         $('.container').css({width: '44px'});
         $('.container').css({height: '66px'});
         adjustPosterAxis();
+        adjustTrailerWidth();
     } 
     else {
         $('img').css({width: '100px'});
@@ -1673,6 +1684,7 @@ function checkWindowWidth(windowWidth) {
         $('.container').css({width: '100px'});
         $('.container').css({height: '150px'});
         adjustPosterAxis();
+        adjustTrailerWidth();
     };
   };
 
@@ -1729,3 +1741,21 @@ function adjustPosterAxis() {
         };
     };
   };
+
+  function adjustTrailerWidth() {
+
+    if ($('#movieInfo')) {
+        console.log('movie info is open')
+        let link = $('iframe').attr('src');
+        link = link.slice(0, link.length-3);
+        if (windowWidth.matches) {
+            link = link + '300';
+        }
+        else {
+            link = link + '480';
+        }
+        $('iframe').remove();
+        $('#trailer').append(`<iframe scroll = 'no' allowfullscreen='true' scrolling='no' autoplay='false' autoplay=0 autostart='0' src=${link} type="video/mp4">Your browser does not support the video tag.</iframe>`);
+    }
+
+  }

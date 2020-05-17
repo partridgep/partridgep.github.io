@@ -607,10 +607,18 @@
 
     #trailer {
       grid-column: span 2;
-      margin: 14px 5% 0 5%;
+      margin: 10em 5%;
       align-self: center;
       justify-self: center;
       justify-items: center;
+      width: 400px;
+    }
+  
+    iframe {
+
+      /*width: 300px;
+      height: 168.75px;*/
+      border: 0;
     }
 
     .covid_info {
@@ -651,12 +659,10 @@
       padding-left: 15px;
     }
 
-
- 
-
-
-
-
+    #sources {
+      margin-top: 2em;
+      margin-bottom: 2em;
+    }
 
   }
 
