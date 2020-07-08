@@ -9,7 +9,7 @@ const movies = [
     ,
     {title: 'Artemis Fowl', imdb: 'tt3089630', originalRelease: '29 May 2020', newRelease: '12 Jun 2020', onVOD: 'Disney+', sources: ['https://www.deadline.com/2020/04/artemis-fowl-disney-release-trolls-world-tour-1202900186/'], trivia: ['The first Disney movie to be pushed to its streaming service due to the pandemic.']}
     ,
-    {title: 'Black Widow', imdb: 'tt3480822', originalRelease: '11 May 2020', newRelease: '06 Nov 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854', 'https://www.theverge.com/2020/3/17/21183747/black-widow-delayed-coronavirus-marvel-studios-disney-mulan-new-mutants-amc-regal', 'https://time.com/5804878/black-widow-coronavirus-release-delayed/'], trivia:['There was speculation that Disney would release the film on Disney+, but as a Marvel title, it was necessary to the studio that it  do well in theaters.', "'Black Widow' shifting dates could trigger a domino effect on release dates for the rest of the movies set in the Marvel Cinematic Universe due to their interconnected nature."]}
+    {title: 'Black Widow', imdb: 'tt3480822', originalRelease: '11 May 2020', newRelease: '06 Nov 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854', 'https://www.theverge.com/2020/3/17/21183747/black-widow-delayed-coronavirus-marvel-studios-disney-mulan-new-mutants-amc-regal', 'https://www.time.com/5804878/black-widow-coronavirus-release-delayed/'], trivia:['There was speculation that Disney would release the film on Disney+, but as a Marvel title, it was necessary to the studio that it  do well in theaters.', "'Black Widow' shifting dates could trigger a domino effect on release dates for the rest of the movies set in the Marvel Cinematic Universe due to their interconnected nature."]}
     ,
     {title: 'Blue Story', imdb: 'tt9285882', originalRelease: '20 Mar 2020', newRelease: 'TBD', sources: ['https://www.hollywoodreporter.com/news/paramount-pulls-lovebirds-blue-story-due-coronavirus-1284257']}
     ,
@@ -165,11 +165,13 @@ const trailerUrlPart2 = '/imdb/embed?autoplay=0&width=480';
 const trailerUrlForMobile = '/imdb/embed?autoplay=0&width=300';
 
 //HTML constants for movie info window
-const infoWindow = `<section class='movieInfo'>
+const infoWindow = `<div class='movieInfo_container'>
+                    <section class='movieInfo'>
                         <p id='closeInfo'><a href=''>X</a></p>
                         <div class="carousel__button--next"></div>
                         <div class="carousel__button--prev"></div>
-                    </section>`;
+                    </section>
+                    </div>`;
 const infoLoading = '<p id="load">Loading...</p>';
 const infoWindowLinks = `<section id='infoLinks'></section>`;
 const infoWindowSwitcher =`<a href='#'>Switch Timelines</a>
@@ -759,10 +761,10 @@ function render(calendar) {
     
     //after all releases have been added, 
     //create event listeners to hover
-    $('img').on('mouseover', handleMouseIn);
-    $('.container').on('mouseover', handleMouseIn);
-    $('img').on('mouseout', handleMouseOut);
-    $('div.container').on('mouseout', handleMouseOut);
+    //$('img').on('mouseover', handleMouseIn);
+    //$('.container').on('mouseover', handleMouseIn);
+    //$('img').on('mouseout', handleMouseOut);
+    //$('div.container').on('mouseout', handleMouseOut);
     
 };
 
@@ -780,12 +782,12 @@ function addToTimeline(movie, d, m, y) {
     //little more than 31 to represent month on a line
     let positioning = parseInt((d/32)*100);
     //variable for HTML input of movie poster
-    posterToAdd = `<img class='poster' src=${poster}>`;
-    
+    posterToAdd = `<img id="${movie.imdb}" class='poster' src=${poster} onerror="{createPosterWithTitle(${movie.imdb})}">`;
+
     //if no poster url is available
     if (poster === 'N/A') {
         //figure out what to do 
-        posterToAdd = `<div class='container'><img class='poster'><div class='posterTitle'>${movie.title}</div></div>`;
+        posterToAdd = `<div id="${movie.imdb}" class='container'><img class='poster'><div class='posterTitle'>${movie.title}</div></div>`;
     }
     
     //append movie poster to timeline
@@ -795,6 +797,19 @@ function addToTimeline(movie, d, m, y) {
     $currentReleaseDate.last().css('left', `${positioning}%`);
 };
 
+//if there is error loading poster image, create container div
+function createPosterWithTitle(id) {
+    let imdb = $(id).attr('id');
+    let title;
+    for (movie of movies) {
+        if (movie.imdb === imdb) {
+            title = movie.title;
+            break;
+        };
+    };
+    id.outerHTML =`<div id=${imdb} class='container'><img class='poster'><div class='posterTitle'>${title}</div></div>`;
+}
+;
 //make sure all movie posters are well aligned on the y-axis
 function fixPostersYAxis(d, m, y) {
     
@@ -879,10 +894,10 @@ function handleClick(e) {
     let $clickedItem = $(clickedItem);
 
     //if we've clicked on a poster title
-    if ($clickedItem.hasClass('posterTitle')) {
+    //if ($clickedItem.hasClass('posterTitle')) {
         //make it go back to its normal size
-        $clickedItem.parent().animate({height: '-=10px', width: '-=10px', marginLeft: '0px'}, 100);
-    };
+        //$clickedItem.parent().animate({height: '-=10px', width: '-=10px', marginLeft: '0px'}, 100);
+    //};
     
     //get source attribute
     let clickedItemSrc = $clickedItem.attr('src')
@@ -894,14 +909,14 @@ function handleClick(e) {
         //if it's a poster with same poster src as a movie in movies array
         if (movie.poster === clickedItemSrc && !movie.poster === false) {
             //do as if we'd hovered off the item
-            handleMouseOut(e);
+            //handleMouseOut(e);
             //create movie info window
             showMovieDetails(movie);      
         }
         //if it's a placeholder poster whose text matches a title in the movie array
         else if (movie.title === $(clickedItem).text() && $clickedItem.hasClass('posterTitle')){
             //do as if we'd hovered off the item
-            handleMouseOut(e);
+            //handleMouseOut(e);
             //create movie info window
             showMovieDetails(movie);
         }
@@ -919,6 +934,44 @@ function handleClick(e) {
             };
         };
     };
+
+    //if user clicks on X to close window
+    if (clickedItemText === 'X') {
+        //prevent from going back to top of page
+        e.preventDefault();
+        console.log('close window');
+        //close window
+        $('.movieInfo_container').remove();
+        //restore page background
+        //removeDim();
+    }
+    else if (clickedItemText === 'Switch Timelines') {
+        console.log('switching');
+        switchTimelines();
+    }
+    //if user clicks on 'View in Timline'
+    //(make sure the span acts the same way as the rest as the link)
+    else if (clickedItemText[0] === 'V'  || $clickedItem.attr('id') === 'timeline_span') {
+        showInTimeline();
+    }
+    else if (clickedItemText === 'Add to Release Tracker') {
+        addToReleaseTracker(currentMovie);
+        //tell user item has been added to release tracker
+        $clickedItem.text('✓ Added to Release Tracker');
+    }
+    //if the user clicks on the link that says the movie is already in the release tracker
+    else if (clickedItemText[0] === '✓') {
+        removeFromReleaseTracker(currentMovie);
+        //tell user item has been removed from release tracker
+        $clickedItem.text('Add to Release Tracker');
+    }
+    else if ($clickedItem.hasClass('carousel__button--prev')) {
+        getPreviousFilm();
+    }
+    else if ($clickedItem.hasClass('carousel__button--next')) {
+        getNextFilm();
+    };
+
 };
 
 function handleMouseIn(e) {
@@ -930,7 +983,7 @@ function handleMouseIn(e) {
     let $hoveredItem = $(hoveredItem);
 
     //make it bigger
-    $hoveredItem.animate({height: '+=10px', width: '+=10px', marginLeft: '-5px'}, 100);  
+    //$hoveredItem.animate({height: '+=10px', width: '+=10px', marginLeft: '-5px'}, 100);  
     
     //in case it's a poster with no image
     //grab title div
@@ -956,7 +1009,7 @@ function handleMouseOut(e) {
     if ($(e.currentTarget).hasClass('poster') || $(e.currentTarget).hasClass('container')) hoveredItem = e.currentTarget;
     else hoveredItem = e.target;
     $hoveredItem = $(hoveredItem);
-    $hoveredItem.animate({height: '-=10px', width: '-=10px', marginLeft: '0px'}, 100);
+    //$hoveredItem.animate({height: '-=10px', width: '-=10px', marginLeft: '0px'}, 100);
 
     let target = e.target;
     if ($(target).hasClass('posterTitle')) {
@@ -976,7 +1029,7 @@ function handleMouseOut(e) {
 function showMovieDetails(movie) {
 
     //make background of page dark and non-interactable
-    dimPageBackground();
+    //dimPageBackground();
 
     //prevent function from repeatedly creating 
     //multiple info windows at once
@@ -1076,7 +1129,7 @@ function renderInfoWindow(movie) {
     addSources(movie);
 
     //create event listeners to interact with window
-    $main.click(handleWindowClick);
+    //$main.click(handleWindowClick);
 
     //set as current movie
     currentMovie = movie;
@@ -1241,9 +1294,9 @@ function handleWindowClick(e) {
         e.preventDefault();
         console.log('close window');
         //close window
-        $('.movieInfo').remove();
+        $('.movieInfo_container').remove();
         //restore page background
-        removeDim();
+        //removeDim();
     }
     else if (clickedItemText === 'Switch Timelines') {
         console.log('switching');
@@ -1308,7 +1361,7 @@ function showInTimeline() {
     //if in Original Timeline
     if (isOriginal) {
         //render page in original timeline
-        removeDim()
+        //removeDim()
         render(originalReleaseCalendar);
         //find matching release div
         let releaseMonth = convertMonthIdxToStr(currentMovie.originalRelease.slice(-8, -5));
@@ -1319,7 +1372,7 @@ function showInTimeline() {
         }, 1000);
     }
     else {
-        removeDim();
+        //removeDim();
         render(newReleaseCalendar);
         let releaseMonth = convertMonthIdxToStr(currentMovie.newRelease.slice(-8, -5));
         let releaseYear = currentMovie.newRelease.slice(-4);
@@ -1362,11 +1415,11 @@ function getPreviousFilm() {
         //iterate through all movies in original sorted array
         for (i=1; i<originalSorted.length; i++) {
             //if we find a match
-            if (currentMovie.title === originalSorted[i].title) {
+            if (currentMovie.imdb === originalSorted[i].imdb) {
                 //get the previous film in the array
                 previousFilm = originalSorted[i-1];
                 //take down info window for current film
-                $('.movieInfo').remove();
+                $('.movieInfo_container').remove();
                 //create info window for previous film
                 showMovieDetails(previousFilm);
                 //make sure the loop stops iterating
@@ -1378,9 +1431,9 @@ function getPreviousFilm() {
     //do similar process in delayed timeline
     else if (isOriginal === false) {
         for (i=1; i<newSorted.length; i++) {
-            if (currentMovie.title === newSorted[i].title) {
+            if (currentMovie.imdb === newSorted[i].imdb) {
                 previousFilm = newSorted[i-1];
-                $('.movieInfo').remove();
+                $('.movieInfo_container').remove();
                 showMovieDetails(previousFilm);
                 break;
             };
@@ -1392,9 +1445,9 @@ function getNextFilm() {
 
     if (isOriginal) {
         for (i=0; i<originalSorted.length-1; i++) {
-            if (currentMovie.title === originalSorted[i].title) {
+            if (currentMovie.imdb === originalSorted[i].imdb) {
                 let nextFilm = originalSorted[i+1];
-                $('.movieInfo').remove();
+                $('.movieInfo_container').remove();
                 showMovieDetails(nextFilm);
                 break;
             };
@@ -1402,9 +1455,9 @@ function getNextFilm() {
     }
     else if (isOriginal === false) {
         for (i=0; i<newSorted.length-1; i++) {
-            if (currentMovie.title === newSorted[i].title) {
+            if (currentMovie.imdb === newSorted[i].imdb) {
                 let nextFilm = newSorted[i+1];
-                $('.movieInfo').remove();
+                $('.movieInfo_container').remove();
                 showMovieDetails(nextFilm);
                 break;
             };
@@ -1639,10 +1692,10 @@ function removeDim() {
     $main.click(handleClick);
     $('#cal_type').prop('disabled', false);
     $('input[type="text"]').prop('disabled', false);
-    $('img').on('mouseover', handleMouseIn);
-    $('.container').on('mouseover', handleMouseIn);
-    $('img').on('mouseout', handleMouseOut);
-    $('div.container').on('mouseout', handleMouseOut);
+    //$('img').on('mouseover', handleMouseIn);
+    //$('.container').on('mouseover', handleMouseIn);
+    //$('img').on('mouseout', handleMouseOut);
+    //$('div.container').on('mouseout', handleMouseOut);
 };
 
 //reset poster size after being clicked
