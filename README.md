@@ -1,5 +1,6 @@
 # Quarantine Movie Release Schedule
-One resource to view all movies whose release has been impacted by the coronavirus.
+A Front-End responsive web application that displays a timeline of all movie releases affected by the pandemic using HTML, CSS, JavaScript and jQuery and utilizing data from two movie database APIs.
+
 
 ## Getting Started
 [Click Here](https://partridgep.github.io/) to get started.
@@ -111,9 +112,4 @@ with ``divMargin`` being equal to the number of posters of the current release d
 
 ## Future Enhancements
 - Add more trivia and sources for movies
-- Writing up text for FAQ section
 - Create different border for VOD releases on delayed timeline to clearly display to user what is still a theatrical release/what has been pushed to VOD
-- Adding media queries to make webpage mobile-friendly
-- Have timeline switch in the background of movie info window when user clicks on the option, so when they X out, they see the correct timeline
-- Fix issue when sometimes clicking on poster after coming home from one of the nav links, buttons and text are greyed out and inactive, clicking on X forces page reload
-- Fix issue when clicking on poster with no image, div with text will shrink each time
