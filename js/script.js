@@ -35,7 +35,7 @@ const movies = [
     ,
     {title: 'Ghostbusters: Afterlife', imdb: 'tt4513678', originalRelease: '10 Jul 2020', newRelease: '05 Mar 2021', sources:  ['https://www.variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
     ,
-    {title: 'Greyhound', imdb:  'tt6048922', originalRelease: '12 Jun 2020', newRelease: 'TBD', sources: ['https://www.variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
+    {title: 'Greyhound', imdb:  'tt6048922', originalRelease: '12 Jun 2020', newRelease: 'TBD', sources: ['https://www.variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/'], onVOD: 'Apple TV+'}
     ,
     {title: 'In the Heights', imdb: 'tt1321510', originalRelease: '26 Jun 2020', newRelease: '18 Jun 2021', sources: ['https://www.collider.com/lin-manuel-miranda-in-the-heights-movie-new-release-date/']}
     ,
@@ -128,6 +128,8 @@ const movies = [
     {title: 'Wonder Woman 1984', imdb: 'tt7126948', originalRelease: '05 Jun 2020', newRelease: '14 Aug 2020'}
     ,
     {title: 'Working Man', imdb: 'tt8391044', originalRelease: '27 Mar 2020', newRelease: '05 May 2020'}
+    ,
+    {title: 'Tenet', imdb: 'tt6723592', originalRelease: '17 Jul 2020', newRelease: '12 Aug 2020', sources: ['https://www.variety.com/2020/film/box-office/tenet-release-date-delayed-again-christopher-nolan-1234690272/'], trivia: ['The film was first delayed to July 31st, then again to August 12th.']}
 ]
 
 //constants for sources urls
@@ -190,9 +192,9 @@ const faqTitle = `<h1>Frequently Asked Questions</h1>`;
 const faQuestion1 = `<p class='question'>Why this project?</p>`;
 const faQuestion2 = `<p class='question'>How confident can we be about the new release dates in the delayed calendar?</p>`;
 const faQuestion3 = `<p class='question'>How will this affect the entertainment industry?</p>`;
-const faqAnswer1 = `<p class='answer'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae provident minima magnam odit debitis quisquam, excepturi, veritatis, sit accusamus temporibus amet nihil velit cupiditate repellendus voluptatum! Fuga beatae mollitia quos.</p>`
-const faqAnswer2 = `<p class='answer'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae provident minima magnam odit debitis quisquam, excepturi, veritatis, sit accusamus temporibus amet nihil velit cupiditate repellendus voluptatum! Fuga beatae mollitia quos.</p>`
-const faqAnswer3 = `<p class='answer'>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quae provident minima magnam odit debitis quisquam, excepturi, veritatis, sit accusamus temporibus amet nihil velit cupiditate repellendus voluptatum! Fuga beatae mollitia quos.</p>`
+const faqAnswer1 = `<p class='answer'>The Coronavirus pandemic has ravaged many industries, and the film industry has not been spared in these trying times. Given my background in this world, I wanted to build something that could serve as a tribute to all the people that have worked on getting this entertainment out to us and to all the great times we used to take for granted seated in a giant movie theater, as well as document this seismic change in our annual movie release calendar for posterity.</p>`
+const faqAnswer2 = `<p class='answer'>Not all all! Since I've started this project, most if not all of these movies has shifted movie release dates yet again, or moved straight to streaming. No one really knows what the future of moviegoing looks like, so setting a release date is an uncertain guessing game.</p>`
+const faqAnswer3 = `<p class='answer'>Putting film shoots on pause and delaying releases has unfortunately created a downturn in employment for the people who rely on this kind of work, most of them freelancers. Moreover, studios are turning to previously unthinkable options to get some return on investment, such as releasing their films straight to streaming. Any production that is picking up again is operating under strict social distancing and PPE guidelines, but that is uncharted territory for an industry that needs to move quick and operates on crowded sets.</p>`
 
 //HTML constants for release tracker
 const trackerSection = `<section id='release_tracker'>`;
@@ -464,7 +466,8 @@ function organizeMoviesByDelayedRelease() {
     }
 
     //finally let's make sure our sorted array is fully sorted
-    createSortedArray(newReleaseCalendar)
+    createSortedArray(newReleaseCalendar);
+    console.log(newReleaseCalendar);
 };
 
 
@@ -756,16 +759,23 @@ function render(calendar) {
                 fixPostersYAxis(day, month, year);
                 
             };
+            let allDays = [];
+            for (child of $(`#${month}${year}`).children()) {
+                if ($(child).hasClass('release')) {
+                    
+                    console.log(child);
+                    console.log($(child).attr('id'));
+                    let day = $(child).attr('id').slice(0,2);
+                    console.log(day);
+                    allDays.push(child);
+                    
+                };
+            }
+            console.log(allDays);
+            allDays.sort();
+            console.log(allDays);
         };
     }; 
-    
-    //after all releases have been added, 
-    //create event listeners to hover
-    //$('img').on('mouseover', handleMouseIn);
-    //$('.container').on('mouseover', handleMouseIn);
-    //$('img').on('mouseout', handleMouseOut);
-    //$('div.container').on('mouseout', handleMouseOut);
-    
 };
 
 function addToTimeline(movie, d, m, y) {
@@ -796,6 +806,11 @@ function addToTimeline(movie, d, m, y) {
     //adjust poster on x-axis
     $currentReleaseDate.last().css('left', `${positioning}%`);
 };
+
+function socialDistance(movie, d) {
+    //get other movies in month
+
+}
 
 //if there is error loading poster image, create container div
 function createPosterWithTitle(id) {
@@ -885,19 +900,11 @@ function toOriginal() {
 //show movie details
 function handleClick(e) {
 
-
     //get value of movie clicked
     let clickedItem = e.target;
-    console.log(clickedItem);
   
     //wrap it in jQuery money
     let $clickedItem = $(clickedItem);
-
-    //if we've clicked on a poster title
-    //if ($clickedItem.hasClass('posterTitle')) {
-        //make it go back to its normal size
-        //$clickedItem.parent().animate({height: '-=10px', width: '-=10px', marginLeft: '0px'}, 100);
-    //};
     
     //get source attribute
     let clickedItemSrc = $clickedItem.attr('src')
@@ -939,14 +946,10 @@ function handleClick(e) {
     if (clickedItemText === 'X') {
         //prevent from going back to top of page
         e.preventDefault();
-        console.log('close window');
         //close window
         $('.movieInfo_container').remove();
-        //restore page background
-        //removeDim();
     }
     else if (clickedItemText === 'Switch Timelines') {
-        console.log('switching');
         switchTimelines();
     }
     //if user clicks on 'View in Timline'
@@ -974,69 +977,7 @@ function handleClick(e) {
 
 };
 
-function handleMouseIn(e) {
-
-    //get value of movie hovered
-    let hoveredItem = e.currentTarget;
-
-    //wrap it in jQuery money
-    let $hoveredItem = $(hoveredItem);
-
-    //make it bigger
-    //$hoveredItem.animate({height: '+=10px', width: '+=10px', marginLeft: '-5px'}, 100);  
-    
-    //in case it's a poster with no image
-    //grab title div
-    let target = e.target;
-    if ($(target).hasClass('posterTitle')) {
-        //make title bigger as well
-        $(target).animate({fontSize: '+=2px'}, 100);
-    };
-
-    //lower all previous release divs
-    //so the y axis isn't messed up
-    let parentDiv = $hoveredItem.parent();
-    let previousReleases = $(parentDiv).prevAll();
-    for(release of previousReleases) {
-        if ($(release).hasClass('release'))
-        $(release).animate({bottom: '-=10px'}, 100);
-    };
-
-};
-
-function handleMouseOut(e) {
-
-    if ($(e.currentTarget).hasClass('poster') || $(e.currentTarget).hasClass('container')) hoveredItem = e.currentTarget;
-    else hoveredItem = e.target;
-    $hoveredItem = $(hoveredItem);
-    //$hoveredItem.animate({height: '-=10px', width: '-=10px', marginLeft: '0px'}, 100);
-
-    let target = e.target;
-    if ($(target).hasClass('posterTitle')) {
-        $(target).animate({fontSize: '-=2px'}, 100);
-    };
-
-    //bring back up all previous release divs
-    //so the y axis isn't messed up
-    let parentDiv = $hoveredItem.parent();
-    let previousReleases = $(parentDiv).prevAll();
-    for(release of previousReleases) {
-        if ($(release).hasClass('release'))
-        $(release).animate({bottom: '+=10px'}, 100);
-    };
-};
-
 function showMovieDetails(movie) {
-
-    //make background of page dark and non-interactable
-    //dimPageBackground();
-
-    //prevent function from repeatedly creating 
-    //multiple info windows at once
-    if ( $(".movieInfo").parents("main").length == 1 ) { 
-        console.log('already movie info here');
-        return;
-    };
 
     //render minimal movie info window while API data is loading
     $main.append(infoWindow);
@@ -1281,7 +1222,6 @@ function handleWindowClick(e) {
 
     //get value of movie clicked
     let clickedItem = e.target;
-    console.log(clickedItem);
 
     //wrap it in jQuery money
     let $clickedItem = $(clickedItem);
@@ -1292,14 +1232,12 @@ function handleWindowClick(e) {
     if (clickedItemText === 'X') {
         //prevent from going back to top of page
         e.preventDefault();
-        console.log('close window');
         //close window
         $('.movieInfo_container').remove();
         //restore page background
         //removeDim();
     }
     else if (clickedItemText === 'Switch Timelines') {
-        console.log('switching');
         switchTimelines();
     }
     //if user clicks on 'View in Timline'
@@ -1536,30 +1474,19 @@ function handleHamburger() {
     };
 };
 
-function pushToLeft() {
-    
+function pushToLeft() {  
     $main.animate({right: '300px'}, 250);
     $('nav').animate({right: '300px'}, 250);
     $('#changeView').animate({right: '300px'}, 250);
     $('footer').animate({right: '300px'}, 250);
-    $slider.off();
-    $main.off();
-    $('#cal_type').prop('disabled', true);
-    $('input[type="text"]').prop('disabled', true);
-    
 };
 
 function pushToRight() {
-    
     $main.animate({right: '0'}, 250);
     $('nav').animate({right: '0'}, 250);
     $('#changeView').animate({right: '0'}, 250);
     $('footer').animate({right: '0'}, 250);
     $slider.change(setCurrentCalendar);
-    $main.click(handleClick);
-    $('#cal_type').prop('disabled', false);
-    $('input[type="text"]').prop('disabled', false);
-
 };
 
 function goHome() {
@@ -1567,8 +1494,6 @@ function goHome() {
     //make sure timeline switcher is back on page
     //(if we clicked on this after the search page)
     $('#changeView').removeClass('hidden');
-    $slider.on();
-    $('#cal_type').prop('disabled', false);
 
     //remove hamburger menu and go back to main 
     goBackToMain();
@@ -1646,74 +1571,6 @@ function renderTracker() {
 
     for(movie of moviesToTrack) {
         $('#release_tracker ul').append(`<li><a id='tracked-link' href='#'>${movie}</a></li>`);
-    };
-};
-
-function dimPageBackground() {
-    
-    //add overlay darkening filter to page sections
-    $main.addClass('overlay');
-    
-    //lower items opacity so they get darkened too
-    $('h1').css('opacity', '0.5');
-    $('input').css('opacity', '0.5');
-    $('img').css('opacity', '0.5');
-    $('h2').css('opacity', '0.5');
-    $('h3').css('opacity', '0.5');
-    $('p').css('opacity', '0.5');
-    $('.posterTitle').css('opacity', '0.5');
-
-    //turn off any event listeners or toggles
-    //so user can't access them
-    $slider.off();
-    $main.off();
-    $('#cal_type').prop('disabled', true);
-    $('input[type="text"]').prop('disabled', true);
-    $('img').off();
-    $('.container').off();
-};
-
-function removeDim() {
-
-    //remove overlay darkening filter to page sections
-    $main.removeClass('overlay');
-
-    //reset items opacity
-    $('h1').css('opacity', '1');
-    $('input').css('opacity', '1');
-    $('img').css('opacity', '1');
-    $('h2').css('opacity', '1');
-    $('h3').css('opacity', '1');
-    $('p').css('opacity', '1');
-    $('.posterTitle').css('opacity', '1')
-
-    //turn back on any event listeners or toggles
-    $slider.change(setCurrentCalendar);
-    $main.click(handleClick);
-    $('#cal_type').prop('disabled', false);
-    $('input[type="text"]').prop('disabled', false);
-    //$('img').on('mouseover', handleMouseIn);
-    //$('.container').on('mouseover', handleMouseIn);
-    //$('img').on('mouseout', handleMouseOut);
-    //$('div.container').on('mouseout', handleMouseOut);
-};
-
-//reset poster size after being clicked
-function resetPosterLength() {
-    if (windowWidth.matches) { // If media query matches
-        //fix width and height of any poster that's been hovered over
-        $('img').css({width: '44px'});
-        $('img').css({height: '66px'});
-        $('.posterTitle').css({fontSize: '10px'});
-        $('.container').css({width: '44px'});
-        $('.container').css({height: '66px'});
-    } 
-    else {
-        $('img').css({width: '100px'});
-        $('img').css({height: '150px'});
-        $('.posterTitle').css({fontSize: '18px'});
-        $('.container').css({width: '100px'});
-        $('.container').css({height: '150px'});
     };
 };
 

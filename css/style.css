@@ -66,6 +66,7 @@
   #nav-right > p {
     margin: auto 20px;
     font-size: 40px;
+    cursor: pointer;
   }
 
   input {
@@ -135,6 +136,7 @@
 
   .half_opacity {
     opacity: 0.5;
+    pointer-events: none;
   }
 
   #changeView {
@@ -164,6 +166,7 @@
     align-items: center;
     font-size: 27px;
     font-variant: small-caps;
+    cursor: pointer;
   }
 
   .slideContainer {
@@ -280,6 +283,7 @@
     align-content: center;
     justify-content: center;
     z-index: 999;
+    overflow-x: hidden;
   }
 
   .movieInfo {
@@ -301,6 +305,7 @@
     min-height: 75%;
     max-height: 95%;
     overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .movieInfo > h3 {
@@ -591,6 +596,12 @@
     .poster {
       width: 44px;
       height: 66px;
+    }
+
+    .poster:hover {
+      width: 47px;
+      height: 69px;
+      margin-left: -2px;
     }
 
     .release {
