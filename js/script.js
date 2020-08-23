@@ -53,7 +53,7 @@ const movies = [
     ,
     {title: 'Morbius', imdb: 'tt5108870', originalRelease: '31 Jul 2020', newRelease: '19 Mar 2021', sources: ['https://www.variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
     ,
-    {title: 'Mulan', imdb: 'tt4566758', originalRelease: '27 Mar 2020', newRelease:  '24 Jul 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854'], trivia: ["Disney first cancelled Mulan's premiere in China, despite hopes that it would perform well there, but did not move its opening date in the rest of the world. Finally, the movie got pushed back to July in early April."]}
+    {title: 'Mulan', imdb: 'tt4566758', originalRelease: '27 Mar 2020', newRelease:  '24 Jul 2020', onVod: "Disney+", sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854'], trivia: ["Disney first cancelled Mulan's premiere in China, despite hopes that it would perform well there, but did not move its opening date in the rest of the world. Finally, the movie got pushed back to July in early April.", "Mulan will be available on Disney+ for the additional cost of $30."]}
     ,
     {title: 'My Spy', imdb: 'tt8242084', originalRelease: '17 Apr 2020', newRelease: 'TBD', onVOD: 'Amazon Prime', sources: ['https://www.variety.com/2020/digital/news/dave-bautista-my-spy-amazon-prime-1234574765/']}
     ,
@@ -129,7 +129,7 @@ const movies = [
     ,
     {title: 'Working Man', imdb: 'tt8391044', originalRelease: '27 Mar 2020', newRelease: '05 May 2020'}
     ,
-    {title: 'Tenet', imdb: 'tt6723592', originalRelease: '17 Jul 2020', newRelease: '12 Aug 2020', sources: ['https://www.variety.com/2020/film/box-office/tenet-release-date-delayed-again-christopher-nolan-1234690272/'], trivia: ['The film was first delayed to July 31st, then again to August 12th.']}
+    {title: 'Tenet', imdb: 'tt6723592', originalRelease: '17 Jul 2020', newRelease: '12 Aug 2020', sources: ['https://www.variety.com/2020/film/box-office/tenet-release-date-delayed-again-christopher-nolan-1234690272/'], trivia: ['Warner Bros. delayed the film multiple times before deciding not to release it in theaters in the U.S.']}
 ]
 
 //constants for sources urls
