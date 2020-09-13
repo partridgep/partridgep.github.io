@@ -714,6 +714,9 @@
       top:60%;
     }
 
+    #faq, #release_tracker {
+      width: 80vw;
+    }
 
   }
 

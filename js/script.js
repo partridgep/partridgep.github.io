@@ -53,7 +53,7 @@ const movies = [
     ,
     {title: 'Morbius', imdb: 'tt5108870', originalRelease: '31 Jul 2020', newRelease: '19 Mar 2021', sources: ['https://www.variety.com/2020/film/news/morbius-ghostbusters-afterlife-uncharted-pushed-back-2021-sony-1203549616/']}
     ,
-    {title: 'Mulan', imdb: 'tt4566758', originalRelease: '27 Mar 2020', newRelease:  '24 Jul 2020', onVod: "Disney+", sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854'], trivia: ["Disney first cancelled Mulan's premiere in China, despite hopes that it would perform well there, but did not move its opening date in the rest of the world. Finally, the movie got pushed back to July in early April.", "Mulan will be available on Disney+ for the additional cost of $30."]}
+    {title: 'Mulan', imdb: 'tt4566758', originalRelease: '27 Mar 2020', newRelease:  '24 Jul 2020', onVOD: "Disney+", sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854'], trivia: ["Disney first cancelled Mulan's premiere in China, despite hopes that it would perform well there, but did not move its opening date in the rest of the world. Finally, the movie got pushed back to July in early April.", "Mulan will be available on Disney+ for the additional cost of $30."]}
     ,
     {title: 'My Spy', imdb: 'tt8242084', originalRelease: '17 Apr 2020', newRelease: 'TBD', onVOD: 'Amazon Prime', sources: ['https://www.variety.com/2020/digital/news/dave-bautista-my-spy-amazon-prime-1234574765/']}
     ,
