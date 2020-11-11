@@ -112,4 +112,4 @@ with ``divMargin`` being equal to the number of posters of the current release d
 
 ## Future Enhancements
 - Add more trivia and sources for movies
-- Create different border for VOD releases on delayed timeline to clearly display to user what is still a theatrical release/what has been pushed to VOD
+- Ensure movie posters are not too close to one another
