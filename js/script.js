@@ -176,8 +176,7 @@ const infoWindow = `<div class='movieInfo_container'>
                     </div>`;
 const infoLoading = '<p id="load">Loading...</p>';
 const infoWindowLinks = `<section id='infoLinks'></section>`;
-const infoWindowSwitcher =`<a href='#'>Switch Timelines</a>
-                            <a href='#'>View in <span id='timeline_span'>Original</span> Timeline</a>`;
+const infoWindowSwitcher =`<a href='#'>View in <span id='timeline_span'>Delayed</span> Timeline</a>`;
 const infoWindowTracker = `<a href='#'>Add to Release Tracker</a>`;
 const infoWindowTrailer = `<div id='trailer'>
                                 <iframe scroll = 'no' allowfullscreen='true' scrolling='no' autoplay='false' autoplay=0 autostart='0' src=`;
@@ -814,8 +813,8 @@ function createPosterWithTitle(id) {
         };
     };
     id.outerHTML =`<div id=${imdb} class='container'><img class='poster'><div class='posterTitle'>${title}</div></div>`;
-}
-;
+};
+
 //make sure all movie posters are well aligned on the y-axis
 function fixPostersYAxis(d, m, y) {
     
@@ -901,6 +900,9 @@ function handleClick(e) {
     let clickedItemSrc = $clickedItem.attr('src')
     //get text value
     let clickedItemText = $(clickedItem).text();
+
+    //prevent from going back to top of page
+    e.preventDefault();
     
     //check if we've clicked on a movie poster
     for(movie of movies) {
@@ -935,17 +937,13 @@ function handleClick(e) {
 
     //if user clicks on X to close window
     if (clickedItemText === 'X') {
-        //prevent from going back to top of page
-        e.preventDefault();
         //close window
         $('.movieInfo_container').remove();
-    }
-    else if (clickedItemText === 'Switch Timelines') {
-        switchTimelines();
     }
     //if user clicks on 'View in Timline'
     //(make sure the span acts the same way as the rest as the link)
     else if (clickedItemText[0] === 'V'  || $clickedItem.attr('id') === 'timeline_span') {
+        switchTimelines();
         showInTimeline();
     }
     else if (clickedItemText === 'Add to Release Tracker') {
@@ -1049,7 +1047,7 @@ function renderInfoWindow(movie) {
     //add link to add to movie tracker
     $('#infoLinks').append(infoWindowTracker);
     //change nav links to fit current timeline
-    if (isOriginal === false) {$('#infoLinks a > span').text('Delayed');};
+    if (isOriginal === false) {$('#infoLinks a > span').text('Original');};
     //change last nav link to reflect whether or not the movie is in the release tracker
     if (checkIfInTracker(movie)) {$('#infoLinks > a:last').text('✓ Added to Release Tracker')};
 
@@ -1058,9 +1056,6 @@ function renderInfoWindow(movie) {
     addCovidFacts(movie);
     addIMDbFacts(movie);
     addSources(movie);
-
-    //create event listeners to interact with window
-    //$main.click(handleWindowClick);
 
     //set as current movie
     currentMovie = movie;
@@ -1218,21 +1213,18 @@ function handleWindowClick(e) {
     //get text value
     let clickedItemText = $(clickedItem).text();
 
+    //prevent from going back to top of page
+    e.preventDefault();
+
     //if user clicks on X to close window
     if (clickedItemText === 'X') {
-        //prevent from going back to top of page
-        e.preventDefault();
         //close window
         $('.movieInfo_container').remove();
-        //restore page background
-        //removeDim();
-    }
-    else if (clickedItemText === 'Switch Timelines') {
-        switchTimelines();
     }
     //if user clicks on 'View in Timline'
     //(make sure the span acts the same way as the rest as the link)
     else if (clickedItemText[0] === 'V'  || $clickedItem.attr('id') === 'timeline_span') {
+        switchTimelines();
         showInTimeline();
     }
     else if (clickedItemText === 'Add to Release Tracker') {
@@ -1262,8 +1254,7 @@ function switchTimelines() {
     else (isOriginal = true);
 
     //change the middle timeline nav to reflect current timeline
-    if ($('#infoLinks a > span').text() === 'Original') {
-        $('#infoLinks a > span').text('Delayed');
+    if ($('#infoLinks a > span').text() === 'Delayed') {
         //change value of toggler in page background
         $('#cal_type').val('2');
         //change display of toggler in background
@@ -1271,7 +1262,6 @@ function switchTimelines() {
         $('#delayed').addClass('selected');
     }
     else {
-        $('#infoLinks a > span').text('Original');
         $('#cal_type').val('1'); 
         //change display of toggler in background
         $('#original').addClass('selected');
@@ -1289,7 +1279,6 @@ function showInTimeline() {
     //if in Original Timeline
     if (isOriginal) {
         //render page in original timeline
-        //removeDim()
         render(originalReleaseCalendar);
         //find matching release div
         let releaseMonth = convertMonthIdxToStr(currentMovie.originalRelease.slice(-8, -5));
@@ -1300,7 +1289,6 @@ function showInTimeline() {
         }, 1000);
     }
     else {
-        //removeDim();
         render(newReleaseCalendar);
         let releaseMonth = convertMonthIdxToStr(currentMovie.newRelease.slice(-8, -5));
         let releaseYear = currentMovie.newRelease.slice(-4);
