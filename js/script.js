@@ -77,7 +77,7 @@ const movies = [
     ,
     {title: 'Spiral: From The Book of Saw', imdb: 'tt10342730', originalRelease: '15 May 2020', newRelease: 'TBD'}
     ,
-    {title: 'Soul', imdb: 'tt2948372', originalRelease: '19 Jun 2020', newRelease: '20 Nov 2020'}
+    {title: 'Soul', imdb: 'tt2948372', originalRelease: '19 Jun 2020', newRelease: '20 Nov 2020', onVOD: 'Disney+'}
     ,
     {title: 'The Artist’s Wife', imdb: 'tt5806558', originalRelease: '03 Apr 2020', newRelease: 'TBD'}
     ,
