@@ -227,8 +227,8 @@ $('#title').click(goHome);
 $('#home').click(goHome);
 $('#faq-burger').click(renderFAQ);
 $('#tracker').click(renderTracker);
-$('#original').click(toOriginal);
-$('#delayed').click(toDelayed);
+$('#original').click(function() {$slider.val('1'), setCurrentCalendar()});
+$('#delayed').click(function() {$slider.val('2'), setCurrentCalendar()});
 windowWidth.addListener(checkWindowWidth) // Attach listener function on state changes
 
 /*----- functions -----*/
@@ -851,17 +851,47 @@ function fixPostersYAxis(d, m, y) {
 //changing calendars once toggled
 function setCurrentCalendar() {
 
+    let monthyear = checkDateScrolled().split(/(\d+)/);
+    let month = monthyear[0];
+    let year = monthyear[1];
+
     //if slider is to the left
     if ($slider.val() === '1') {
-        toOriginal();
+        toOriginal(month, year);
     }
     //if it's the to right
     else {
-        toDelayed();
+        toDelayed(month, year);
     }
 };
 
-function toDelayed() {
+function checkDateScrolled() {
+
+    let monthyear;
+    // get all divs with the 'month' class
+    let releaseDateDivs = document.querySelectorAll('.month');
+    // if one of them is in the center of the viewport
+    // return that element's id (month+year)
+    for (element of releaseDateDivs) {
+        let position = element.getBoundingClientRect();
+        if (position.top >= 0 && position.bottom <= window.innerHeight) {
+            monthyear = element.id;
+            break;
+        }
+    }
+    // try again and find one that may be visible in viewport 
+    if (!monthyear) {
+        for (element of releaseDateDivs) {
+            let position = element.getBoundingClientRect();
+            if (position.top < window.innerHeight && position.bottom >= 0) {
+                monthyear = element.id;
+            }
+        }
+    }
+    return monthyear;
+}
+
+function toDelayed(month, year) {
 
     //make sure the slider is at correct value
     $slider.val('2');
@@ -872,9 +902,13 @@ function toDelayed() {
     $('#delayed').addClass('selected');
     //render new release calendar
     render(newReleaseCalendar);
+    let closestDate = findClosestDate(month, year);
+    $('html, body').animate({
+        scrollTop: $(`#${closestDate[0]}${closestDate[1]}`).offset().top-300,
+    }, 0);
 };
 
-function toOriginal() {
+function toOriginal(month, year) {
 
     //make sure slider is at correct value
     $slider.val('1');
@@ -885,7 +919,44 @@ function toOriginal() {
     $('#delayed').removeClass('selected');
     //render original release calendar
     render(originalReleaseCalendar);
+    if (month, year) {
+        let closestDate = findClosestDate(month, year);
+        $('html, body').animate({
+            scrollTop: $(`#${closestDate[0]}${closestDate[1]}`).offset().top-300,
+        }, 0);
+    }
 };
+
+function findClosestDate(month, year) {
+    let finalDate = [];
+    // if there is a div matching the month and year return those
+    if ($(`#${month}${year}`).length) {
+        finalDate.push(month, year);
+    }
+    // otherwise find closest match
+    else {
+        let monthIdx = convertMonthStrToIdx(month.substring(0, 3));
+        // if switching to anytime after August 2020 (last date in original calendar)
+        if (isOriginal && ((parseInt(year) > 2022) || (monthIdx > 8 && year === '2022'))) finalDate = ['August', '2022'];
+        else {
+            let nextMonth = month;
+            let nextYear = year;
+            // if at end of year, go to January of next year
+            if (month !== 'December') {
+                let nextMonthIdx =  monthIdx + 1;
+                nextMonth = convertMonthIdxToStr(nextMonthIdx+'');
+            }
+            // otherwise go to next month
+            else {
+                nextMonth = 'January';
+                nextYear = (parseInt(nextYear) + 1) + '';
+            }
+            // recursively iterate to find closest date
+            finalDate = findClosestDate(nextMonth, nextYear);
+        }
+    }
+    return finalDate;
+}
 
 //show movie details
 function handleClick(e) {
