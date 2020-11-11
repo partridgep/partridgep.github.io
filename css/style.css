@@ -279,6 +279,9 @@
 
   .movieInfo_container {
     position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100vw;
     height: 100vh;
     top: 0;
@@ -292,10 +295,8 @@
 
   .movieInfo {
     display: grid;
+    position: relative;
     grid-template-columns: 2fr 1fr;
-    position: fixed;
-    top: 20%;
-    bottom: 15%;
     background-color: white;
     background: linear-gradient(top, rgb(255, 255, 255), rgb(224, 224, 224));
     background: -webkit-linear-gradient(top, rgb(255,255,255), rgb(224, 224, 224));
