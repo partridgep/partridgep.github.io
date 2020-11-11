@@ -9,7 +9,7 @@ const movies = [
     ,
     {title: 'Artemis Fowl', imdb: 'tt3089630', originalRelease: '29 May 2020', newRelease: '12 Jun 2020', onVOD: 'Disney+', sources: ['https://www.deadline.com/2020/04/artemis-fowl-disney-release-trolls-world-tour-1202900186/'], trivia: ['The first Disney movie to be pushed to its streaming service due to the pandemic.']}
     ,
-    {title: 'Black Widow', imdb: 'tt3480822', originalRelease: '11 May 2020', newRelease: '06 Nov 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854', 'https://www.theverge.com/2020/3/17/21183747/black-widow-delayed-coronavirus-marvel-studios-disney-mulan-new-mutants-amc-regal', 'https://www.time.com/5804878/black-widow-coronavirus-release-delayed/'], trivia:['There was speculation that Disney would release the film on Disney+, but as a Marvel title, it was necessary to the studio that it  do well in theaters.', "'Black Widow' shifting dates could trigger a domino effect on release dates for the rest of the movies set in the Marvel Cinematic Universe due to their interconnected nature."]}
+    {title: 'Black Widow', imdb: 'tt3480822', originalRelease: '11 May 2020', newRelease: '06 Nov 2020', sources: ['https://www.hollywoodreporter.com/heat-vision/black-widow-mulan-nab-new-release-dates-jungle-cruise-delayed-a-year-1286854', 'https://www.theverge.com/2020/3/17/21183747/black-widow-delayed-coronavirus-marvel-studios-disney-mulan-new-mutants-amc-regal', 'https://www.time.com/5804878/black-widow-coronavirus-release-delayed/'], trivia:['There was speculation that Disney would release the film on Disney+, but Disney has resisted doing so, even as they launched Mulan on that platform.', "'Black Widow' shifting dates could trigger a domino effect on release dates for the rest of the movies set in the Marvel Cinematic Universe due to their interconnected nature."]}
     ,
     {title: 'Blue Story', imdb: 'tt9285882', originalRelease: '20 Mar 2020', newRelease: 'TBD', sources: ['https://www.hollywoodreporter.com/news/paramount-pulls-lovebirds-blue-story-due-coronavirus-1284257']}
     ,
@@ -129,7 +129,7 @@ const movies = [
     ,
     {title: 'Working Man', imdb: 'tt8391044', originalRelease: '27 Mar 2020', newRelease: '05 May 2020'}
     ,
-    {title: 'Tenet', imdb: 'tt6723592', originalRelease: '17 Jul 2020', newRelease: '12 Aug 2020', sources: ['https://www.variety.com/2020/film/box-office/tenet-release-date-delayed-again-christopher-nolan-1234690272/'], trivia: ['Warner Bros. delayed the film multiple times before deciding not to release it in theaters in the U.S.']}
+    {title: 'Tenet', imdb: 'tt6723592', originalRelease: '17 Jul 2020', newRelease: '12 Aug 2020', sources: ['https://www.variety.com/2020/film/box-office/tenet-release-date-delayed-again-christopher-nolan-1234690272/'], trivia: ['Warner Bros. delayed the film multiple times before releasing the film in the U.S. to disappointing box-office results.']}
 ]
 
 //constants for sources urls
@@ -467,7 +467,6 @@ function organizeMoviesByDelayedRelease() {
 
     //finally let's make sure our sorted array is fully sorted
     createSortedArray(newReleaseCalendar);
-    console.log(newReleaseCalendar);
 };
 
 
@@ -762,18 +761,10 @@ function render(calendar) {
             let allDays = [];
             for (child of $(`#${month}${year}`).children()) {
                 if ($(child).hasClass('release')) {
-                    
-                    console.log(child);
-                    console.log($(child).attr('id'));
-                    let day = $(child).attr('id').slice(0,2);
-                    console.log(day);
-                    allDays.push(child);
-                    
+                    allDays.push(child);              
                 };
             }
-            console.log(allDays);
             allDays.sort();
-            console.log(allDays);
         };
     }; 
 };
@@ -792,11 +783,16 @@ function addToTimeline(movie, d, m, y) {
     //little more than 31 to represent month on a line
     let positioning = parseInt((d/32)*100);
     //variable for HTML input of movie poster
-    posterToAdd = `<img id="${movie.imdb}" class='poster' src=${poster} onerror="{createPosterWithTitle(${movie.imdb})}">`;
+    if (isOriginal || !movie.onVOD) {
+        posterToAdd = `<img id="${movie.imdb}" class='poster' src=${poster} onerror="{createPosterWithTitle(${movie.imdb})}">`;
+    }
+    else {
+        posterToAdd = `<img id="${movie.imdb}" class='poster poster-VOD' src=${poster} onerror="{createPosterWithTitle(${movie.imdb})}">`;
+    }
 
     //if no poster url is available
     if (poster === 'N/A') {
-        //figure out what to do 
+        //show movie title
         posterToAdd = `<div id="${movie.imdb}" class='container'><img class='poster'><div class='posterTitle'>${movie.title}</div></div>`;
     }
     
@@ -806,11 +802,6 @@ function addToTimeline(movie, d, m, y) {
     //adjust poster on x-axis
     $currentReleaseDate.last().css('left', `${positioning}%`);
 };
-
-function socialDistance(movie, d) {
-    //get other movies in month
-
-}
 
 //if there is error loading poster image, create container div
 function createPosterWithTitle(id) {
@@ -1034,7 +1025,6 @@ function createTrailerLink(movie) {
 
     //give embed link of smaller trailer window if query matches
     if (windowWidth.matches) {
-        console.log('window is small');
         trailerLink = trailerUrl + movie.trailer + trailerUrlForMobile;
     }
     else {

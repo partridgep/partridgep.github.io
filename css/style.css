@@ -242,6 +242,10 @@
     cursor: pointer;
   }
 
+  .poster-VOD {
+    border: 2px solid yellow;
+  }
+
   .poster:hover {
     height: 155px;
     width: 105px;
